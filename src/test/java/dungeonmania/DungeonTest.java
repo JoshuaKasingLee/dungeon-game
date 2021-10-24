@@ -115,6 +115,7 @@ public class DungeonTest {
         listOfGames.add("boulders");
         listOfGames.add("advanced");
         assertEquals(controller.allGames(), listOfGames);
+
     }
 
 
