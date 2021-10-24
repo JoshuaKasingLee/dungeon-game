@@ -9,8 +9,6 @@ public class Dungeon {
     private List<Items> inventory;    // subject to change name or class to entity
     private List<Items> buildables; // subject to change name or class to entity
     private GoalCondition goals;
-    private int width;
-    private int height;
 
     public Dungeon(String dungeonName, String gameMode, String dungeonId) {
         this.dungeonName = dungeonName;
@@ -92,35 +90,6 @@ public class Dungeon {
      */
     public void setGoals(GoalCondition goals) {
         this.goals = goals;
-    }
-
-
-    /**
-     * @return int return the width
-     */
-    public int getWidth() {
-        return width;
-    }
-
-    /**
-     * @param width the width to set
-     */
-    public void setWidth(int width) {
-        this.width = width;
-    }
-
-    /**
-     * @return int return the height
-     */
-    public int getHeight() {
-        return height;
-    }
-
-    /**
-     * @param height the height to set
-     */
-    public void setHeight(int height) {
-        this.height = height;
     }
 
 }

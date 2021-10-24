@@ -74,10 +74,6 @@ public class DungeonManiaController {
         JSONObject dungeonObj = new JSONObject(fileContentsOutput);
 
         // Extract data from Json Object
-        int width = Integer.parseInt(dungeonObj.getString("width"));
-        int height = Integer.parseInt(dungeonObj.getString("height"));
-        activeGame.setWidth(width);
-        activeGame.setHeight(height); 
 
         JSONArray entityList = dungeonObj.getJSONArray("entities");
         for (int i = 0; i < entityList.length(); i++) {
