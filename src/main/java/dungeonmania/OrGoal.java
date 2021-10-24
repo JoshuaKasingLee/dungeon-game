@@ -7,8 +7,8 @@ public class OrGoal {
         this.subgoals = new ArrayList<GoalComponent>();
     }
 
-    public boolean IsComplete() {
-        return subgoals.stream().anyMatch(goal -> (goal.IsComplete()));
+    public boolean isComplete() {
+        return subgoals.stream().anyMatch(goal -> (goal.isComplete()));
     }
 
     public void addSubGoal(GoalComponent subgoal) {

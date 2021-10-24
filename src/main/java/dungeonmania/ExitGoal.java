@@ -7,7 +7,7 @@ public class ExitGoal implements GoalComponent {
 
     }
 
-    public boolean IsComplete() {
+    public boolean isComplete() {
         return true;
     }
 

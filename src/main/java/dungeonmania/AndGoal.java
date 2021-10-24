@@ -7,8 +7,8 @@ public class AndGoal {
         this.subgoals = new ArrayList<GoalComponent>();
     }
 
-    public boolean IsComplete() {
-        return subgoals.stream().allMatch(goal -> (goal.IsComplete()));
+    public boolean isComplete() {
+        return subgoals.stream().allMatch(goal -> (goal.isComplete()));
     }
 
     public void addSubGoal(GoalComponent subgoal) {
