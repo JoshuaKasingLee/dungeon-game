@@ -17,13 +17,13 @@ import java.util.List;
 import org.json.JSONObject;
 import org.json.JSONArray;
 
+import dungeonmania.util.Position;
+
 public class DungeonManiaController {
     private static int dungeonIdCounter = 0; 
     public static synchronized String newDungeonId() {
         return String.valueOf(dungeonIdCounter++);
     }
-
-
 
     private Dungeon activeGame = null;
 
@@ -81,8 +81,11 @@ public class DungeonManiaController {
             int xPosition = Integer.parseInt(entityList.getJSONObject(i).getString("x"));
             int yPosition = Integer.parseInt(entityList.getJSONObject(i).getString("y"));
 
+
+            // TODO: Create entities based on type in JSON File using a bunch of if statements
             //create entity object and add it into activegame
-            Entity currEntity = new Entity(entityType, xPosition, yPosition);
+
+            Entity currEntity = new Entity(new Position(xPosition, yPosition), gameMode);
             activeGame.addEntity(currEntity);
             // make a counter for the entityId in entity class similar to how we did it here
         }
