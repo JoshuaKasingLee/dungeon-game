@@ -2,10 +2,8 @@ package dungeonmania;
 
 import java.util.List;
 
-public abstract class CompositeGoal {
+public abstract class CompositeGoal implements GoalComponent, Observer {
     private List<GoalComponent> subgoals;
-
-    public abstract boolean isComplete();
 
     public void addSubgoal(GoalComponent subgoal) {
         subgoals.add(subgoal);

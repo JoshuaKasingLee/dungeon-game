@@ -1,6 +1,6 @@
 package dungeonmania;
 
-public class ExitGoal implements GoalComponent {
+public class ExitGoal implements GoalComponent, Observer  {
 
 
     public ExitGoal() {
@@ -11,4 +11,13 @@ public class ExitGoal implements GoalComponent {
         return true;
     }
 
+    @Override
+    public boolean tryToAttach(Entity entity) {
+        if (entity instanceof Exit) {
+            entity.attach(this);
+        }
+    }
+
+    public void update(Subject obj) {
+    }
 }
