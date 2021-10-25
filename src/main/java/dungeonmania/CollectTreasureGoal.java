@@ -22,10 +22,7 @@ public class CollectTreasureGoal implements GoalComponent, Observer {
 
     @Override
     public void update(Subject entity) {
-        if (entity instanceof Treasure) {
-            entity.detach(this);
-            numUncollected--;
-        } 
+        numUncollected--;
     }
 
 
