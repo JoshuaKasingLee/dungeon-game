@@ -2,7 +2,7 @@ package dungeonmania;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OrGoal extends CompositeGoal implements GoalComponent, Observer {
+public class OrGoal extends CompositeGoal{
     private List<GoalComponent> subgoals;
     public OrGoal() {
         this.subgoals = new ArrayList<GoalComponent>();
