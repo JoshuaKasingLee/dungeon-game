@@ -1,5 +1,7 @@
 package dungeonmania;
 
+import java.util.List;
+
 public class Dungeon {
 
     private String dungeonName;
@@ -8,7 +10,8 @@ public class Dungeon {
     private List<Entity> entities;
     private List<Items> inventory;    // subject to change name or class to entity
     private List<Items> buildables; // subject to change name or class to entity
-    private GoalCondition goals;
+    private List<GoalComponent> simpleGoals;
+    private GoalComponent overallGoal;
 
     public Dungeon(String dungeonName, String gameMode, String dungeonId) {
         this.dungeonName = dungeonName;
@@ -18,6 +21,18 @@ public class Dungeon {
 
     public void addEntity(Entity entity) {
         entities.add(entity);
+        conditionalAttach(entity);
+
+    }
+
+    public void conditionalAttach(Entity entity) {
+        for (GoalComponent goal : simpleGoals) {
+            goal.tryToAttach(entity);
+        }
+    }
+    
+    public boolean isEntityInDungeon(Treasure treasure) {
+        return entities.stream().anyMatch(entity -> (entity instanceof Treasure));
     }
     
 
