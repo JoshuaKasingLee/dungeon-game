@@ -74,10 +74,10 @@ public class InventoryTest {
         inv.add(i3);
         inv.add(i4);
         inv.add(i5);
-        assertEquals(inv.count("Treasure"), 3);
-        assertEquals(inv.count("Key"), 2);
+        assertEquals(3, inv.count("Treasure"));
+        assertEquals(2, inv.count("Key"));
         inv.use("Treasure", character);
-        assertEquals(inv.count("Treasure"), 2);
+        assertEquals(2, inv.count("Treasure"));
     }
 
     @Test
