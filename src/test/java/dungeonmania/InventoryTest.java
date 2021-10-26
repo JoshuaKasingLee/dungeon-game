@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.Arrays;
 
 import dungeonmania.Inventory;
+import dungeonmania.Character;
+import dungeonmania.util.Position;
 import dungeonmania.response.models.ItemResponse;
 import dungeonmania.exceptions.InvalidActionException;
 
@@ -34,31 +36,34 @@ public class InventoryTest {
 
     @Test
     public void useInventoryItems() {
-        Inventory inv = new Inventory();
+        Character character = new Character(new Position(0, 0), "Kelly");
+        Inventory inv = character.getInventory();
         Item i1 = new Item("i1", "Treasure");
         Item i2 = new Item("i2", "Key");
         Item i3 = new Item("i3", "Wood");
         inv.add(i1);
         inv.add(i2);
         inv.add(i3);
-        inv.use("Key");
+        inv.use("Key", character);
         assertEquals(Arrays.asList("Treasure", "Wood"), inv.listInventory());
-        inv.use("Treasure");
-        inv.use("Wood");
+        inv.use("Treasure", character);
+        inv.use("Wood", character);
         assertEquals(Arrays.asList(), inv.listInventory());
     }
 
     @Test
     public void useNonExistentItem() {
-        Inventory inv = new Inventory();
+        Character character = new Character(new Position(0, 0), "Kelly");
+        Inventory inv = character.getInventory();
         Item i1 = new Item("i1", "Treasure");
         inv.add(i1);
-        assertThrows(InvalidActionException.class, () -> inv.use("Key"));
+        assertThrows(InvalidActionException.class, () -> inv.use("Key", character));
     }
 
     @Test
     public void countInventory() {
-        Inventory inv = new Inventory();
+        Character character = new Character(new Position(0, 0), "Kelly");
+        Inventory inv = character.getInventory();
         Item i1 = new Item("i1", "Treasure");
         Item i2 = new Item("i2", "Key");
         Item i3 = new Item("i3", "Treasure");
@@ -71,13 +76,14 @@ public class InventoryTest {
         inv.add(i5);
         assertEquals(inv.count("Treasure"), 3);
         assertEquals(inv.count("Key"), 2);
-        inv.use("Treasure");
+        inv.use("Treasure", character);
         assertEquals(inv.count("Treasure"), 2);
     }
 
     @Test
     public void craftBow() {
-        Inventory inv = new Inventory();
+        Character character = new Character(new Position(0, 0), "Kelly");
+        Inventory inv = character.getInventory();
         Item i1 = new Item("i1", "Arrow");
         Item i2 = new Item("i2", "Wood");
         Item i3 = new Item("i3", "Arrow");
@@ -88,23 +94,25 @@ public class InventoryTest {
         inv.add(i3);
         inv.add(i4);
         inv.add(i5);
-        inv.craftBow();
+        inv.craftBow(character);
         assertEquals(Arrays.asList("Key", "Bow"), inv.listInventory());
     }
 
     @Test
     public void craftBowFail() {
-        Inventory inv = new Inventory();
+        Character character = new Character(new Position(0, 0), "Kelly");
+        Inventory inv = character.getInventory();
         Item i1 = new Item("i1", "Arrow");
         Item i2 = new Item("i2", "Wood");
         inv.add(i1);
         inv.add(i2);
-        assertThrows(InvalidActionException.class, () -> inv.craftBow());
+        assertThrows(InvalidActionException.class, () -> inv.craftBow(character));
     }
 
     @Test
     public void craftShield() {
-        Inventory inv = new Inventory();
+        Character character = new Character(new Position(0, 0), "Kelly");
+        Inventory inv = character.getInventory();
         Item i1 = new Item("i1", "Wood");
         Item i2 = new Item("i2", "Wood");
         Item i3 = new Item("i3", "Treasure");
@@ -113,16 +121,17 @@ public class InventoryTest {
         inv.add(i2);
         inv.add(i3);
         inv.add(i4);
-        inv.craftShield();
+        inv.craftShield(character);
         assertEquals(Arrays.asList("Key", "Shield"), inv.listInventory()); // test key remains
     }
 
     @Test
     public void craftShieldFail() {
-        Inventory inv = new Inventory();
+        Character character = new Character(new Position(0, 0), "Kelly");
+        Inventory inv = character.getInventory();
         Item i1 = new Item("i1", "Key");
         inv.add(i1);
-        assertThrows(InvalidActionException.class, () -> inv.craftShield());
+        assertThrows(InvalidActionException.class, () -> inv.craftShield(character));
         assertEquals(Arrays.asList("Key"), inv.listInventory());
     }
     
