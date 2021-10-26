@@ -64,6 +64,32 @@ public class ItemTest {
     }
 
     @Test
+    public void useInvisibilityPotion() {
+        Character character = new Character(new Position(0, 0), "Kelly");
+        assertEquals(Character.ORIGINAL_HEALTH, character.getHealth());
+        Inventory inv = character.getInventory();
+        InvisibilityPotion i = new InvisibilityPotion("my_potion");
+        inv.add(i);
+        assertEquals("Standard", character.getCharacterState().getType());
+        inv.use("InvisibilityPotion", character);
+        assertEquals("Invisible", character.getCharacterState().getType());
+        // NEED TO ADD
+    }
+
+    @Test
+    public void useInvincibilityPotion() {
+        Character character = new Character(new Position(0, 0), "Kelly");
+        assertEquals(Character.ORIGINAL_HEALTH, character.getHealth());
+        Inventory inv = character.getInventory();
+        InvincibilityPotion i = new InvincibilityPotion("my_potion");
+        inv.add(i);
+        assertEquals("Standard", character.getCharacterState().getType());
+        inv.use("InvincibilityPotion", character);
+        assertEquals("Invincible", character.getCharacterState().getType());
+        // NEED TO ADD
+    }
+
+    @Test
     public void testArmourLongevity() {
         Character character = new Character(new Position(0, 0), "Kelly");
         Inventory inv = character.getInventory();
@@ -92,7 +118,7 @@ public class ItemTest {
     
 
     @Test
-    public void testOneRing() {
+    public void useOneRing() {
         Character character = new Character(new Position(0, 0), "Kelly");
         assertEquals(Character.ORIGINAL_HEALTH, character.getHealth());
         Inventory inv = character.getInventory();
@@ -103,6 +129,8 @@ public class ItemTest {
         inv.use("OneRing", character);
         assertEquals(Character.ORIGINAL_HEALTH, character.getHealth());
     }
+
+    
 
     // need to test one ring again for real death
     
