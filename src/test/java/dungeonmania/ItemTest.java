@@ -89,6 +89,8 @@ public class ItemTest {
         // NEED TO ADD
     }
 
+    
+
     @Test
     public void testArmourLongevity() {
         Character character = new Character(new Position(0, 0), "Kelly");
@@ -130,8 +132,41 @@ public class ItemTest {
         assertEquals(Character.ORIGINAL_HEALTH, character.getHealth());
     }
 
-    
-
     // need to test one ring again for real death
     
+    @Test
+    public void testSword() {
+        Character character = new Character(new Position(0, 0), "Kelly");
+        Inventory inv = character.getInventory();
+        Sword s = new Sword("s");
+        inv.add(s);
+        // WRITE TEST
+    }
+
+    @Test
+    public void testBow() {
+        Character character = new Character(new Position(0, 0), "Kelly");
+        Inventory inv = character.getInventory();
+        Bow b = new Bow("b");
+        inv.add(b);
+        // WRITE TEST
+    }
+
+    @Test
+    public void testBomb() {
+        Character character = new Character(new Position(0, 0), "Kelly");
+        Inventory inv = character.getInventory();
+        Bomb b = new Bomb("b");
+        inv.add(b);
+        // WRITE TEST
+    }
+
+    @Test
+    public void testKey() {
+        Character character = new Character(new Position(0, 0), "Kelly");
+        Inventory inv = character.getInventory();
+        Key k = new Key("silver key");
+        inv.add(k);
+        // WRITE TEST
+    }
 }
