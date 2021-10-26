@@ -1,6 +1,6 @@
 package dungeonmania;
 
-public class Item {
+public abstract class Item {
     private String id;
     private String type;
 
@@ -9,7 +9,7 @@ public class Item {
         this.type = type;
     }
 
-    public void activate() {
+    public void activate(Character character) {
     
     }
 

@@ -24,10 +24,10 @@ public class Inventory {
      * activates and removes last item of given type from inventory
      * @param type
      */
-    public void use(String type, MovingEntity entity) {
+    public void use(String type, Character character) {
         Item item = this.getItem(type);
         if (item != null) {
-            item.activate(entity);
+            item.activate(character);
             inventory.remove(item);
         } else {
             throw new InvalidActionException(type + "does not exist in inventory");
@@ -53,12 +53,12 @@ public class Inventory {
      * creates a bow and adds to inventory
      * adjusts stock of crafting materials
      */
-    public void craftBow(MovingEntity entity) {
+    public void craftBow(Character character) {
         if (this.count("Wood") >= 1 && this.count("Arrow") >= 3) {
-            this.use("Wood", entity);
-            this.use("Arrow", entity);
-            this.use("Arrow", entity);
-            this.use("Arrow", entity); // NEED TO FIX
+            this.use("Wood", character);
+            this.use("Arrow", character);
+            this.use("Arrow", character);
+            this.use("Arrow", character); // NEED TO FIX
             // bow id is given by count of bows in inventory (ok since last item is always used, so won't have double ups)
             this.add(new Bow(Integer.toString(this.count("Bow")))); 
         } else {
@@ -70,18 +70,18 @@ public class Inventory {
      * creates a shield and adds to inventory
      * adjusts stock of crafting materials
      */
-    public void craftShield(MovingEntity entity) {
+    public void craftShield(Character character) {
         if (this.count("Wood") >= 2) {
             // assume we prioritise using treasure over keys for crafting
             if (this.count("Treasure") >= 1) {
-                this.use("Wood", entity);
-                this.use("Wood", entity);
-                this.use("Treasure", entity);
+                this.use("Wood", character);
+                this.use("Wood", character);
+                this.use("Treasure", character);
                 this.add(new Shield(Integer.toString(this.count("Shield"))));  // shield id is given same as shields - see above
             } else if (this.count("Key") >= 1) {
-                this.use("Wood", entity);
-                this.use("Wood", entity);
-                this.use("Key", entity);
+                this.use("Wood", character);
+                this.use("Wood", character);
+                this.use("Key", character);
                 this.add(new Shield(Integer.toString(this.count("Shield")))); 
             }
         } else {
