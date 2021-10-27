@@ -34,6 +34,10 @@ public class Dungeon {
     public boolean isEntityInDungeon(Treasure treasure) {
         return entities.stream().anyMatch(entity -> (entity instanceof Treasure));
     }
+
+    public void addSimpleGoals(GoalComponent simpleGoal) {
+        simpleGoals.add(simpleGoal);
+    }
     
 
     /**
@@ -93,18 +97,35 @@ public class Dungeon {
         this.entities = entities;
     }
 
+
+
+
     /**
-     * @return GoalCondition return the goals
+     * @return List<GoalComponent> return the simpleGoals
      */
-    public GoalCondition getGoals() {
-        return goals;
+    public List<GoalComponent> getSimpleGoals() {
+        return simpleGoals;
     }
 
     /**
-     * @param goals the goals to set
+     * @param simpleGoals the simpleGoals to set
      */
-    public void setGoals(GoalCondition goals) {
-        this.goals = goals;
+    public void setSimpleGoals(List<GoalComponent> simpleGoals) {
+        this.simpleGoals = simpleGoals;
+    }
+
+    /**
+     * @return GoalComponent return the overallGoal
+     */
+    public GoalComponent getOverallGoal() {
+        return overallGoal;
+    }
+
+    /**
+     * @param overallGoal the overallGoal to set
+     */
+    public void setOverallGoal(GoalComponent overallGoal) {
+        this.overallGoal = overallGoal;
     }
 
 }
