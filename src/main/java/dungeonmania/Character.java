@@ -23,17 +23,6 @@ public class Character extends MovingEntity {
 
     @Override
     public boolean checkValidMove(Position pos, Direction dir) {
-        super.checkValidMove(pos, dir);
-        // check for doors
-        for (Entity e : getDungeon().getEntities(pos)) {
-            if (e instanceof Boulder) {
-                checkUnlockedDoor(pos.translateBy(dir));
-            }
-            if (e instanceof Door) {
-                checkUnlockedDoor(pos);
-            }
-        }
-
         // check for obstructions
         for (Entity e : getDungeon().getEntities(pos)) {
             // assume can't walk on top of spawner

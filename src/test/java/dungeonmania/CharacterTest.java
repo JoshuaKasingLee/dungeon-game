@@ -23,7 +23,7 @@ import dungeonmania.util.Position;
 
 public class CharacterTest {
     @Test
-    public void testMovement() {
+    public void testValidMovement() {
         Character character = new Character(new Position(0, 0), "Kelly", new Dungeon("Dungeon", "Standard", "1"));
         character.moveUp();
         assertEquals(new Position(0, 1), character.getPosition());
@@ -39,6 +39,46 @@ public class CharacterTest {
         character.moveRight();
         character.moveRight();
         assertEquals(new Position(2, 3), character.getPosition());
+    }
+
+    @Test
+    public void testInvalidMovement() {
+        Character character = new Character(new Position(0, 0), "Kelly", new Dungeon("Dungeon", "Standard", "1"));
+        Door d = new Door(new Position(1, 0), "door", character.getDungeon(), 1);
+        character.moveRight();
+        assertEquals(new Position(0, 0), character.getPosition());
+        Wall w = new Wall(new Position(-1, 0), "wall", character.getDungeon());
+        character.moveLeft();
+        assertEquals(new Position(0, 0), character.getPosition());
+        ZombieToastSpawner z = new ZombieToastSpawner(new Position(0, 1), "spawner", character.getDungeon());
+        character.moveUp();
+        assertEquals(new Position(0, 0), character.getPosition());
+        Boulder b = new Boulder(new Position(0, -1), "boulder", character.getDungeon());
+        character.moveDown();
+        assertEquals(new Position(0, -1), character.getPosition());
+    }
+
+    @Test
+    public void testBlockedBoulders() {
+        Character character = new Character(new Position(0, 0), "Kelly", new Dungeon("Dungeon", "Standard", "1"));
+        Boulder b1 = new Boulder(new Position(0, -1), "boulder", character.getDungeon());
+        ZombieToastSpawner z = new ZombieToastSpawner(new Position(0, -2), "spawner", character.getDungeon());
+        character.moveDown();  // should fail since boulder is blocked
+        assertEquals(new Position(0, 0), character.getPosition());
+    }
+
+    @Test
+    public void testUnlockDoorMovement() {
+        Character character = new Character(new Position(0, 0), "Kelly", new Dungeon("Dungeon", "Standard", "1"));
+        Door d = new Door(new Position(1, 0), "door", character.getDungeon(), 1);
+        character.moveRight();
+        assertEquals(new Position(0, 0), character.getPosition());
+        Inventory inv = character.getInventory();
+        Key k = new Key(new Position(0, 0), "k", character.getDungeon(), 1);
+        inv.add(k);
+        // door should now unlock
+        character.moveRight();
+        assertEquals(new Position(1, 0), character.getPosition());
     }
 
     @Test
@@ -433,6 +473,18 @@ public class CharacterTest {
         character.moveUp();
         // fight should happen
         assertEquals(Arrays.asList(character), character.getDungeon().getAllEntities());
+    }
+
+    @Test
+    public void fightEnemiesInheritArmour() {
+        Character character = new Character(new Position(0, 0), "Kelly", new Dungeon("Dungeon", "Standard", "1"));
+        Spider spider = new Spider(new Position(0, 1), "Polly", character.getDungeon());
+        spider.giveArmour(Armour.DURABILITY);
+        assertEquals(Arrays.asList(character, spider), character.getDungeon().getAllEntities());
+        character.moveUp();
+        // fight should happen
+        assertEquals(Arrays.asList(character), character.getDungeon().getAllEntities());
+        assertEquals(Arrays.asList("Armour"), character.getInventory().listInventory());
     }
 
     @Test
