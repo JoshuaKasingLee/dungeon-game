@@ -16,6 +16,8 @@ public class InvincibleState implements CharacterState {
     // assume that since they are already invincible, no need to use armour/shields in this state
     // assume character's health cannot decrease (spec doesn't explicitly say this)
     public void battleEnemy(Enemy enemy) {
+        enemy.setHealth(0);
+        // remove enemy
     }
 
     public void updateState() {
