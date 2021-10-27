@@ -42,6 +42,20 @@ public class CharacterTest {
     }
 
     @Test
+    public void pickUpItems() {
+        Character character = new Character(new Position(0, 0), "Kelly", new Dungeon("Dungeon", "Standard", "1"));
+        Inventory inv = character.getInventory();
+        Sword s = new Sword(new Position(0, 1), "s", character.getDungeon());
+        character.moveUp();
+        assertEquals(Arrays.asList("Sword"), inv.listInventory());
+        Treasure t = new Treasure(new Position(1, 3), "t", character.getDungeon());
+        character.moveUp();
+        character.moveUp();
+        character.moveRight();
+        assertEquals(Arrays.asList("Sword", "Treasure"), inv.listInventory());
+    }
+
+    @Test
     public void useValidItems() {
         Character character = new Character(new Position(0, 0), "Kelly", new Dungeon("Dungeon", "Standard", "1"));
         Inventory inv = character.getInventory();
