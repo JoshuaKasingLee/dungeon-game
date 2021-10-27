@@ -23,23 +23,51 @@ public class Character extends MovingEntity {
 
     @Override
     public boolean checkValidMove(Position pos, Direction dir) {
-        // super.checkValidMove(pos, dir);
-        // // check for doors
-        // for (Entity e : getDungeon().getEntities(pos)) {
-        //     if (e instanceof Boulder) {
-        //         Position newPos = pos.translateBy(dir);
-        //         if (e instanceof Door && inventory.hasCorrectKey(e.getClass())) {
-        //             // or an unopen door
-        //             return false;
-        //         }
-        //     }
-        //     if (e instanceof Door) {
-        //         // if we don't have the key NEED TO CODE
-        //         // assume if we are on top of a door, we will always use the key
-        //         return false;
-        //     }
-        // }
+        super.checkValidMove(pos, dir);
+        // check for doors
+        for (Entity e : getDungeon().getEntities(pos)) {
+            if (e instanceof Boulder) {
+                checkUnlockedDoor(pos.translateBy(dir));
+            }
+            if (e instanceof Door) {
+                checkUnlockedDoor(pos);
+            }
+        }
+
+        // check for obstructions
+        for (Entity e : getDungeon().getEntities(pos)) {
+            // assume can't walk on top of spawner
+            if (e instanceof Wall || e instanceof ZombieToastSpawner || !checkUnlockedDoor(pos)) {
+                return false;
+            }
+            // assume boulders never exist on the edge of the dungeon (i.e. there is always a wall border)
+            // assume boulder can be pushed onto items/other moving entities
+            if (e instanceof Boulder) {
+                Position newPos = pos.translateBy(dir);
+                for (Entity e1 : getDungeon().getEntities(newPos)) {
+                    if (e1 instanceof Wall || e1 instanceof Boulder || e1 instanceof ZombieToastSpawner || !checkUnlockedDoor(newPos)) {
+                        return false;
+                    }
+                }   
+            }
+        }
         return true;
+    }
+
+    
+    /** 
+     * checks whether door exists in position, and if so returns true if we can unlock it
+     * returns false if no door or no correct key
+     * @param pos
+     * @return boolean
+     */
+    public boolean checkUnlockedDoor(Position pos) {
+        Door door = getDungeon().getDoor(pos);
+        if (door != null) {
+            return inventory.useKey(door, this);
+        } else {
+            return false;
+        }
     }
 
     // assume we pick items after we fight enemies
@@ -81,7 +109,6 @@ public class Character extends MovingEntity {
             }     
         } 
     }
-
 
 
     // assume that:

@@ -44,6 +44,7 @@ public abstract class MovingEntity extends Entity {
     }
 
     // other functions
+
     
     // override in character to pick items and fight enemies
     public void move(Direction direction) {
@@ -90,6 +91,24 @@ public abstract class MovingEntity extends Entity {
     // need to override for spider
     // assumes zombies + mercenaries can also push boulders, etc. -> everything a player can do except key/door
     public boolean checkValidMove(Position pos, Direction dir) {
+
+        // check for obstructions
+        for (Entity e : getDungeon().getEntities(pos)) {
+            // assume can't walk on top of spawner
+            if (e instanceof Wall || e instanceof ZombieToastSpawner || e instanceof Door) {
+                return false;
+            }
+            // assume boulders never exist on the edge of the dungeon (i.e. there is always a wall border)
+            // assume boulder can be pushed onto items/other moving entities
+            if (e instanceof Boulder) {
+                Position newPos = pos.translateBy(dir);
+                for (Entity e1 : getDungeon().getEntities(newPos)) {
+                    if (e1 instanceof Wall || e1 instanceof Boulder || e1 instanceof ZombieToastSpawner || e1 instanceof Door) {
+                        return false;
+                    }
+                }   
+            }
+        }
         
         return true;
     }

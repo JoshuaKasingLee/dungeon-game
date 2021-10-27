@@ -36,6 +36,20 @@ public class Inventory {
             throw new InvalidActionException(type + "does not exist in inventory");
         }
     }
+
+    public boolean useKey(Door door, Character character) {
+        if (door != null) {
+            for (Item i : inventory) {
+                if (i instanceof Key && i.correctKey(door)) {
+                    i.activate(character);
+                    inventory.remove(i);
+                    return true;
+                }
+            }
+        }
+        // no error throwing?
+        return false;
+    }
     
     /** 
      * returns how many of the input item type is in the inventory
@@ -124,14 +138,6 @@ public class Inventory {
         return null;
     }
 
-    public boolean hasCorrectKey(Door door) {
-        for (Item i : inventory) {
-            if (i instanceof Key && i.correctKey(door)) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     public static void main(String[] args) {
     }

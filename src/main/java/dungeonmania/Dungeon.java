@@ -19,6 +19,12 @@ public class Dungeon {
         return new ArrayList<Entity>();
     }
 
+    // assume only one door in each position
+    public Door getDoor(Position position) {
+        // return door if there is one in the position, null if else
+        return null;
+    }
+
     public List<Item> getItems(Position position) {
         return new ArrayList<Item>();
     }
