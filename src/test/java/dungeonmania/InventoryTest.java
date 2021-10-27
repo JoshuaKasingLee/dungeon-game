@@ -126,6 +126,20 @@ public class InventoryTest {
     }
 
     @Test
+    public void craftShieldWithKey() {
+        Character character = new Character(new Position(0, 0), "Kelly");
+        Inventory inv = character.getInventory();
+        Wood i1 = new Wood("i1");
+        Wood i2 = new Wood("i2");
+        Key i3 = new Key("i3");
+        inv.add(i1);
+        inv.add(i2);
+        inv.add(i3);
+        inv.craftShield(character);
+        assertEquals(Arrays.asList("Shield"), inv.listInventory()); // test key remains
+    }
+
+    @Test
     public void craftShieldFail() {
         Character character = new Character(new Position(0, 0), "Kelly");
         Inventory inv = character.getInventory();

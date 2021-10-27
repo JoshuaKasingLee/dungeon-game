@@ -28,7 +28,10 @@ public class Inventory {
         Item item = this.getItem(type);
         if (item != null) {
             item.activate(character);
-            inventory.remove(item);
+            if (item.getUsesLeft() == 0) {
+                inventory.remove(item);
+            }
+            
         } else {
             throw new InvalidActionException(type + "does not exist in inventory");
         }

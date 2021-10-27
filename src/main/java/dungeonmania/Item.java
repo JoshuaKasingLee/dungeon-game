@@ -20,7 +20,6 @@ public abstract class Item {
 
     public void activate(Character character) {
         this.usesLeft = usesLeft - 1;
-    
     }
 
     // basic getters and setters

@@ -100,15 +100,16 @@ public class CharacterTest {
         CharacterState state = character.getCharacterState();
         assertEquals(state.getType(), "Standard");
 
-        // zombietoast battle
+        // zombietoast battle - no armour
         ZombieToast zombie = new ZombieToast(new Position(0, 0), "Holly");
+        zombie.giveArmour(0);
         // expect 2 rounds to kill zombie
         int expectedCharHealth1 = character.getHealth() - ((zombie.getHealth() * zombie.getAttackDamage()) / 10);
         int expectedEnemyHealth1 = zombie.getHealth() - ((character.getHealth() * character.getAttackDamage()) / 5);
         int expectedCharHealth2 = expectedCharHealth1 - ((expectedEnemyHealth1 * zombie.getAttackDamage()) / 10);
         int expectedEnemyHealth2 = expectedEnemyHealth1 - ((expectedCharHealth1 * character.getAttackDamage()) / 5);
         state.battleEnemy(zombie);
-        assertTrue(character.getHealth() == expectedCharHealth2);
+        assertEquals(character.getHealth(), expectedCharHealth2);
         assertEquals(zombie.getHealth(), expectedEnemyHealth2);
     }
 
@@ -120,8 +121,9 @@ public class CharacterTest {
         CharacterState state = character.getCharacterState();
         assertEquals(state.getType(), "Standard");
 
-        // mercenary battle
+        // mercenary battle - no armour
         Mercenary merc = new Mercenary(new Position(0, 0), "Molly");
+        merc.giveArmour(0);
         // expect 3 rounds to kill mercenary
         int expectedCharHealth1 = character.getHealth() - ((merc.getHealth() * merc.getAttackDamage()) / 10);
         int expectedEnemyHealth1 = merc.getHealth() - ((character.getHealth() * character.getAttackDamage()) / 5);
@@ -145,8 +147,9 @@ public class CharacterTest {
         Sword s = new Sword("swordy");
         inv.add(s);
 
-        // mercenary battle
+        // mercenary battle - no armour
         Mercenary merc = new Mercenary(new Position(0, 0), "Molly");
+        merc.giveArmour(0);
         // expect instant kill mercenary 
         int expectedCharHealth = character.getHealth() - ((merc.getHealth() * merc.getAttackDamage()) / 10);
         state.battleEnemy(merc);
@@ -165,8 +168,9 @@ public class CharacterTest {
         Bow b = new Bow("katniss");
         inv.add(b);
 
-        // mercenary battle
+        // mercenary battle - no armour
         Mercenary merc = new Mercenary(new Position(0, 0), "Molly");
+        merc.giveArmour(0);
         // expect double hit to instantly kill mercenary
         int expectedCharHealth = character.getHealth() - ((merc.getHealth() * merc.getAttackDamage()) / 10);
         int expectedEnemyHealth = merc.getHealth() - 2*((character.getHealth() * character.getAttackDamage()) / 5);
@@ -258,6 +262,7 @@ public class CharacterTest {
 
         // followed by zombie battle - 2 rounds -> character should have 7 points after round 1 and 2
         ZombieToast zombie = new ZombieToast(new Position(0, 0), "Holly");
+        zombie.giveArmour(0);
         int expectedCharHealth2 = expectedCharHealth1 - ((zombie.getHealth()* zombie.getAttackDamage()) / 10);
         int expectedEnemyHealth2 = zombie.getHealth() - ((expectedCharHealth1 * character.getAttackDamage()) / 5);
         int expectedCharHealth3 = expectedCharHealth2 - ((expectedEnemyHealth2 * zombie.getAttackDamage()) / 10);
@@ -268,6 +273,7 @@ public class CharacterTest {
 
         // followed by merc battle - 3 rounds
         Mercenary merc = new Mercenary(new Position(0, 0), "Molly");
+        merc.giveArmour(0);
         int expectedCharHealth4 = expectedCharHealth3 - ((merc.getHealth() * merc.getAttackDamage()) / 10);
         int expectedEnemyHealth4 = merc.getHealth() - ((expectedCharHealth3 * character.getAttackDamage()) / 5);
         int expectedCharHealth5 = expectedCharHealth4 - ((expectedEnemyHealth4 * merc.getAttackDamage()) / 10);
@@ -278,6 +284,42 @@ public class CharacterTest {
         state.battleEnemy(merc);
         assertEquals(character.getHealth(), expectedCharHealth6);
         assertEquals(merc.getHealth(), expectedEnemyHealth6);
+    }
+
+    @Test
+    public void testBattleEnemyArmour() {
+        // tests health score after battle (ignoring deaths)
+        // NEED TO FIX - ALSO NEED TO DO FIGHT ENEMIES INSTEAD OF JUST BATTLE
+        Character character = new Character(new Position(0, 0), "Kelly");
+        CharacterState state = character.getCharacterState();
+        assertEquals(state.getType(), "Standard");
+
+        // zombietoast battle - with armour
+        ZombieToast zombie = new ZombieToast(new Position(0, 0), "Holly");
+        zombie.giveArmour(Armour.DURABILITY);
+        // now expect 3 rounds to kill zombie
+        int expectedCharHealth1 = character.getHealth() - ((zombie.getHealth() * zombie.getAttackDamage()) / 10);
+        int expectedEnemyHealth1 = zombie.getHealth() - ((character.getHealth() * character.getAttackDamage()) / 10);
+        int expectedCharHealth2 = expectedCharHealth1 - ((expectedEnemyHealth1 * zombie.getAttackDamage()) / 10);
+        int expectedEnemyHealth2 = expectedEnemyHealth1 - ((expectedCharHealth1 * character.getAttackDamage()) / 10);
+        // zombie armour removed after 2 hits
+        int expectedCharHealth3 = expectedCharHealth2 - ((expectedEnemyHealth2 * zombie.getAttackDamage()) / 10);
+        int expectedEnemyHealth3 = expectedEnemyHealth2 - ((expectedCharHealth2 * character.getAttackDamage()) / 5);
+        state.battleEnemy(zombie);
+        assertEquals(character.getHealth(), expectedCharHealth3);
+        assertEquals(zombie.getHealth(), expectedEnemyHealth3);
+
+        // show sword overrides armour
+        Inventory inv = character.getInventory();
+        Sword sword = new Sword("swordy");
+        inv.add(sword);
+
+        Mercenary merc = new Mercenary(new Position(0, 0), "Molly");
+        merc.giveArmour(Armour.DURABILITY);
+        int expectedCharHealth4 = expectedCharHealth3 - ((merc.getHealth() * merc.getAttackDamage()) / 10);
+        state.battleEnemy(merc);
+        assertEquals(character.getHealth(), expectedCharHealth4);
+        assertEquals(merc.getHealth(), 0);
     }
 
     @Test
