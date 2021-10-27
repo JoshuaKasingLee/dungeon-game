@@ -31,6 +31,16 @@ public abstract class Enemy extends MovingEntity {
         return this.ally;
     }
 
+    /**
+     * @param ally the ally to set
+     */
+    public void setAlly(boolean ally) {
+        this.ally = ally;
+    }
+
+    public int getArmour() {
+        return this.armour;
+    }
     
     /** 
      * given a percentage chance the enemy should have armour, randomly assign armour
@@ -52,6 +62,7 @@ public abstract class Enemy extends MovingEntity {
 
     public abstract void updatePosition();
 
+
     public static void main(String[] args) {   
         // ZombieToast zombie = new ZombieToast(new Position(0, 0), "Holly");
         // Mercenary merc = new Mercenary(new Position(0, 0), "Molly");
@@ -66,5 +77,10 @@ public abstract class Enemy extends MovingEntity {
         //     System.out.println("hello");
         // }
     }
+
+
+
     
+
+
 }

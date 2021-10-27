@@ -375,5 +375,21 @@ public class CharacterTest {
         assertTrue(character.getHealth() == Character.ORIGINAL_HEALTH);
         assertTrue(merc.getHealth() == Mercenary.ORIGINAL_HEALTH);
     }
+
+    @Test
+    public void testBattleAlly() {
+        // tests health score after battle (ignoring deaths)
+        // NEED TO FIX - ALSO NEED TO DO FIGHT ENEMIES INSTEAD OF JUST BATTLE
+        Character character = new Character(new Position(0, 0), "Kelly");
+        CharacterState state = character.getCharacterState();
+        assertEquals(state.getType(), "Standard");
+
+        // mercenary ally - should not battle
+        Mercenary merc = new Mercenary(new Position(0, 0), "Molly");
+        merc.setAlly(true);
+        state.battleEnemy(merc);
+        assertEquals(character.getHealth(), Character.ORIGINAL_HEALTH);
+        assertEquals(merc.getHealth(), Mercenary.ORIGINAL_HEALTH);
+    }
     
 }
