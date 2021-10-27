@@ -1,11 +1,23 @@
+package dungeonmania;
+
+import dungeonmania.util.Position;
+
+
+
 public abstract class Entity {
     private Position position;
     private String id;
     private String type;
-    private boolean isInteractable = false;
-    private Gamemode gamemode;
+    // private boolean isInteractable = false;
+    // private Gamemode gamemode;
 
-    public Entity(Position position, String id, String type, Gamemode gamemode);
+    public Entity(Position position, String id, String type) {
+        this.position = position;
+        this.id = id;
+        this.type = type;
+        // this.isInteractable = false;
+        // this.gamemode = gamemode;
+    }
 
     /**
      * @return Position return the position
@@ -49,32 +61,32 @@ public abstract class Entity {
         this.type = type;
     }
 
-    /**
-     * @return boolean return the isInteractable
-     */
-    public boolean isIsInteractable() {
-        return isInteractable;
-    }
+    // /**
+    //  * @return boolean return the isInteractable
+    //  */
+    // public boolean isIsInteractable() {
+    //     return isInteractable;
+    // }
 
-    /**
-     * @param isInteractable the isInteractable to set
-     */
-    public void setIsInteractable(boolean isInteractable) {
-        this.isInteractable = isInteractable;
-    }
+    // /**
+    //  * @param isInteractable the isInteractable to set
+    //  */
+    // public void setIsInteractable(boolean isInteractable) {
+    //     this.isInteractable = isInteractable;
+    // }
 
-    /**
-     * @return Gamemode return the gamemode
-     */
-    public Gamemode getGamemode() {
-        return gamemode;
-    }
+    // /**
+    //  * @return Gamemode return the gamemode
+    //  */
+    // public Gamemode getGamemode() {
+    //     return gamemode;
+    // }
 
-    /**
-     * @param gamemode the gamemode to set
-     */
-    public void setGamemode(Gamemode gamemode) {
-        this.gamemode = gamemode;
-    }
+    // /**
+    //  * @param gamemode the gamemode to set
+    //  */
+    // public void setGamemode(Gamemode gamemode) {
+    //     this.gamemode = gamemode;
+    // }
 
 }
