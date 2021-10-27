@@ -162,11 +162,18 @@ public class ItemTest {
     }
 
     @Test
-    public void testKey() {
+    public void testKeyMatch() {
         Character character = new Character(new Position(0, 0), "Kelly", new Dungeon("Dungeon", "Standard", "1"));
         Inventory inv = character.getInventory();
         Key k = new Key(new Position(0, 0), "i1", character.getDungeon(), 1);
         inv.add(k);
-        // WRITE TEST
+        inv.useKey(null, character);
+        assertEquals(Arrays.asList("Key"), inv.listInventory());
+        Door d1 = new Door(new Position(0, 1), "door", character.getDungeon(), 2);
+        assertEquals(false, inv.useKey(d1, character));
+
+        Door d2 = new Door(new Position(1, 0), "door", character.getDungeon(), 1);
+        assertTrue(inv.useKey(d2, character));
+        assertEquals(Arrays.asList(), inv.listInventory());
     }
 }
