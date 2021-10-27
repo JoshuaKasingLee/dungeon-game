@@ -23,7 +23,22 @@ public class Character extends MovingEntity {
 
     @Override
     public boolean checkValidMove(Position pos, Direction dir) {
-        
+        // super.checkValidMove(pos, dir);
+        // // check for doors
+        // for (Entity e : getDungeon().getEntities(pos)) {
+        //     if (e instanceof Boulder) {
+        //         Position newPos = pos.translateBy(dir);
+        //         if (e instanceof Door && inventory.hasCorrectKey(e.getClass())) {
+        //             // or an unopen door
+        //             return false;
+        //         }
+        //     }
+        //     if (e instanceof Door) {
+        //         // if we don't have the key NEED TO CODE
+        //         // assume if we are on top of a door, we will always use the key
+        //         return false;
+        //     }
+        // }
         return true;
     }
 
@@ -36,14 +51,16 @@ public class Character extends MovingEntity {
         characterState.updateState();
     }
 
-
     public void pickItems(Position pos) {
-        
+        for (Item i : getDungeon().getItems(pos)) {
+            inventory.add(i);
+        }
     }
 
     public void fightEnemies(Position pos) {
-    
+     
     }
+
 
     // assume that:
     // items that need to be triggered to use;
