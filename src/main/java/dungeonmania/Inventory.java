@@ -63,7 +63,7 @@ public class Inventory {
             this.use("Arrow", character);
             this.use("Arrow", character); // NEED TO FIX
             // bow id is given by count of bows in inventory (ok since last item is always used, so won't have double ups)
-            this.add(new Bow(Integer.toString(this.count("Bow")))); 
+            this.add(new Bow(Integer.toString(this.count("Bow")), character.getDungeon())); 
         } else {
             throw new InvalidActionException("Insufficient crafting material for Bow");
         }
@@ -80,12 +80,12 @@ public class Inventory {
                 this.use("Wood", character);
                 this.use("Wood", character);
                 this.use("Treasure", character);
-                this.add(new Shield(Integer.toString(this.count("Shield"))));  // shield id is given same as shields - see above
+                this.add(new Shield(Integer.toString(this.count("Shield")), character.getDungeon()));  // shield id is given same as shields - see above
             } else if (this.count("Key") >= 1) {
                 this.use("Wood", character);
                 this.use("Wood", character);
                 this.use("Key", character);
-                this.add(new Shield(Integer.toString(this.count("Shield")))); 
+                this.add(new Shield(Integer.toString(this.count("Shield")), character.getDungeon())); 
             }
         } else {
             throw new InvalidActionException("Insufficient crafting material for Shield");
@@ -122,6 +122,15 @@ public class Inventory {
         }
         Collections.reverse(inventory);
         return null;
+    }
+
+    public boolean hasCorrectKey(Door door) {
+        for (Item i : inventory) {
+            if (i instanceof Key && i.correctKey(door)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static void main(String[] args) {

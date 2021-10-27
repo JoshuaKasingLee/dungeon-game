@@ -1,5 +1,7 @@
 package dungeonmania;
 
+import dungeonmania.util.Position;
+
 
 // assume that:
 // items that need to be triggered to use;
@@ -7,14 +9,11 @@ package dungeonmania;
 // items that are auto-used:
 // weaponry, armour/shields, one-ring
 
-public abstract class Item {
-    private String id;
-    private String type;
+public abstract class Item extends Entity {
     private int usesLeft;
 
-    public Item (String id, String type) {
-        this.id = id;
-        this.type = type;
+    public Item(Position position, String id, String type, Dungeon dungeon) {
+        super(position, id, type, dungeon);
         this.usesLeft = 1;
     }
 
@@ -22,21 +21,13 @@ public abstract class Item {
         this.usesLeft = usesLeft - 1;
     }
 
-    // basic getters and setters
-    
-    /**
-     * @return String return the id
-     */
-    public String getId() {
-        return id;
+    // for polymorphism
+    public boolean correctKey(Door door) {
+        return false;
     }
 
-    /**
-     * @return String return the type
-     */
-    public String getType() {
-        return type;
-    }
+
+    // basic getters and setters
 
     /**
      * @return int return the usesLeft

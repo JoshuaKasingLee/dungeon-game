@@ -1,8 +1,10 @@
 package dungeonmania;
 
+import dungeonmania.util.Position;
+
 public class OneRing extends Item {
-    public OneRing (String id) {
-        super(id, "OneRing");
+    public OneRing (Position position, String id, Dungeon dungeon) {
+        super(position, id, "OneRing", dungeon);
     }
 
     /**

@@ -1,9 +1,11 @@
 package dungeonmania;
 
+import dungeonmania.util.Position;
+
 public class Wood extends Item {
 
-    public Wood (String id) {
-        super(id, "Wood");
+    public Wood (Position position, String id, Dungeon dungeon) {
+        super(position, id, "Wood", dungeon);
     }
     
 }

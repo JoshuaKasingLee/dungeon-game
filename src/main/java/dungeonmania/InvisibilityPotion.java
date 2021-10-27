@@ -1,9 +1,11 @@
 package dungeonmania;
 
+import dungeonmania.util.Position;
+
 public class InvisibilityPotion extends Item {
 
-    public InvisibilityPotion (String id) {
-        super(id, "InvisibilityPotion");
+    public InvisibilityPotion (Position position, String id, Dungeon dungeon) {
+        super(position, id, "InvisibilityPotion", dungeon);
     }
 
     @Override

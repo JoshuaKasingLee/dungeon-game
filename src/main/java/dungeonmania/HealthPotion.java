@@ -1,10 +1,11 @@
 package dungeonmania;
 
+import dungeonmania.util.Position;
 
 public class HealthPotion extends Item {
 
-    public HealthPotion (String id) {
-        super(id, "HealthPotion");
+    public HealthPotion (Position position, String id, Dungeon dungeon) {
+        super(position, id, "HealthPotion", dungeon);
     }
 
     /**

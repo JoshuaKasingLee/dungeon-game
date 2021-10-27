@@ -45,10 +45,10 @@ public class CharacterTest {
     public void useValidItems() {
         Character character = new Character(new Position(0, 0), "Kelly", new Dungeon("Dungeon", "Standard", "1"));
         Inventory inv = character.getInventory();
-        HealthPotion i1 = new HealthPotion("i1");
-        InvisibilityPotion i2 = new InvisibilityPotion("my_potion");
-        InvincibilityPotion i3 = new InvincibilityPotion("my_potion");
-        Bomb i4 = new Bomb("i4");
+        HealthPotion i1 = new HealthPotion(new Position(0, 0), "i1", character.getDungeon());
+        InvisibilityPotion i2 = new InvisibilityPotion(new Position(0, 0), "i2", character.getDungeon());
+        InvincibilityPotion i3 = new InvincibilityPotion(new Position(0, 0), "i3", character.getDungeon());
+        Bomb i4 = new Bomb(new Position(0, 0), "i4", character.getDungeon());
         inv.add(i1);
         inv.add(i2);
         inv.add(i3);
@@ -64,15 +64,15 @@ public class CharacterTest {
     public void useInvalidItems() {
         Character character = new Character(new Position(0, 0), "Kelly", new Dungeon("Dungeon", "Standard", "1"));
         Inventory inv = character.getInventory();
-        Treasure i1 = new Treasure("i1");
-        Key i2 = new Key("i2", 1);
-        Wood i3 = new Wood("i3");
-        Arrow i4 = new Arrow("i4");
-        Shield i5 = new Shield("shield");
-        Armour i6 = new Armour("a");
-        Bow i7 = new Bow("b");
-        Sword i8 = new Sword("s");
-        OneRing i9 = new OneRing("one_ring");
+        Treasure i1 = new Treasure(new Position(0, 0), "i1", character.getDungeon());
+        Key i2 = new Key(new Position(0, 0), "i2", character.getDungeon(), 1);
+        Wood i3 = new Wood(new Position(0, 0), "i3", character.getDungeon());
+        Arrow i4 = new Arrow(new Position(0, 0), "i4", character.getDungeon());
+        Shield i5 = new Shield("i5", character.getDungeon());
+        Armour i6 = new Armour("i6", character.getDungeon());
+        Bow i7 = new Bow("i7", character.getDungeon());
+        Sword i8 = new Sword(new Position(0, 0), "i8", character.getDungeon());
+        OneRing i9 = new OneRing(new Position(0, 0), "i9", character.getDungeon());
         inv.add(i1);
         inv.add(i2);
         inv.add(i3);
@@ -163,7 +163,7 @@ public class CharacterTest {
         CharacterState state = character.getCharacterState();
         assertEquals(state.getType(), "Standard");
         Inventory inv = character.getInventory();
-        Sword s = new Sword("swordy");
+        Sword s = new Sword(new Position(0, 0), "s", character.getDungeon());
         inv.add(s);
 
         // mercenary battle - no armour
@@ -184,7 +184,7 @@ public class CharacterTest {
         CharacterState state = character.getCharacterState();
         assertEquals(state.getType(), "Standard");
         Inventory inv = character.getInventory();
-        Bow b = new Bow("katniss");
+        Bow b = new Bow("i1", character.getDungeon());
         inv.add(b);
 
         // mercenary battle - no armour
@@ -206,7 +206,7 @@ public class CharacterTest {
         CharacterState state = character.getCharacterState();
         assertEquals(state.getType(), "Standard");
         Inventory inv = character.getInventory();
-        Armour a = new Armour("protection");
+        Armour a = new Armour("i1", character.getDungeon());
         inv.add(a);
 
         // spider battle
@@ -226,7 +226,7 @@ public class CharacterTest {
         CharacterState state = character.getCharacterState();
         assertEquals(state.getType(), "Standard");
         Inventory inv = character.getInventory();
-        Shield s = new Shield("protection");
+        Shield s = new Shield("s", character.getDungeon());
         inv.add(s);
 
         // spider battle - shield should protect character health completely
@@ -246,13 +246,13 @@ public class CharacterTest {
         CharacterState state = character.getCharacterState();
         assertEquals(state.getType(), "Standard");
         Inventory inv = character.getInventory();
-        Sword sword = new Sword("swordy");
+        Sword sword = new Sword(new Position(0, 0), "sword", character.getDungeon());
         inv.add(sword);
-        Bow bow = new Bow("katniss");
+        Bow bow = new Bow("bow", character.getDungeon());
         inv.add(bow);
-        Armour armour = new Armour("protection");
+        Armour armour = new Armour("armour", character.getDungeon());
         inv.add(armour);
-        Shield shield = new Shield("protection");
+        Shield shield = new Shield("shield", character.getDungeon());
         inv.add(shield);
         
         // spider battle - shows sword priority over bow, and shield over armour
@@ -330,7 +330,7 @@ public class CharacterTest {
 
         // show sword overrides armour
         Inventory inv = character.getInventory();
-        Sword sword = new Sword("swordy");
+        Sword sword = new Sword(new Position(0, 0), "sword", character.getDungeon());
         inv.add(sword);
 
         Mercenary merc = new Mercenary(new Position(0, 0), "Molly", new Dungeon("Dungeon", "Standard", "1"));
@@ -345,7 +345,7 @@ public class CharacterTest {
     public void testInvincibleBattle() {
         Character character = new Character(new Position(0, 0), "Kelly", new Dungeon("Dungeon", "Standard", "1"));
         Inventory inv = character.getInventory();
-        InvincibilityPotion i1 = new InvincibilityPotion("my_potion");
+        InvincibilityPotion i1 = new InvincibilityPotion(new Position(0, 0), "i1", character.getDungeon());
         inv.add(i1);
         character.useItem("InvincibilityPotion");
         CharacterState state = character.getCharacterState();
@@ -372,7 +372,7 @@ public class CharacterTest {
     public void testInvisibleBattle() {
         Character character = new Character(new Position(0, 0), "Kelly", new Dungeon("Dungeon", "Standard", "1"));
         Inventory inv = character.getInventory();
-        InvisibilityPotion i1 = new InvisibilityPotion("my_potion");
+        InvisibilityPotion i1 = new InvisibilityPotion(new Position(0, 0), "i1", character.getDungeon());
         inv.add(i1);
         character.useItem("InvisibilityPotion");
         CharacterState state = character.getCharacterState();
