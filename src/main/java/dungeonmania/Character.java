@@ -58,8 +58,30 @@ public class Character extends MovingEntity {
     }
 
     public void fightEnemies(Position pos) {
-     
+        for (Enemy e : getDungeon().getEnemies(pos)) {
+            if (!e.isAlly()) {
+                characterState.battleEnemy(e);
+                // if character health is below zero
+                if (this.getHealth() <= 0) {
+                    if (inventory.getItem("OneRing") != null) {
+                        inventory.use("OneRing", this);
+                    } else {
+                        getDungeon().removeFrom(this);
+                    }  
+                }
+                // if enemy health is below zero
+                if (e.getHealth() <=0 ) {
+                    // check for armour
+                    if (e.getArmour() > 0) {
+                        Armour a = new Armour(Integer.toString(inventory.count("Armour")), getDungeon());
+                        inventory.add(a);
+                    }
+                    getDungeon().removeFrom(e);
+                }
+            }     
+        } 
     }
+
 
 
     // assume that:

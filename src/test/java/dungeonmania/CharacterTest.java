@@ -434,5 +434,34 @@ public class CharacterTest {
         // fight should happen
         assertEquals(Arrays.asList(character), character.getDungeon().getAllEntities());
     }
-    
+
+    @Test
+    public void characterDeath() {
+        Character character = new Character(new Position(0, 0), "Kelly", new Dungeon("Dungeon", "Standard", "1"));
+        character.setHealth(1);
+        Mercenary merc = new Mercenary(new Position(0, 1), "Molly", character.getDungeon());
+        assertEquals(Arrays.asList(character, merc), character.getDungeon().getAllEntities());
+        character.moveUp();
+        // fight should eliminate character
+        assertEquals(Arrays.asList(merc), character.getDungeon().getAllEntities());
+    }
+
+    @Test
+    public void revivalWithOneRing() {
+        Character character = new Character(new Position(0, 0), "Kelly", new Dungeon("Dungeon", "Standard", "1"));
+        character.setHealth(1);
+        Inventory inv = character.getInventory();
+        OneRing ring = new OneRing(new Position(0, 0), "ring", character.getDungeon());
+        inv.add(ring);
+        assertEquals(Arrays.asList("OneRing"), inv.listInventory());
+
+        Mercenary merc = new Mercenary(new Position(0, 1), "Molly", character.getDungeon());
+        assertEquals(Arrays.asList(character, merc), character.getDungeon().getAllEntities());
+        character.moveUp();
+        // fight should happen, one ring should be used since merc can kill character
+        assertEquals(Arrays.asList(character, merc), character.getDungeon().getAllEntities());
+        assertEquals(Arrays.asList(), inv.listInventory());
+        assertEquals(Character.ORIGINAL_HEALTH, character.getHealth());
+    }
+
 }

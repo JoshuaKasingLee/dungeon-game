@@ -2,8 +2,6 @@ package dungeonmania;
 
 import dungeonmania.util.Position;
 
-
-
 public abstract class Entity {
     private Position position;
     private String id;

@@ -15,8 +15,26 @@ public class Dungeon {
         this.dungeonId = dungeonId;
     }
 
-
     public List<Entity> getEntities(Position position) {
+        return new ArrayList<Entity>();
+    }
+
+    public List<Item> getItems(Position position) {
+        return new ArrayList<Item>();
+    }
+
+    public List<Enemy> getEnemies(Position position) {
+        return new ArrayList<Enemy>();
+    }
+
+    public void addTo(Entity entity, Position position) {
+    }
+
+    public void removeFrom(Entity entity) {
+    }
+
+    // for testing
+    public List<Entity> getAllEntities() {
         return new ArrayList<Entity>();
     }
     
