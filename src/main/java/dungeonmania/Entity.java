@@ -8,7 +8,7 @@ import java.util.List;
 public abstract class Entity implements Subject {
     private Position position;
     private String id = newEntityId();
-    private boolean isInteractable = false;
+    private boolean Interactable;
     private Gamemode gamemode;
     private List<Observer> goalObservers = new ArrayList<Observer>();
 
@@ -18,10 +18,10 @@ public abstract class Entity implements Subject {
     }
 
     
-    public Entity(Position position, Gamemode gamemode) {
+    public Entity(Position position, Gamemode gamemode, boolean Interactable) {
         this.position = position;
         this.gamemode = gamemode;
-        
+        this.Interactable = Interactable;
     }
 
     @Override
@@ -86,20 +86,6 @@ public abstract class Entity implements Subject {
     }
 
     /*
-     * @return boolean return the isInteractable
-     */
-    public boolean isIsInteractable() {
-        return isInteractable;
-    }
-
-    /*
-     * @param isInteractable the isInteractable to set
-     */
-    public void setIsInteractable(boolean isInteractable) {
-        this.isInteractable = isInteractable;
-    }
-
-    /*
      * @return Gamemode return the gamemode
      */
     public Gamemode getGamemode() {
@@ -111,6 +97,36 @@ public abstract class Entity implements Subject {
      */
     public void setGamemode(Gamemode gamemode) {
         this.gamemode = gamemode;
+    }
+
+
+    /**
+     * @return List<Observer> return the goalObservers
+     */
+    public List<Observer> getGoalObservers() {
+        return goalObservers;
+    }
+
+    /**
+     * @param goalObservers the goalObservers to set
+     */
+    public void setGoalObservers(List<Observer> goalObservers) {
+        this.goalObservers = goalObservers;
+    }
+
+
+    /**
+     * @return boolean return the Interactable
+     */
+    public boolean isInteractable() {
+        return Interactable;
+    }
+
+    /**
+     * @param Interactable the Interactable to set
+     */
+    public void setInteractable(boolean Interactable) {
+        this.Interactable = Interactable;
     }
 
 }
