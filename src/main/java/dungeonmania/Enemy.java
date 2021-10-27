@@ -8,8 +8,8 @@ public abstract class Enemy extends MovingEntity {
     private boolean ally;
     private int armour; // num hits left
 
-    public Enemy(Position position, String id, String type) {
-        super(position, id, type);
+    public Enemy(Position position, String id, String type, Dungeon dungeon) {
+        super(position, id, type, dungeon);
         this.ally = false;
         this.armour = 0;
     }
@@ -62,25 +62,7 @@ public abstract class Enemy extends MovingEntity {
 
     public abstract void updatePosition();
 
-
     public static void main(String[] args) {   
-        // ZombieToast zombie = new ZombieToast(new Position(0, 0), "Holly");
-        // Mercenary merc = new Mercenary(new Position(0, 0), "Molly");
-        // zombie.giveArmour(0);
-        // merc.giveArmour(0);
-        // System.out.println(zombie.getArmour());
-        // System.out.println(merc.getArmour());
-        // Random rand = new Random();
-        // int randN = rand.nextInt(100);
-        // System.out.println(randN);
-        // if (randN < 0) {
-        //     System.out.println("hello");
-        // }
-    }
-
-
-
-    
-
+    }  
 
 }

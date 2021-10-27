@@ -8,13 +8,15 @@ public abstract class Entity {
     private Position position;
     private String id;
     private String type;
+    private Dungeon dungeon;
     // private boolean isInteractable = false;
     // private Gamemode gamemode;
 
-    public Entity(Position position, String id, String type) {
+    public Entity(Position position, String id, String type, Dungeon dungeon) {
         this.position = position;
         this.id = id;
         this.type = type;
+        this.dungeon = dungeon;
         // this.isInteractable = false;
         // this.gamemode = gamemode;
     }
@@ -59,6 +61,20 @@ public abstract class Entity {
      */
     public void setType(String type) {
         this.type = type;
+    }
+
+    /**
+     * @return Dungeon return the dungeon
+     */
+    public Dungeon getDungeon() {
+        return dungeon;
+    }
+
+    /**
+     * @param dungeon the dungeon to set
+     */
+    public void setDungeon(Dungeon dungeon) {
+        this.dungeon = dungeon;
     }
 
     // /**

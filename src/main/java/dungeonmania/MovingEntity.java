@@ -6,16 +6,15 @@ import dungeonmania.util.Direction;
 public abstract class MovingEntity extends Entity {
     private int health;
     private int attackDamage;
-    // private Dungeon dungeon;
 
-    public MovingEntity(Position position, String id, String type) {
-        super(position, id, type);
-        this.health = 5;
-        this.attackDamage = 1;
+    public MovingEntity(Position position, String id, String type, Dungeon dungeon) {
+        super(position, id, type, dungeon);
+        this.health = 0;
+        this.attackDamage = 0;
     }
 
     // basic getters and setters
-    
+
     /**
      * @return int return the health
      */
@@ -43,4 +42,58 @@ public abstract class MovingEntity extends Entity {
     public void setAttackDamage(int attackDamage) {
         this.attackDamage = attackDamage;
     }
+
+    // other functions
+    
+    // override in character to pick items and fight enemies
+    public void move(Direction direction) {
+        if (direction == Direction.UP) {
+            moveUp();
+        } else if (direction == Direction.DOWN) {
+            moveDown();
+        } else if (direction == Direction.LEFT) {
+            moveLeft();
+        } else if (direction == Direction.RIGHT) {
+            moveRight();
+        }
+    }
+    
+    public void moveUp() {
+        Position newPos = new Position(getPosition().getX(), getPosition().getY() + 1);
+        if (checkValidMove(newPos, Direction.UP)) {
+            setPosition(newPos);
+        }
+    }
+
+    public void moveDown() {
+        Position newPos = new Position(getPosition().getX(), getPosition().getY() - 1);
+        if (checkValidMove(newPos, Direction.DOWN)) {
+            setPosition(newPos);
+        }
+
+    }
+
+    public void moveLeft() {
+        Position newPos = new Position(getPosition().getX() - 1, getPosition().getY());
+        if (checkValidMove(newPos, Direction.LEFT)) {
+            setPosition(newPos);
+        }
+    }
+
+    public void moveRight() {
+        Position newPos = new Position(getPosition().getX() + 1, getPosition().getY());
+        if (checkValidMove(newPos, Direction.RIGHT)) {
+            setPosition(newPos);
+        }
+    }
+        
+    // need to override for spider
+    // assumes zombies + mercenaries can also push boulders, etc. -> everything a player can do except key/door
+    public boolean checkValidMove(Position pos, Direction dir) {
+        
+        return true;
+    }
+
+
 }
+

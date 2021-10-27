@@ -26,7 +26,7 @@ public class InventoryTest {
     public void addToInventory() {
         Inventory inv = new Inventory();
         Treasure i1 = new Treasure("i1");
-        Key i2 = new Key("i2");
+        Key i2 = new Key("i2", 1);
         Wood i3 = new Wood("i3");
         inv.add(i1);
         inv.add(i2);
@@ -36,10 +36,10 @@ public class InventoryTest {
 
     @Test
     public void useInventoryItems() {
-        Character character = new Character(new Position(0, 0), "Kelly");
+        Character character = new Character(new Position(0, 0), "Kelly", new Dungeon("Dungeon", "Standard", "1"));
         Inventory inv = character.getInventory();
         Treasure i1 = new Treasure("i1");
-        Key i2 = new Key("i2");
+        Key i2 = new Key("i2", 1);
         Wood i3 = new Wood("i3");
         inv.add(i1);
         inv.add(i2);
@@ -53,7 +53,7 @@ public class InventoryTest {
 
     @Test
     public void useNonExistentItem() {
-        Character character = new Character(new Position(0, 0), "Kelly");
+        Character character = new Character(new Position(0, 0), "Kelly", new Dungeon("Dungeon", "Standard", "1"));
         Inventory inv = character.getInventory();
         Treasure i1 = new Treasure("i1");
         inv.add(i1);
@@ -62,13 +62,13 @@ public class InventoryTest {
 
     @Test
     public void countInventory() {
-        Character character = new Character(new Position(0, 0), "Kelly");
+        Character character = new Character(new Position(0, 0), "Kelly", new Dungeon("Dungeon", "Standard", "1"));
         Inventory inv = character.getInventory();
         Treasure i1 = new Treasure("i1");
-        Key i2 = new Key("i2");
+        Key i2 = new Key("i2", 1);
         Treasure i3 = new Treasure("i3");
         Treasure i4 = new Treasure("i4");
-        Key i5 = new Key("i5");
+        Key i5 = new Key("i5", 2);
         inv.add(i1);
         inv.add(i2);
         inv.add(i3);
@@ -82,13 +82,13 @@ public class InventoryTest {
 
     @Test
     public void craftBow() {
-        Character character = new Character(new Position(0, 0), "Kelly");
+        Character character = new Character(new Position(0, 0), "Kelly", new Dungeon("Dungeon", "Standard", "1"));
         Inventory inv = character.getInventory();
         Arrow i1 = new Arrow("i1");
         Wood i2 = new Wood("i2");
         Arrow i3 = new Arrow("i3");
         Arrow i4 = new Arrow("i4");
-        Key i5 = new Key("i5");
+        Key i5 = new Key("i5", 1);
         inv.add(i1);
         inv.add(i2);
         inv.add(i3);
@@ -100,7 +100,7 @@ public class InventoryTest {
 
     @Test
     public void craftBowFail() {
-        Character character = new Character(new Position(0, 0), "Kelly");
+        Character character = new Character(new Position(0, 0), "Kelly", new Dungeon("Dungeon", "Standard", "1"));
         Inventory inv = character.getInventory();
         Arrow i1 = new Arrow("i1");
         Wood i2 = new Wood("i2");
@@ -111,12 +111,12 @@ public class InventoryTest {
 
     @Test
     public void craftShield() {
-        Character character = new Character(new Position(0, 0), "Kelly");
+        Character character = new Character(new Position(0, 0), "Kelly", new Dungeon("Dungeon", "Standard", "1"));
         Inventory inv = character.getInventory();
         Wood i1 = new Wood("i1");
         Wood i2 = new Wood("i2");
         Treasure i3 = new Treasure("i3");
-        Key i4 = new Key("i4");
+        Key i4 = new Key("i4", 1);
         inv.add(i1);
         inv.add(i2);
         inv.add(i3);
@@ -127,11 +127,11 @@ public class InventoryTest {
 
     @Test
     public void craftShieldWithKey() {
-        Character character = new Character(new Position(0, 0), "Kelly");
+        Character character = new Character(new Position(0, 0), "Kelly", new Dungeon("Dungeon", "Standard", "1"));
         Inventory inv = character.getInventory();
         Wood i1 = new Wood("i1");
         Wood i2 = new Wood("i2");
-        Key i3 = new Key("i3");
+        Key i3 = new Key("i3", 1);
         inv.add(i1);
         inv.add(i2);
         inv.add(i3);
@@ -141,9 +141,9 @@ public class InventoryTest {
 
     @Test
     public void craftShieldFail() {
-        Character character = new Character(new Position(0, 0), "Kelly");
+        Character character = new Character(new Position(0, 0), "Kelly", new Dungeon("Dungeon", "Standard", "1"));
         Inventory inv = character.getInventory();
-        Key i1 = new Key("i1");
+        Key i1 = new Key("i1", 1);
         inv.add(i1);
         assertThrows(InvalidActionException.class, () -> inv.craftShield(character));
         assertEquals(Arrays.asList("Key"), inv.listInventory());
