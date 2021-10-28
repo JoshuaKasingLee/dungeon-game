@@ -21,7 +21,7 @@ public class StaticEntityTest {
         DungeonManiaController controller = new DungeonManiaController();
 
         // Create a new game
-        DungeonResponse dungeonInfo = controller.newGame("walls", "standard");
+        DungeonResponse dungeonInfo = controller.newGame("walls", "Standard");
 
         // Get entities from dungeonInfo
         List<EntityResponse> entities = dungeonInfo.getEntities();
@@ -65,7 +65,7 @@ public class StaticEntityTest {
         DungeonManiaController controller = new DungeonManiaController();
 
         // Create a new game
-        DungeonResponse dungeonInfo = controller.newGame("spawner", "standard");
+        DungeonResponse dungeonInfo = controller.newGame("spawner", "Standard");
 
         // Get entities from dungeonInfo
         List<EntityResponse> entities = dungeonInfo.getEntities();
@@ -87,7 +87,7 @@ public class StaticEntityTest {
         DungeonManiaController controller = new DungeonManiaController();
 
         // Create a new game
-        DungeonResponse dungeonInfo = controller.newGame("spawner", "peaceful");
+        DungeonResponse dungeonInfo = controller.newGame("spawner", "Peaceful");
 
         // Get entities from dungeonInfo
         List<EntityResponse> entities = dungeonInfo.getEntities();
@@ -106,13 +106,13 @@ public class StaticEntityTest {
         DungeonManiaController controller = new DungeonManiaController();
 
         // Create a new game
-        DungeonResponse dungeonInfo = controller.newGame("spawner", "hard");
+        DungeonResponse dungeonInfo = controller.newGame("spawner", "Hard");
 
         // Get entities from dungeonInfo
         List<EntityResponse> entities = dungeonInfo.getEntities();
 
         // Game ticks
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < 14; i++) {
             controller.tick(null, Direction.NONE);
             assertEquals(entities.stream().anyMatch(n -> n.getType().equals("zombie")), false);
         }
@@ -128,7 +128,7 @@ public class StaticEntityTest {
         DungeonManiaController controller = new DungeonManiaController();
 
         // Create a new game
-        DungeonResponse dungeonInfo = controller.newGame("spawner", "peaceful");
+        DungeonResponse dungeonInfo = controller.newGame("spawner", "Peaceful");
 
         // Get entities from dungeonInfo
         List<EntityResponse> entities = dungeonInfo.getEntities();
@@ -160,7 +160,7 @@ public class StaticEntityTest {
         DungeonManiaController controller = new DungeonManiaController();
 
         // Create a new game
-        DungeonResponse dungeonInfo = controller.newGame("spawner", "peaceful");
+        DungeonResponse dungeonInfo = controller.newGame("spawner", "Peaceful");
 
         // Get entities from dungeonInfo
         List<EntityResponse> entities = dungeonInfo.getEntities();
@@ -192,7 +192,7 @@ public class StaticEntityTest {
         DungeonManiaController controller = new DungeonManiaController();
 
         // Create a new game
-        DungeonResponse dungeonInfo = controller.newGame("doors", "peaceful");
+        DungeonResponse dungeonInfo = controller.newGame("doors", "Peaceful");
 
         // Get entities from dungeonInfo
         List<EntityResponse> entities = dungeonInfo.getEntities();
@@ -224,7 +224,7 @@ public class StaticEntityTest {
         DungeonManiaController controller = new DungeonManiaController();
 
         // Create a new game
-        DungeonResponse dungeonInfo = controller.newGame("doors", "peaceful");
+        DungeonResponse dungeonInfo = controller.newGame("doors", "Peaceful");
 
         // Get entities from dungeonInfo
         List<EntityResponse> entities = dungeonInfo.getEntities();
@@ -271,7 +271,7 @@ public class StaticEntityTest {
         DungeonManiaController controller = new DungeonManiaController();
 
         // Create a new game
-        DungeonResponse dungeonInfo = controller.newGame("portals-2", "peaceful");
+        DungeonResponse dungeonInfo = controller.newGame("portals-2", "Peaceful");
 
         // Get entities from dungeonInfo
         List<EntityResponse> entities = dungeonInfo.getEntities();
@@ -297,7 +297,7 @@ public class StaticEntityTest {
         DungeonManiaController controller = new DungeonManiaController();
 
         // Create a new game
-        DungeonResponse dungeonInfo = controller.newGame("boulderAndSwitch", "peaceful");
+        DungeonResponse dungeonInfo = controller.newGame("boulderAndSwitch", "Peaceful");
 
         // Get entities from dungeonInfo
         List<EntityResponse> entities = dungeonInfo.getEntities();
@@ -327,7 +327,7 @@ public class StaticEntityTest {
         DungeonManiaController controller = new DungeonManiaController();
 
         // Create a new game
-        DungeonResponse dungeonInfo = controller.newGame("boulderAndSwitch", "peaceful");
+        DungeonResponse dungeonInfo = controller.newGame("boulderAndSwitch", "Peaceful");
 
         // Get entities from dungeonInfo
         List<EntityResponse> entities = dungeonInfo.getEntities();
@@ -376,7 +376,7 @@ public class StaticEntityTest {
         DungeonManiaController controller = new DungeonManiaController();
 
         // Create a new game
-        DungeonResponse dungeonInfo = controller.newGame("boulderAndSwitch", "peaceful");
+        DungeonResponse dungeonInfo = controller.newGame("boulderAndSwitch", "Peaceful");
 
         // Get entities from dungeonInfo
         List<EntityResponse> entities = dungeonInfo.getEntities();
@@ -405,7 +405,7 @@ public class StaticEntityTest {
         DungeonManiaController controller = new DungeonManiaController();
 
         // Create a new game
-        DungeonResponse dungeonInfo = controller.newGame("exit", "peaceful");
+        DungeonResponse dungeonInfo = controller.newGame("exit", "Peaceful");
 
         // Get entities from dungeonInfo
         List<EntityResponse> entities = dungeonInfo.getEntities();

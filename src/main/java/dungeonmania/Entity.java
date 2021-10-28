@@ -1,11 +1,24 @@
+package dungeonmania;
+
+import java.util.List;
+import java.util.Arrays;
+import java.util.ArrayList;
+
+import dungeonmania.util.Position;
+
 public abstract class Entity {
     private Position position;
     private String id;
     private String type;
-    private boolean isInteractable = false;
+    private boolean isInteractable;
     private Gamemode gamemode;
+    private Dungeon dungeon;
 
-    public Entity(Position position, String id, String type, Gamemode gamemode);
+    public Entity(Position position, Dungeon dungeon) {
+        this.position = position;
+        this.type = setType();
+        this.isInteractable = setIsInteractable();
+    };
 
     /**
      * @return Position return the position
@@ -45,9 +58,7 @@ public abstract class Entity {
     /**
      * @param type the type to set
      */
-    public void setType(String type) {
-        this.type = type;
-    }
+    public abstract String setType();
 
     /**
      * @return boolean return the isInteractable
@@ -59,8 +70,8 @@ public abstract class Entity {
     /**
      * @param isInteractable the isInteractable to set
      */
-    public void setIsInteractable(boolean isInteractable) {
-        this.isInteractable = isInteractable;
+    public boolean setIsInteractable() {
+        return false;
     }
 
     /**
@@ -77,4 +88,20 @@ public abstract class Entity {
         this.gamemode = gamemode;
     }
 
+    public void setDungeon(Dungeon dungeon) {
+        this.dungeon = dungeon;
+    }
+
+    public Dungeon getDungeon() {
+        return dungeon;
+    }
+    
+    public List<Entity> getEntities() {
+        return dungeon.getEntityList();
+    }
+
+    public void removeEntity() {
+        dungeon.removeEntity(this);
+    }
 }
+
