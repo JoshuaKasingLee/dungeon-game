@@ -19,29 +19,19 @@ public class Dungeon {
         return new ArrayList<Entity>();
     }
 
-    // assume only one door in each position
-    public Door getDoor(Position position) {
-        // return door if there is one in the position, null if else
-        return null;
-    }
-
-    public List<Item> getItems(Position position) {
-        return new ArrayList<Item>();
-    }
-
-    public List<Enemy> getEnemies(Position position) {
-        return new ArrayList<Enemy>();
-    }
-
     public void addTo(Entity entity, Position position) {
     }
 
     public void removeFrom(Entity entity) {
     }
 
+    public void removeFrom(Position position) {
+        // remove all entities from the given position (including items)
+    }
+
     // for testing
     public List<Entity> getAllEntities() {
-        return new ArrayList<Entity>();
+        return new ArrayList<Entity>(); // on dungeon map
     }
     
 }

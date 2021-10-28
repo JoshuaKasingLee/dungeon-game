@@ -59,46 +59,54 @@ public class Character extends MovingEntity {
      * @return boolean
      */
     public boolean checkUnlockedDoor(Position pos) {
-        Door door = getDungeon().getDoor(pos);
-        if (door != null) {
-            return inventory.useKey(door, this);
-        } else {
-            return false;
+        for (Entity e : getDungeon().getEntities(pos)) {
+            if (e instanceof Door) {
+                Door door = (Door) e;
+                return inventory.useKey(door, this); // if wrong key, will return false here
+            }
         }
+        return false;
     }
 
     // fighting functions
 
     public void fightEnemies(Position pos) {
-        for (Enemy e : getDungeon().getEnemies(pos)) {
-            if (!e.isAlly()) {
-                characterState.battleEnemy(e);
-                // if character health is below zero
-                if (this.getHealth() <= 0) {
-                    if (inventory.getItem("OneRing") != null) {
-                        inventory.use("OneRing", this);
-                    } else {
-                        getDungeon().removeFrom(this);
-                    }  
-                }
-                // if enemy health is below zero
-                if (e.getHealth() <=0 ) {
-                    // check for armour
-                    if (e.getArmour() > 0) {
-                        Armour a = new Armour(Integer.toString(inventory.count("Armour")), getDungeon());
-                        inventory.add(a);
+        for (Entity entity : getDungeon().getEntities(pos)) {
+            if (entity instanceof Enemy) {
+                Enemy e = (Enemy) entity;
+                if (!e.isAlly()) {
+                    characterState.battleEnemy(e);
+                    // if character health is below zero
+                    if (this.getHealth() <= 0) {
+                        if (inventory.getItem("OneRing") != null) {
+                            inventory.use("OneRing", this);
+                        } else {
+                            getDungeon().removeFrom(this);
+                        }  
                     }
-                    getDungeon().removeFrom(e);
+                    // if enemy health is below zero
+                    if (e.getHealth() <=0 ) {
+                        // check for armour
+                        if (e.getArmour() > 0) {
+                            Armour a = new Armour(Integer.toString(inventory.count("Armour")), getDungeon());
+                            inventory.add(a);
+                        }
+                        getDungeon().removeFrom(e);
+                    }
                 }
-            }     
-        } 
+            }
+        }
     }
 
     // item functions
 
     public void pickItems(Position pos) {
-        for (Item i : getDungeon().getItems(pos)) {
-            inventory.add(i);
+        for (Entity e : getDungeon().getEntities(pos)) {
+            if (e instanceof Item) {
+                Item i = (Item) e;
+                getDungeon().removeFrom(i);
+                inventory.add(i);
+            }
         }
     }
 
