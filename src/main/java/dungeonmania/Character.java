@@ -1,18 +1,16 @@
-
 package dungeonmania;
 
 import dungeonmania.util.Position;
 import dungeonmania.util.Direction;
 import java.util.ArrayList;
 import java.util.List;
+import dungeonmania.exceptions.InvalidActionException;
 
 public class Character extends MovingEntity {
     private Inventory inventory = new Inventory();
     private CharacterState characterState;
     public static final int ORIGINAL_HEALTH = 10;
     public static final int CHARACTER_ATTACK_DAMAGE = 3;
-    // private Dungeon dungeon;
-
 
     public Character(Position position, String id, Dungeon dungeon) {
         super(position, id, "Character", dungeon);
@@ -20,6 +18,17 @@ public class Character extends MovingEntity {
         this.setAttackDamage(CHARACTER_ATTACK_DAMAGE);
         this.characterState = new StandardState(this);
     }
+
+    // assume we pick items after we fight enemies
+    @Override
+    public void move(Direction direction) {
+        super.move(direction);
+        fightEnemies(getPosition());
+        pickItems(getPosition());
+        characterState.updateState();
+    }
+
+    // move checking functions
 
     @Override
     public boolean checkValidMove(Position pos, Direction dir) {
@@ -43,7 +52,6 @@ public class Character extends MovingEntity {
         return true;
     }
 
-    
     /** 
      * checks whether door exists in position, and if so returns true if we can unlock it
      * returns false if no door or no correct key
@@ -59,20 +67,7 @@ public class Character extends MovingEntity {
         }
     }
 
-    // assume we pick items after we fight enemies
-    @Override
-    public void move(Direction direction) {
-        super.move(direction);
-        fightEnemies(getPosition());
-        pickItems(getPosition());
-        characterState.updateState();
-    }
-
-    public void pickItems(Position pos) {
-        for (Item i : getDungeon().getItems(pos)) {
-            inventory.add(i);
-        }
-    }
+    // fighting functions
 
     public void fightEnemies(Position pos) {
         for (Enemy e : getDungeon().getEnemies(pos)) {
@@ -99,6 +94,13 @@ public class Character extends MovingEntity {
         } 
     }
 
+    // item functions
+
+    public void pickItems(Position pos) {
+        for (Item i : getDungeon().getItems(pos)) {
+            inventory.add(i);
+        }
+    }
 
     // assume that:
     // items that need to be triggered to use;
@@ -115,6 +117,53 @@ public class Character extends MovingEntity {
         }
     }
 
+    // assume only need to give 1 gold to be bribed
+    // assume 2 cardinally adjacent tiles does NOT mean diagonally adjacent
+    public void bribe(Mercenary mercenary) {
+        Position mercPos = mercenary.getPosition();
+        List<Position> cardinalAdjMercPos = getCardinalAdjPositions2(mercPos);
+        for (Position p : cardinalAdjMercPos) {
+            if (p.equals(getPosition())) {
+                inventory.use("Treasure", this); // will throw exception in use if no treasure
+                mercenary.setAlly(true);
+                break;
+            } else {
+                throw new InvalidActionException("Mercenary is not within 2 cardinal tiles");
+            }
+        }
+    }
+
+    public void destroySpawner(ZombieToastSpawner spawner) {
+
+    }
+
+    // helper functions
+
+    // gets list of positions within 1 cardinally adjacent tiles
+    private List<Position> getCardinalAdjPositions1(Position pos) {
+        List<Position> cardinalAdjPositions = new ArrayList<>();
+        List<Position> adjPositions = pos.getAdjacentPositions();
+        cardinalAdjPositions.add(adjPositions.get(1));
+        cardinalAdjPositions.add(adjPositions.get(3));
+        cardinalAdjPositions.add(adjPositions.get(5));
+        cardinalAdjPositions.add(adjPositions.get(7));
+        return cardinalAdjPositions;
+    }
+
+    // gets list of positions within 2 cardinally adjacent tiles
+    private List<Position> getCardinalAdjPositions2(Position pos) {
+        List<Position> cardinalAdjPositions = new ArrayList<>();
+        List<Position> adjPositions = pos.getAdjacentPositions();
+        cardinalAdjPositions.add(adjPositions.get(1));
+        cardinalAdjPositions.add(adjPositions.get(1).translateBy(Direction.UP));
+        cardinalAdjPositions.add(adjPositions.get(3));
+        cardinalAdjPositions.add(adjPositions.get(3).translateBy(Direction.RIGHT));
+        cardinalAdjPositions.add(adjPositions.get(5));
+        cardinalAdjPositions.add(adjPositions.get(5).translateBy(Direction.DOWN));
+        cardinalAdjPositions.add(adjPositions.get(7));
+        cardinalAdjPositions.add(adjPositions.get(7).translateBy(Direction.LEFT));
+        return cardinalAdjPositions;
+    }
 
     // basic getters and setters
 
@@ -140,7 +189,6 @@ public class Character extends MovingEntity {
     }
 
     public static void main(String[] args) {   
-
     }
 
 }
