@@ -1,5 +1,10 @@
 package dungeonmania;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.json.JSONObject;
+
 public class ExitGoal implements GoalComponent, Observer  {
 
     private boolean onExit; 
@@ -27,4 +32,12 @@ public class ExitGoal implements GoalComponent, Observer  {
             onExit = false;
         }
     }
+
+    @Override
+    public JSONObject toJSON() {
+        Map<String, Object> goalData = new HashMap<String, Object>();
+        goalData.put("goal", "exit");
+        return new JSONObject(goalData);
+    }
+
 }

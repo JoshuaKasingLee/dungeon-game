@@ -1,5 +1,10 @@
 package dungeonmania;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.json.JSONObject;
+
 public class CollectTreasureGoal implements GoalComponent, Observer {
     private int numUncollected;
 
@@ -23,6 +28,13 @@ public class CollectTreasureGoal implements GoalComponent, Observer {
     @Override
     public void update(Subject entity) {
         numUncollected--;
+    }
+
+    @Override
+    public JSONObject toJSON() {
+        Map<String, Object> goalData = new HashMap<String, Object>();
+        goalData.put("goal", "treasure");
+        return new JSONObject(goalData);
     }
 
 
