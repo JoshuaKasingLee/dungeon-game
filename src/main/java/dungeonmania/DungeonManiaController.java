@@ -13,12 +13,16 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.json.JSONObject;
 import org.eclipse.jetty.io.NetworkTrafficListener;
 import org.json.JSONArray;
 
+
 import dungeonmania.util.Position;
+
 
 public class DungeonManiaController {
     private static int dungeonIdCounter = 0; 
@@ -92,76 +96,73 @@ public class DungeonManiaController {
             String colour;
             switch (entityType) {
                 case "wall":
-                    currEntity = new Wall(new Position(xPosition, yPosition), gameMode, false);
-                    
+                    currEntity = new Wall(new Position(xPosition, yPosition), activeGame);  
                     break;
                 case "exit":
-                    currEntity = new Exit(new Position(xPosition, yPosition), gameMode, false);
+                    currEntity = new Exit(new Position(xPosition, yPosition), activeGame);
                     break;
                 case "boulder":
-                    currEntity = new Boulder(new Position(xPosition, yPosition), gameMode, false);
+                    currEntity = new Boulder(new Position(xPosition, yPosition), activeGame);
                     break;
                 case "switch":
-                    currEntity = new Switch(new Position(xPosition, yPosition), gameMode, false);
+                    currEntity = new Switch(new Position(xPosition, yPosition), activeGame);
                     break;
                 case "door":
                     key = entityList.getJSONObject(i).getString("key");
-                    currEntity = new Door(new Position(xPosition, yPosition), key, gameMode, false);
+                    currEntity = new Door(new Position(xPosition, yPosition), activeGame, key);
                     break;
                 case "portal":
                     colour = entityList.getJSONObject(i).getString("colour");
-                    currEntity = new Portal(new Position(xPosition, yPosition), colour, gameMode, false);
+                    currEntity = new Portal(new Position(xPosition, yPosition), activeGame, colour);
                     break;
                 case "zombie_toast_spawner":
-                    currEntity = new ZombieToastSpawner(new Position(xPosition, yPosition), gameMode, true);
+                    currEntity = new ZombieToastSpawner(new Position(xPosition, yPosition), activeGame);
                     break;
                 case "one_ring":
-                    currEntity = new OneRing(new Position(xPosition, yPosition), gameMode, false);
+                    currEntity = new OneRing(new Position(xPosition, yPosition), activeGame);
                     break;
                 case "spider":
-                    currEntity = new Spider(new Position(xPosition, yPosition), gameMode, false);
+                    currEntity = new Spider(new Position(xPosition, yPosition), activeGame);
                     break;
                 case "zombie_toast":
-                    currEntity = new ZombieToast(new Position(xPosition, yPosition), gameMode, false);
+                    currEntity = new ZombieToast(new Position(xPosition, yPosition), activeGame);
                     break;
                 case "mercenary":
-                    currEntity = new Mercenary(new Position(xPosition, yPosition), gameMode, true);
+                    currEntity = new Mercenary(new Position(xPosition, yPosition), activeGame);
                     break;
                 case "treasure":
-                    currEntity = new Treasure(new Position(xPosition, yPosition), gameMode, false);
+                    currEntity = new Treasure(new Position(xPosition, yPosition), activeGame);
                     break;
                 case "key":
                     key = entityList.getJSONObject(i).getString("key");
-                    currEntity = new Key(new Position(xPosition, yPosition), gameMode, false);
+                    currEntity = new Key(new Position(xPosition, yPosition), activeGame, key);
                     break;
                 case "health_position":
-                    currEntity = new HealthPotion(new Position(xPosition, yPosition), gameMode, false);
+                    currEntity = new HealthPotion(new Position(xPosition, yPosition), activeGame);
                     break;
                 case "invincibility_potion":
-                    currEntity = new InvincibilityPotion(new Position(xPosition, yPosition), gameMode, false);
+                    currEntity = new InvincibilityPotion(new Position(xPosition, yPosition), activeGame);
                     break;
                 case "invisibility_potion":
-                    currEntity = new InvisibilityPotion(new Position(xPosition, yPosition), gameMode, false);
+                    currEntity = new InvisibilityPotion(new Position(xPosition, yPosition), activeGame);
                     break;
                 case "wood":
-                    currEntity = new Wood(new Position(xPosition, yPosition), gameMode, false);
+                    currEntity = new Wood(new Position(xPosition, yPosition), activeGame);
                     break;
                 case "arrow":
-                    currEntity = new Arrow(new Position(xPosition, yPosition), gameMode, false); 
+                    currEntity = new Arrow(new Position(xPosition, yPosition), activeGame); 
                     break;
                 case "bomb":
-                    currEntity = new Bomb(new Position(xPosition, yPosition), gameMode, false);
+                    currEntity = new Bomb(new Position(xPosition, yPosition), activeGame);
                     break;
                 case "sword":
-                    currEntity = new Sword(new Position(xPosition, yPosition), gameMode, false);
+                    currEntity = new Sword(new Position(xPosition, yPosition), activeGame);
                     break;
                 case "armour":
-                    currEntity = new Armour(new Position(xPosition, yPosition), gameMode, false);
+                    currEntity = new Armour(new Position(xPosition, yPosition), activeGame);
                     break;
-
-
-                entityResponses.add(new EntityResponse(currEntity.getId(), currEntity.getType(), currEntity.getPosition(), currEntity.isInteractable()));
             }
+            entityResponses.add(new EntityResponse(currEntity.getId(), currEntity.getType(), currEntity.getPosition(), currEntity.isInteractable()));
 
             activeGame.addEntity(currEntity);
         }
@@ -183,6 +184,69 @@ public class DungeonManiaController {
         //     throw new IllegalArgumentException("Invalid saveName");
         // }
         // TODO: save activeGame as a JSON and solve it
+
+        
+        List<Entity> entities = activeGame.getEntities();
+
+        JSONArray entitiesJSON = new JSONArray();
+        // Map<String, Object> entityJSON = new Hashmap<String, Object>();
+        // entityJSON.put("x", currEntity.getXPosition);
+        // entityJSON.put("y", currEntity.getYPosition);
+        // entityJSON.put("type", currEntity.findType());
+        // entitiesJSON.put(entityJSON);
+
+        for (int i = 0; i < entities.size(), i++) {
+            Entity currEntity = entities.get(i);
+            String currType = currEntity.findType();
+            Map<String, Object> entityJSON = new HashMap<String, Object>();
+            entityJSON.put("x", currEntity.getXPosition());
+            entityJSON.put("y", currEntity.getYPosition());
+            entityJSON.put("type", currEntity.findType());
+
+            switch (currType) {
+                case "portal":
+                    entityJSON.put("colour", currEntity.getColour());
+                    break;
+                case "door": case "key":
+                    entityJSON.put("key", currEntity.getKey());
+                    break;
+                // MAYBE REMOVE LATER!!! COULD BE UNNECESSARY
+                case "switch":
+                    entityJSON.put("hasBoulder", currEntity.hasBoulder());
+                    break;
+                case "zombie": case "mercenary":
+                    entityJSON.put("hasArmour", currEntity.hasArmour());
+                    break;       
+            }
+
+            entitiesJSON.put(entityJSON);
+        }
+
+        
+        List<Entity> items = activeGame.getInventory();
+        JSONArray itemsJSON = new JSONArray();
+
+        for (int i = 0; i < items.size(); i++) {
+            Entity currItem = items.get(i);
+            String currType = currItem.getType();
+            Map<String, Object> itemJSON = new HashMap<String, Object>();
+            itemJSON.put("type", currItem.findType());
+
+            switch (currType) {
+                case "key":
+                    itemJSON.put("key", currItem.getKey());
+                    break;
+                case "sword": case "armour": case "bow": case "shield":
+                    itemJSON.put("durability", currItem.getDurability());
+                    break;                
+            }
+            itemsJSON.put(itemJSON);
+
+        }
+
+        
+
+
 
         return new DungeonResponse(dungeonId, dungeonName, new ArrayList<EntityResponse>(), new ArrayList<ItemResponse>(), new ArrayList<String>(), "Temp");
     }
