@@ -4,8 +4,8 @@ import dungeonmania.util.Position;
 import dungeonmania.util.Direction;
 
 public abstract class StaticEntity extends Entity {
-    public StaticEntity(Position position, String id) {
-        super(position, id);
+    public StaticEntity(Position position, Dungeon dungeon) {
+        super(position, dungeon);
     }
 
     /**

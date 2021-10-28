@@ -7,8 +7,8 @@ public class Door extends StaticEntity {
     private boolean locked = true;
     private int key;
     
-    public Door(Position position, /* */, int key) {
-        super(position, id);
+    public Door(Position position, Dungeon dungeon, int key) {
+        super(position, dungeon);
         this.key = key;
     }
 

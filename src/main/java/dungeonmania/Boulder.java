@@ -4,8 +4,8 @@ import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
 public class Boulder extends StaticEntity{
-    public Boulder(Position position, String id) {
-        super(position, id);
+    public Boulder(Position position, Dungeon dungeon) {
+        super(position, dungeon);
     }
 
     @Override
@@ -16,8 +16,13 @@ public class Boulder extends StaticEntity{
     @Override
     // Updates state
     public void update(Direction direction) {
-        if (this.getPosition().equals(this.getPlayerPosition())) {
+        if (getPosition().equals(getPlayerPosition())) {
             move(direction);
+            for (Entity entity : getEntities()) {
+                if (entity instanceof Bomb && getPosition().equals(entity.getPosition)) {
+                    ((Bomb)entity).explode();
+                }
+            }
         }
     }
 

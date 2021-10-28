@@ -8,8 +8,8 @@ import dungeonmania.util.Direction;
 public class ZombieToastSpawner extends StaticEntity {
     private int counter = 0;
 
-    public ZombieToastSpawner(Position position, String id) {
-        super(position, id);
+    public ZombieToastSpawner(Position position, Dungeon dungeon) {
+        super(position, dungeon);
     }
 
     @Override
@@ -24,18 +24,19 @@ public class ZombieToastSpawner extends StaticEntity {
     }
 
     public void spawnZombie() {
-        // dungeon.newEntity(super.position, zombie)
         if (getSpawnTimer() == 0) {
             return;
         } else if (counter % getSpawnTimer() == 0) {
-            // id creator?
             // Get adjacent positions
             List<Position> adjacentPositions = this.getPosition().getAdjacentPositions();
 
             // Check whether adjacent positions are free and spawn a zombie
             for (Position position : adjacentPositions) {
-                if (getDungeon().getEntity(position) /* IS NOT OBSTRUCTED*/) {
-                    getDungeon().createZombieToast(position);
+                if (!getDungeon().getEntity(position) instanceof Wall ||
+                    !getDungeon().getEntity(position) instanceof Boulder ||
+                    !getDungeon().getEntity(position) instanceof Door ||
+                    !getDungeon().getEntity(position) instanceof ZombieToastSpawner) {
+                    createZombieToast(position);
                     break;
                 }
             }
@@ -47,8 +48,7 @@ public class ZombieToastSpawner extends StaticEntity {
     }
 
     public void createZombieToast(Position position) {
-        // zombie creation
-        getDungeon().addEntity(new ZombieToast(position, getGamemode()));
+        getDungeon().addEntity(new ZombieToast(position, getDungeon()));
     }
 
     @Override

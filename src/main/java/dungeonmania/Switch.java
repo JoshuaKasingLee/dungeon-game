@@ -4,8 +4,8 @@ import dungeonmania.util.Position;
 import dungeonmania.util.Direction;
 
 public class Switch extends StaticEntity {    
-    public Switch(Position position, String id) {
-        super(position, id);
+    public Switch(Position position, Dungeon dungeon) {
+        super(position, dungeon);
     }
 
     @Override

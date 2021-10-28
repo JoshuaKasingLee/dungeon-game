@@ -4,12 +4,12 @@ import dungeonmania.util.Position;
 import dungeonmania.util.Direction;
 
 public class Portal extends StaticEntity {
-    Portal pairedPortal;
+    private Portal pairedPortal;
     private String colour;
 
-    public Portal(Position position, String id, String colour) {
-        super(position, id);
-        pairedPortal = findPairedPortal(); // to change
+    public Portal(Position position, Dungeon dungeon, String colour) {
+        super(position, dungeon);
+        pairedPortal = findPairedPortal();
         this.colour = colour;
     }
 
@@ -43,11 +43,15 @@ public class Portal extends StaticEntity {
 
     public Portal findPairedPortal() {
         for (Entity entity : this.getEntities()) {
-            if (entity instanceof Portal && !entity.equals(this)) {
+            if (entity instanceof Portal && !entity.equals(this) && ((Portal)entity).getPortalColour().equals(getPortalColour())) {
                 return (Portal)entity;
             }
         }
         // paired portal does not exist
         return null;
+    }
+
+    public String getPortalColour() {
+        return this.colour;
     }
 }

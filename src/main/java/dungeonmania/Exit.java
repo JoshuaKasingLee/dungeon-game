@@ -4,8 +4,8 @@ import dungeonmania.util.Position;
 import dungeonmania.util.Direction;
 
 public class Exit extends StaticEntity {
-    public Exit(Position position, String id) {
-        super(position, id);
+    public Exit(Position position, Dungeon dungeon) {
+        super(position, dungeon);
     }
 
     @Override
