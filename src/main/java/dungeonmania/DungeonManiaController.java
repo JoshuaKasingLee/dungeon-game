@@ -73,9 +73,19 @@ public class DungeonManiaController {
         }
 
         String dungeonId = newDungeonId();
+        Gamemode dungeonMode;
+        if (gameMode.equals("Peaceful")) {
+            dungeonMode = new Peaceful();
+        }
+        else if (gameMode.equals("Standard")) {
+            dungeonMode = new Standard();
+        }
+        else if (gameMode.equals("Hard")) {
+            dungeonMode = new Hard();
+        }
 
         // TODO: Make the Dungeon Class
-        activeGame = new Dungeon(dungeonName, gameMode, dungeonId);
+        activeGame = new Dungeon(dungeonName, dungeonMode, dungeonId);
         
         String fileContentsOutput = FileLoader.loadResourceFile("/dungeons/" + dungeonName + ".json");
         JSONObject dungeonObj = new JSONObject(fileContentsOutput);

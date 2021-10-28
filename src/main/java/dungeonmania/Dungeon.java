@@ -19,7 +19,7 @@ public class Dungeon {
     private List<GoalComponent> simpleGoals;
     private GoalComponent overallGoal;
 
-    public Dungeon(String dungeonName, String gameMode, String dungeonId) {
+    public Dungeon(String dungeonName, Gamemode gameMode, String dungeonId) {
         this.dungeonName = dungeonName;
         this.gameMode = gameMode;
         this.dungeonId = dungeonId;
