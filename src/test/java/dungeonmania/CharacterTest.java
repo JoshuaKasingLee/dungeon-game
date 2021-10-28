@@ -516,4 +516,48 @@ public class CharacterTest {
         assertEquals(Character.ORIGINAL_HEALTH, character.getHealth());
     }
 
+    @Test
+    public void bribeMercenary() {
+        Character character = new Character(new Position(0, 0), "Kelly", new Dungeon("Dungeon", "Standard", "1"));
+        Inventory inv = character.getInventory();
+        Treasure t1 = new Treasure(new Position(0, 0), "t1", character.getDungeon());
+        Treasure t2 = new Treasure(new Position(0, 0), "t2", character.getDungeon());
+        inv.add(t1);
+        inv.add(t2);
+        assertEquals(Arrays.asList("Treasure", "Treasure"), inv.listInventory());
+
+        // too far - fail
+        Mercenary merc1 = new Mercenary(new Position(0, 3), "Sally", character.getDungeon());
+        assertEquals(false, merc1.isAlly());
+        assertThrows(InvalidActionException.class, () -> character.bribe(merc1));
+
+        // diagonal - fail
+        merc1.setPosition(new Position(1,1));
+        assertThrows(InvalidActionException.class, () -> character.bribe(merc1));
+        merc1.setPosition(new Position(-2,3));
+        assertThrows(InvalidActionException.class, () -> character.bribe(merc1));
+
+        // within 1 cardinal square - sucess
+        merc1.setPosition(new Position(0,1));
+        character.bribe(merc1);
+        assertEquals(true, merc1.isAlly());
+        assertEquals(Arrays.asList("Treasure"), inv.listInventory());
+        
+        // within 2 cardinal squares - success
+        Mercenary merc2 = new Mercenary(new Position(0, 1), "Molly", character.getDungeon());
+        assertEquals(false, merc2.isAlly());
+        character.bribe(merc2);
+        assertEquals(true, merc2.isAlly());
+        assertEquals(Arrays.asList(), inv.listInventory());
+    }
+
+    @Test
+    public void bribeMercenaryNoTreasure() {
+        Character character = new Character(new Position(0, 0), "Kelly", new Dungeon("Dungeon", "Standard", "1"));
+        // no treasure - fail
+        Mercenary merc1 = new Mercenary(new Position(0, 1), "Sally", character.getDungeon());
+        assertEquals(false, merc1.isAlly());
+        assertThrows(InvalidActionException.class, () -> character.bribe(merc1));
+    }
+
 }
