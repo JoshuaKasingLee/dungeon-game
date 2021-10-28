@@ -11,6 +11,8 @@ public abstract class Entity implements Subject {
     private boolean Interactable;
     private Gamemode gamemode;
     private List<Observer> goalObservers = new ArrayList<Observer>();
+    private String type;
+    private Dungeon activeDungeon;
 
     private static int entityIdCounter = 0; 
     public static synchronized String newEntityId() {
@@ -18,11 +20,21 @@ public abstract class Entity implements Subject {
     }
 
     
-    public Entity(Position position, Gamemode gamemode, boolean Interactable) {
+    public Entity(Position position, Dungeon activeDungeon) {
         this.position = position;
-        this.gamemode = gamemode;
-        this.Interactable = Interactable;
+        this.activeDungeon = activeDungeon;
+        this.type = findType();
     }
+
+    public int getXPosition() {
+        position.getX();
+    }
+
+    public int getYPosition() {
+        position.getY();
+    }
+
+    public abstract String findType();
 
     @Override
     public void attach(Observer o) {
@@ -79,13 +91,6 @@ public abstract class Entity implements Subject {
     }
 
     /*
-    * @param type the type to set
-    */
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    /*
      * @return Gamemode return the gamemode
      */
     public Gamemode getGamemode() {
@@ -127,6 +132,21 @@ public abstract class Entity implements Subject {
      */
     public void setInteractable(boolean Interactable) {
         this.Interactable = Interactable;
+    }
+
+
+    /**
+     * @return Dungeon return the activeDungeon
+     */
+    public Dungeon getActiveDungeon() {
+        return activeDungeon;
+    }
+
+    /**
+     * @param activeDungeon the activeDungeon to set
+     */
+    public void setActiveDungeon(Dungeon activeDungeon) {
+        this.activeDungeon = activeDungeon;
     }
 
 }
