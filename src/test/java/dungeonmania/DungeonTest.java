@@ -13,7 +13,7 @@ import java.lang.IllegalArgumentException;
 import java.util.List;
 import java.util.ArrayList;
 
-public class DungeonTest {
+public class DungeonManiaControllerTest {
     @Test
     public void testNewGame() {
 
