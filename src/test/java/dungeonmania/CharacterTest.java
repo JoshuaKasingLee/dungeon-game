@@ -560,4 +560,50 @@ public class CharacterTest {
         assertThrows(InvalidActionException.class, () -> character.bribe(merc1));
     }
 
+    @Test
+    public void destroyZombieToastSpawnerSword() {
+        Character character = new Character(new Position(0, 0), "Kelly", new Dungeon("Dungeon", "Standard", "1"));
+        Inventory inv = character.getInventory();
+        Sword s = new Sword(new Position(0, 1), "s", character.getDungeon());
+        inv.add(s);
+        assertEquals(Arrays.asList("Sword"), inv.listInventory());
+
+        // too far - should fail
+        ZombieToastSpawner z = new ZombieToastSpawner(new Position(0, 2), "spawner", character.getDungeon());
+        assertEquals(Arrays.asList(character, z), character.getDungeon().getAllEntities());
+        assertThrows(InvalidActionException.class, () -> character.destroySpawner(z));
+
+        // not cardinally adjacent - should fail
+        z.setPosition(new Position(1,1));
+        assertThrows(InvalidActionException.class, () -> character.destroySpawner(z));
+
+        // now passes
+        z.setPosition(new Position(0,1));
+        character.destroySpawner(z);
+        assertEquals(Arrays.asList(character), character.getDungeon().getAllEntities());
+    }
+
+    @Test
+    public void destroyZombieToastSpawnerBow() {
+        Character character = new Character(new Position(0, 0), "Kelly", new Dungeon("Dungeon", "Standard", "1"));
+        Inventory inv = character.getInventory();
+        Bow b = new Bow("b", character.getDungeon());
+        inv.add(b);
+        assertEquals(Arrays.asList("Bow"), inv.listInventory());
+
+        // check bow works
+        ZombieToastSpawner z = new ZombieToastSpawner(new Position(0, 2), "spawner", character.getDungeon());
+        z.setPosition(new Position(0,1));
+        character.destroySpawner(z);
+        assertEquals(Arrays.asList(character), character.getDungeon().getAllEntities());
+    }
+
+    @Test
+    public void destroyZombieToastSpawnerAttempt() {
+        Character character = new Character(new Position(0, 0), "Kelly", new Dungeon("Dungeon", "Standard", "1"));
+        ZombieToastSpawner z = new ZombieToastSpawner(new Position(0, 1), "spawner", character.getDungeon());
+        // no weapon - should fail
+        assertThrows(InvalidActionException.class, () -> character.destroySpawner(z));
+    }
+
 }
