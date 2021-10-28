@@ -133,8 +133,28 @@ public class Character extends MovingEntity {
         }
     }
 
+    // assume weapons get "used" when used to destroy zombie toast spawner
     public void destroySpawner(ZombieToastSpawner spawner) {
-
+        Position spawnerPos = spawner.getPosition();
+        List<Position> cardinalAdjMercPos = getCardinalAdjPositions1(spawnerPos);
+        for (Position p : cardinalAdjMercPos) {
+            // assume sword is used before bow
+            if (p.equals(getPosition())) {
+                if (inventory.getItem("Sword") != null) {
+                    inventory.use("Sword", this);
+                    getDungeon().removeFrom(spawner);
+                    break;
+                } else if (inventory.getItem("Bow") != null) {
+                    inventory.use("Bow", this);
+                    getDungeon().removeFrom(spawner);
+                    break;
+                } else {
+                    throw new InvalidActionException("Cannot destory ZombieToastspawner without weapon");
+                }
+            } else {
+                throw new InvalidActionException("ZombieToastspawner is not cardinally adjacent");
+            }
+        }
     }
 
     // helper functions
