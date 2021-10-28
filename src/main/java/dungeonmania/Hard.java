@@ -5,13 +5,13 @@ public class Hard extends Gamemode{
     public Hard() {
         super();
     }
-    public boolean findBattle() {
+    public boolean checkBattle() {
         return true;
     }
-    public int findSpawnTimer() {
+    public int checkSpawnTimer() {
         return 15;
     }
-    public int findStartingHealth() {
+    public int checkStartingHealth() {
         return 0; //subject ot change
     }
 }

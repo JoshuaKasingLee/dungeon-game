@@ -6,13 +6,13 @@ public class Peaceful extends Gamemode {
         super();
     }
 
-    public boolean findBattle() {
+    public boolean checkBattle() {
         return false;
     }
-    public int findSpawnTimer() {
+    public int checkSpawnTimer() {
         return 0;
     }
-    public int findStartingHealth() {
+    public int checkStartingHealth() {
         return 0; //subject ot change
     }
 

@@ -6,15 +6,15 @@ public abstract class Gamemode {
     private int startingHealth;
 
     public Gamemode() {
-        this.battle = findBattle();
-        this.spawnTimer = findSpawnTimer();
-        this.startingHealth = findStartingHealth();
+        this.battle = checkBattle();
+        this.spawnTimer = checkSpawnTimer();
+        this.startingHealth = checkStartingHealth();
     }
 
 
-    public abstract boolean findBattle();
-    public abstract int findSpawnTimer();
-    public abstract int findStartingHealth();
+    public abstract boolean checkBattle();
+    public abstract int checkSpawnTimer();
+    public abstract int checkStartingHealth();
 
     /**
      * @return boolean return the battle

@@ -6,13 +6,13 @@ public class Standard extends Gamemode {
         super();
     }
 
-    public boolean findBattle() {
+    public boolean checkBattle() {
         return true;
     }
-    public int findSpawnTimer() {
+    public int checkSpawnTimer() {
         return 20;
     }
-    public int findStartingHealth() {
+    public int checkStartingHealth() {
         return 0; //subject ot change
     }
 }
