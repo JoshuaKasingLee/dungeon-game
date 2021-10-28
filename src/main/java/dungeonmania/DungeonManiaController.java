@@ -267,7 +267,7 @@ public class DungeonManiaController {
 
         String dungeonSave = dungeonJSON.toString();
         String dungeonId = activeGame.getDungeonId();
-        PrintWriter fileLocation = new PrintWriter(new FileWriter("saveFiles\\" + dungeonId);
+        PrintWriter fileLocation = new PrintWriter(new FileWriter("saveFiles\\" + dungeonId));
 
         String dungeonName = activeGame.getDungeonName();
 
