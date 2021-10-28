@@ -73,7 +73,7 @@ public class ItemTest {
         assertEquals("Standard", character.getCharacterState().getType());
         inv.use("InvisibilityPotion", character);
         assertEquals("Invisible", character.getCharacterState().getType());
-        // NEED TO ADD
+        // effect is tested in character.java
     }
 
     @Test
@@ -86,9 +86,8 @@ public class ItemTest {
         assertEquals("Standard", character.getCharacterState().getType());
         inv.use("InvincibilityPotion", character);
         assertEquals("Invincible", character.getCharacterState().getType());
-        // NEED TO ADD
+        // effect is tested in character.java
     }
-
     
 
     @Test
@@ -101,6 +100,7 @@ public class ItemTest {
         assertEquals(Arrays.asList("Armour"), inv.listInventory());
         inv.use("Armour", character);
         assertEquals(Arrays.asList(), inv.listInventory());
+        // armour effect is tested in character.java
     }
 
     @Test
@@ -115,9 +115,8 @@ public class ItemTest {
         assertEquals(Arrays.asList("Shield"), inv.listInventory());
         inv.use("Shield", character);
         assertEquals(Arrays.asList(), inv.listInventory());
+        // shield effect is tested in character.java
     }
-
-    
 
     @Test
     public void useOneRing() {
@@ -130,9 +129,8 @@ public class ItemTest {
         assertEquals(-1, character.getHealth());
         inv.use("OneRing", character);
         assertEquals(Character.ORIGINAL_HEALTH, character.getHealth());
+        // more testing in character.java
     }
-
-    // need to test one ring again for real death
     
     @Test
     public void testSword() {
@@ -140,7 +138,8 @@ public class ItemTest {
         Inventory inv = character.getInventory();
         Sword s = new Sword(new Position(0, 0), "s", character.getDungeon());
         inv.add(s);
-        // WRITE TEST
+        inv.use("Sword", character);
+        // sword effect is tested in character.java
     }
 
     @Test
@@ -149,16 +148,31 @@ public class ItemTest {
         Inventory inv = character.getInventory();
         Bow b = new Bow("i1", character.getDungeon());
         inv.add(b);
-        // WRITE TEST
+        inv.use("Bow", character);
+        // bow effect is tested in character.java
     }
 
     @Test
-    public void testBomb() {
+    public void testBombExplosion() {
         Character character = new Character(new Position(0, 0), "Kelly", new Dungeon("Dungeon", "Standard", "1"));
-        Inventory inv = character.getInventory();
+        // Inventory inv = character.getInventory();
         Bomb b = new Bomb(new Position(0, 0), "b", character.getDungeon());
-        inv.add(b);
-        // WRITE TEST
+        // inv.add(b);
+        // inv.use("Bomb", character); // drop bomb in current position
+
+        // within radius
+        Sword s = new Sword(new Position(0, 1), "s", character.getDungeon());
+        Spider spider = new Spider(new Position(-1, -2), "Polly", character.getDungeon());
+        Door d = new Door(new Position(-3, 0), "door", character.getDungeon(), 1);
+
+        // not within radius
+        Treasure t = new Treasure(new Position(3, 3), "t", character.getDungeon());
+
+        assertEquals(Arrays.asList(character, b, s, spider, d, t), character.getDungeon().getAllEntities());
+        b.explode();
+
+        // only character and treasure should remain
+        assertEquals(Arrays.asList(character, t), character.getDungeon().getAllEntities());
     }
 
     @Test

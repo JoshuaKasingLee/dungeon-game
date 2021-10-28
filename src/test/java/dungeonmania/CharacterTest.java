@@ -86,8 +86,10 @@ public class CharacterTest {
         Character character = new Character(new Position(0, 0), "Kelly", new Dungeon("Dungeon", "Standard", "1"));
         Inventory inv = character.getInventory();
         Sword s = new Sword(new Position(0, 1), "s", character.getDungeon());
+        assertEquals(Arrays.asList(character, s), character.getDungeon().getAllEntities());
         character.moveUp();
         assertEquals(Arrays.asList("Sword"), inv.listInventory());
+        assertEquals(Arrays.asList(character), character.getDungeon().getAllEntities());
         Treasure t = new Treasure(new Position(1, 3), "t", character.getDungeon());
         character.moveUp();
         character.moveUp();
@@ -504,14 +506,14 @@ public class CharacterTest {
         character.setHealth(1);
         Inventory inv = character.getInventory();
         OneRing ring = new OneRing(new Position(0, 0), "ring", character.getDungeon());
-        inv.add(ring);
+        inv.add(ring); // doesn't remove from dungeon
         assertEquals(Arrays.asList("OneRing"), inv.listInventory());
 
         Mercenary merc = new Mercenary(new Position(0, 1), "Molly", character.getDungeon());
-        assertEquals(Arrays.asList(character, merc), character.getDungeon().getAllEntities());
+        assertEquals(Arrays.asList(character, ring, merc), character.getDungeon().getAllEntities());
         character.moveUp();
         // fight should happen, one ring should be used since merc can kill character
-        assertEquals(Arrays.asList(character, merc), character.getDungeon().getAllEntities());
+        assertEquals(Arrays.asList(character, ring, merc), character.getDungeon().getAllEntities());
         assertEquals(Arrays.asList(), inv.listInventory());
         assertEquals(Character.ORIGINAL_HEALTH, character.getHealth());
     }
@@ -565,12 +567,12 @@ public class CharacterTest {
         Character character = new Character(new Position(0, 0), "Kelly", new Dungeon("Dungeon", "Standard", "1"));
         Inventory inv = character.getInventory();
         Sword s = new Sword(new Position(0, 1), "s", character.getDungeon());
-        inv.add(s);
+        inv.add(s); // doesn't remove from dungeon
         assertEquals(Arrays.asList("Sword"), inv.listInventory());
 
         // too far - should fail
         ZombieToastSpawner z = new ZombieToastSpawner(new Position(0, 2), "spawner", character.getDungeon());
-        assertEquals(Arrays.asList(character, z), character.getDungeon().getAllEntities());
+        assertEquals(Arrays.asList(character, s, z), character.getDungeon().getAllEntities());
         assertThrows(InvalidActionException.class, () -> character.destroySpawner(z));
 
         // not cardinally adjacent - should fail
@@ -580,7 +582,7 @@ public class CharacterTest {
         // now passes
         z.setPosition(new Position(0,1));
         character.destroySpawner(z);
-        assertEquals(Arrays.asList(character), character.getDungeon().getAllEntities());
+        assertEquals(Arrays.asList(character, s), character.getDungeon().getAllEntities());
     }
 
     @Test
@@ -595,7 +597,7 @@ public class CharacterTest {
         ZombieToastSpawner z = new ZombieToastSpawner(new Position(0, 2), "spawner", character.getDungeon());
         z.setPosition(new Position(0,1));
         character.destroySpawner(z);
-        assertEquals(Arrays.asList(character), character.getDungeon().getAllEntities());
+        assertEquals(Arrays.asList(character, b), character.getDungeon().getAllEntities());
     }
 
     @Test
