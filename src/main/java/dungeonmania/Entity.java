@@ -7,16 +7,14 @@ public abstract class Entity {
     private String id;
     private String type;
     private Dungeon dungeon;
-    // private boolean isInteractable = false;
-    // private Gamemode gamemode;
+    private boolean isInteractable;
 
     public Entity(Position position, String id, String type, Dungeon dungeon) {
         this.position = position;
         this.id = id;
         this.type = type;
         this.dungeon = dungeon;
-        // this.isInteractable = false;
-        // this.gamemode = gamemode;
+        this.isInteractable = false;
     }
 
     /**
@@ -75,32 +73,18 @@ public abstract class Entity {
         this.dungeon = dungeon;
     }
 
-    // /**
-    //  * @return boolean return the isInteractable
-    //  */
-    // public boolean isIsInteractable() {
-    //     return isInteractable;
-    // }
+    /**
+     * @return boolean return the isInteractable
+     */
+    public boolean isIsInteractable() {
+        return isInteractable;
+    }
 
-    // /**
-    //  * @param isInteractable the isInteractable to set
-    //  */
-    // public void setIsInteractable(boolean isInteractable) {
-    //     this.isInteractable = isInteractable;
-    // }
-
-    // /**
-    //  * @return Gamemode return the gamemode
-    //  */
-    // public Gamemode getGamemode() {
-    //     return gamemode;
-    // }
-
-    // /**
-    //  * @param gamemode the gamemode to set
-    //  */
-    // public void setGamemode(Gamemode gamemode) {
-    //     this.gamemode = gamemode;
-    // }
+    /**
+     * @param isInteractable the isInteractable to set
+     */
+    public void setIsInteractable(boolean isInteractable) {
+        this.isInteractable = isInteractable;
+    }
 
 }

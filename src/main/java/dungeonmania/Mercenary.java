@@ -11,6 +11,7 @@ public class Mercenary extends Enemy {
         this.setHealth(ORIGINAL_HEALTH);
         this.setAttackDamage(MERCENARY_ATTACK_DAMAGE);
         this.setArmour(50); // assume zombie has 50% chance spawning with armour
+        setIsInteractable(true);
     }
 
     public void updatePosition() {   
