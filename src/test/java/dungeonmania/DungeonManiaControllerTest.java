@@ -136,7 +136,37 @@ public class DungeonManiaControllerTest {
         assertEquals(controller.allGames(), listOfGames);
     }
 
+    @Test
+    public void tickMovement() {
+        DungeonManiaController controller = new DungeonManiaController();
+        assertDoesNotThrow(() -> controller.newGame("boulderGoalTester", "Standard"));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.UP));
 
+        EntityResponse playerResponse = new EntityResponse("0", "player", new Position(1, 3), false);
+        EntityResponse boulderResponse = new EntityResponse("1", "boulder", new Position(1, 1), false);
+        EntityResponse switchResponse = new EntityResponse("2", "switch", new Position(1, 0), false);
+
+        List<EntityResponse> entityResponseList = new ArrayList<>(Arrays.asList(playerResponse, boulderResponse, switchResponse));
+        List<ItemResponse> inventoryList = new ArrayList<>();
+        List<String> buildablesList = new ArrayList<>();
+        assertEquals(new DungeonResponse("0", "boulderGoalTester", entityResponseList, inventoryList, buildablesList, ":boulders "), controller.newGame("boulderGoalTester", "Standard"));
+    }
+
+    public void tickHealthPotion() {
+        DungeonManiaController controller = new DungeonManiaController();
+        assertDoesNotThrow(() -> controller.newGame("boulderGoalTester", "Standard"));
+        assertDoesNotThrow(() -> controller.tick(, Direction.UP));
+
+        EntityResponse playerResponse = new EntityResponse("0", "player", new Position(1, 3), false);
+        EntityResponse boulderResponse = new EntityResponse("1", "boulder", new Position(1, 1), false);
+        EntityResponse switchResponse = new EntityResponse("2", "switch", new Position(1, 0), false);
+
+        List<EntityResponse> entityResponseList = new ArrayList<>(Arrays.asList(playerResponse, boulderResponse, switchResponse));
+        List<ItemResponse> inventoryList = new ArrayList<>();
+        List<String> buildablesList = new ArrayList<>();
+        assertEquals(new DungeonResponse("0", "boulderGoalTester", entityResponseList, inventoryList, buildablesList, ":boulders "), controller.newGame("boulderGoalTester", "Standard"));
+    }
+    
 
 
 }
