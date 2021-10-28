@@ -9,7 +9,9 @@ import dungeonmania.response.models.EntityResponse;
 import dungeonmania.response.models.ItemResponse;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -198,30 +200,37 @@ public class DungeonManiaController {
         for (int i = 0; i < entities.size(), i++) {
             Entity currEntity = entities.get(i);
             String currType = currEntity.findType();
-            Map<String, Object> entityJSON = new HashMap<String, Object>();
-            entityJSON.put("x", currEntity.getXPosition());
-            entityJSON.put("y", currEntity.getYPosition());
-            entityJSON.put("type", currEntity.findType());
+            Map<String, Object> entityData = new HashMap<String, Object>();
+            entityData.put("x", currEntity.getXPosition());
+            entityData.put("y", currEntity.getYPosition());
+            entityData.put("type", currEntity.findType());
 
             switch (currType) {
                 case "portal":
-                    entityJSON.put("colour", currEntity.getColour());
+                    entityData.put("colour", currEntity.getColour());
                     break;
                 case "door": case "key":
-                    entityJSON.put("key", currEntity.getKey());
+                    entityData.put("key", currEntity.getKey());
                     break;
                 // MAYBE REMOVE LATER!!! COULD BE UNNECESSARY
                 case "switch":
-                    entityJSON.put("hasBoulder", currEntity.hasBoulder());
+                    entityData.put("hasBoulder", currEntity.hasBoulder());
                     break;
                 case "zombie": case "mercenary":
-                    entityJSON.put("hasArmour", currEntity.hasArmour());
+                    entityData.put("hasArmour", currEntity.hasArmour());
                     break;       
+                case "player":
+                    entityData.put("health", currEntity.getHealth());
+                    break;
             }
+
+            JSONObject entityJSON = new JSONObject(entityData);
 
             entitiesJSON.put(entityJSON);
         }
 
+
+        
         
         List<Entity> items = activeGame.getInventory();
         JSONArray itemsJSON = new JSONArray();
@@ -229,24 +238,38 @@ public class DungeonManiaController {
         for (int i = 0; i < items.size(); i++) {
             Entity currItem = items.get(i);
             String currType = currItem.getType();
-            Map<String, Object> itemJSON = new HashMap<String, Object>();
-            itemJSON.put("type", currItem.findType());
+            Map<String, Object> itemData = new HashMap<String, Object>();
+            itemData.put("type", currItem.findType());
 
             switch (currType) {
                 case "key":
-                    itemJSON.put("key", currItem.getKey());
+                    itemData.put("key", currItem.getKey());
                     break;
                 case "sword": case "armour": case "bow": case "shield":
-                    itemJSON.put("durability", currItem.getDurability());
+                    itemData.put("durability", currItem.getDurability());
                     break;                
             }
+            JSONObject itemJSON = new JSONObject(itemData);
             itemsJSON.put(itemJSON);
 
         }
 
-        
 
+        GoalComponent overallGoal = activeGame.getOverallGoal();
+        JSONObject goalsJSON = overallGoal.toJSON();
 
+        Map<String, Object> dungeonMap = new HashMap<String, Object>();
+        dungeonMap.put("entities", entitiesJSON);
+        dungeonMap.put("items", itemsJSON);
+        dungeonMap.put("goal-condition", goalsJSON);
+
+        JSONObject dungeonJSON = new JSONObject(dungeonMap);
+
+        String dungeonSave = dungeonJSON.toString();
+        String dungeonId = activeGame.getDungeonId();
+        PrintWriter fileLocation = new PrintWriter(new FileWriter("saveFiles\\" + dungeonId);
+
+        String dungeonName = activeGame.getDungeonName();
 
         return new DungeonResponse(dungeonId, dungeonName, new ArrayList<EntityResponse>(), new ArrayList<ItemResponse>(), new ArrayList<String>(), "Temp");
     }
@@ -346,6 +369,14 @@ public class DungeonManiaController {
         return overallGoal;
     }
 
+    // public String goalsToJSON(GoalComponent goal) {
+    //     String goalJSONString = "";
+    //     if (goal instanceof AndGoal) {
+
+    //     }
+    // }
+
+    
 
 
 }
