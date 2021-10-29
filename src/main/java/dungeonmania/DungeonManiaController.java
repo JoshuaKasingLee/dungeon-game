@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.json.JSONObject;
+import org.json.JSONTokener;
 import org.eclipse.jetty.io.NetworkTrafficListener;
 import org.json.JSONArray;
 
@@ -65,21 +66,28 @@ public class DungeonManiaController {
 
     public DungeonResponse newGame(String dungeonName, String gameMode) throws IllegalArgumentException {
     
-        if (!dungeons().contains(dungeonName)) {
-            throw new IllegalArgumentException("Invalid dungeonName");
-        }
+        // if (!dungeons().contains(dungeonName)) {
+        //     throw new IllegalArgumentException("Invalid dungeonName");
+        // }
         if (!getGameModes().contains(gameMode)) {
             throw new IllegalArgumentException();
         }
-
+        String fileContents = null;
+        
+        try {
+            String fileContentsOutput = FileLoader.loadResourceFile("/dungeons/" + dungeonName + ".json");
+            fileContents = fileContentsOutput;
+        } catch(IOException e) {
+            throw new IllegalArgumentException("Invalid dungeonName");
+        }
         String dungeonId = newDungeonId();
 
         // TODO: Make the Dungeon Class
         activeGame = new Dungeon(dungeonName, gameMode, dungeonId);
-        
-        String fileContentsOutput = FileLoader.loadResourceFile("/dungeons/" + dungeonName + ".json");
-        JSONObject dungeonObj = new JSONObject(fileContentsOutput);
 
+        
+        
+        JSONObject dungeonObj = new JSONObject(fileContents);
         // Extract data from Json Object
 
         JSONArray entityList = dungeonObj.getJSONArray("entities");
@@ -95,11 +103,10 @@ public class DungeonManiaController {
 
             // TODO: Create entities based on type in JSON File using a bunch of if statements
             //create entity object and add it into activegame
-            Entity currEntity;
-            String key;
+            Entity currEntity = null;
+            int key;
             String colour;
 
-            currEntity.fromJSON()
             switch (entityType) {
                 case "wall":
                     currEntity = new Wall(currPosition, activeGame);  
@@ -114,7 +121,7 @@ public class DungeonManiaController {
                     currEntity = new Switch(currPosition, activeGame);
                     break;
                 case "door":
-                    key = entityList.getJSONObject(i).getString("key");
+                    key = entityList.getJSONObject(i).getInt("key");
                     currEntity = new Door(currPosition, activeGame, key);
                     break;
                 case "portal":
@@ -140,7 +147,7 @@ public class DungeonManiaController {
                     currEntity = new Treasure(currPosition, activeGame);
                     break;
                 case "key":
-                    key = entityList.getJSONObject(i).getString("key");
+                    key = entityList.getJSONObject(i).getInt("key");
                     currEntity = new Key(currPosition, activeGame, key);
                     break;
                 case "health_position":
@@ -165,18 +172,19 @@ public class DungeonManiaController {
                     currEntity = new Sword(currPosition, activeGame);
                     break;
                 case "armour":
-                    currEntity = new Armour(currPosition, activeGame);
+                    currEntity = new Armour(activeGame);
                     break;
                 case "bow":
-                    currEntity = new Bow(currPosition, activeGame);
+                    currEntity = new Bow(activeGame);
                     break;
                 case "shield":
-                    currEntity = new Shield(currPosition, activeGame);
+                    currEntity = new Shield(activeGame);
                     break;
                 case "player":
                     currEntity = new Player(currPosition, activeGame);
                     break;
             }
+
             entityResponses.add(new EntityResponse(currEntity.getId(), currEntity.getType(), currEntity.getPosition(), currEntity.isInteractable()));
 
             activeGame.addEntity(currEntity);
@@ -209,7 +217,7 @@ public class DungeonManiaController {
         // entityJSON.put("y", currEntity.getYPosition);
         // entityJSON.put("type", currEntity.findType());
         // entitiesJSON.put(entityJSON);
-        List<EntityResponse> entityResponses;
+        List<EntityResponse> entityResponses = new ArrayList<EntityResponse>();
         
         for (int i = 0; i < entities.size(); i++) {
             Entity currEntity = entities.get(i);
@@ -217,28 +225,34 @@ public class DungeonManiaController {
             entityResponses.add(new EntityResponse(currEntity.getId(), currEntity.getType(), currEntity.getPosition(), currEntity.isInteractable()));
 
             
-            String currType = currEntity.findType();
+            String currType = currEntity.getType();
             Map<String, Object> entityData = new HashMap<String, Object>();
             entityData.put("x", currEntity.getXPosition());
             entityData.put("y", currEntity.getYPosition());
-            entityData.put("type", currEntity.findType());
+            entityData.put("type", currEntity.getType());
 
             switch (currType) {
-                case "portal":
-                    entityData.put("colour", currEntity.getColour());
+                case "Portal":
+                    entityData.put("colour", ((Portal)currEntity).getPortalColour());
                     break;
-                case "door": case "key":
-                    entityData.put("key", currEntity.getKey());
+                case "Door": 
+                    entityData.put("key", ((Door)currEntity).getKey());
+                    break;
+                case "Key":
+                    entityData.put("key", ((Key)currEntity).getKey());
                     break;
                 // MAYBE REMOVE LATER!!! COULD BE UNNECESSARY
-                case "switch":
-                    entityData.put("hasBoulder", currEntity.hasBoulder());
+                case "Switch":
+                    entityData.put("hasBoulder", ((Switch)currEntity).hasBoulder());
                     break;
-                case "zombie": case "mercenary":
-                    entityData.put("hasArmour", currEntity.hasArmour());
+                case "ZombieToast": 
+                    entityData.put("totalArmour", ((ZombieToast)currEntity).getArmour());
                     break;       
-                case "player":
-                    entityData.put("health", currEntity.getHealth());
+                case "Mercenary":
+                    entityData.put("totalArmour", ((Mercenary)currEntity).getArmour());
+                    break; 
+                case "Player":
+                    entityData.put("health", ((Player)currEntity).getHealth());
                     break;
             }
 
@@ -249,29 +263,38 @@ public class DungeonManiaController {
 
 
         
-        
-        List<Entity> items = activeGame.getInventory();
+        // TODO: REFACTORY LAW OF DEMETER
+        List<Item> items = activeGame.getInventory().getInventoryList();
         JSONArray itemsJSON = new JSONArray();
 
-        List<ItemResponse> itemResponses;
+        List<ItemResponse> itemResponses = new ArrayList<ItemResponse>();
 
         for (int i = 0; i < items.size(); i++) {
             Entity currItem = items.get(i);
 
-            itemResponses.add(new ItemResponse(currItem.getId(), currEntity.getType()));
+            itemResponses.add(new ItemResponse(currItem.getId(), currItem.getType()));
 
 
             String currType = currItem.getType();
             Map<String, Object> itemData = new HashMap<String, Object>();
-            itemData.put("type", currItem.findType());
+            itemData.put("type", currItem.getType());
 
             switch (currType) {
-                case "key":
-                    itemData.put("key", currItem.getKey());
+                case "Key":
+                    itemData.put("key", ((Key)currItem).getKey());
                     break;
-                case "sword": case "armour": case "bow": case "shield":
-                    itemData.put("durability", currItem.getDurability());
-                    break;                
+                case "Sword":  
+                    itemData.put("usesLeft", ((Sword)currItem).getUsesLeft());
+                    break;
+                case "Armour":   
+                    itemData.put("usesLeft", ((Armour)currItem).getUsesLeft());
+                    break;
+                case "Bow":
+                    itemData.put("usesLeft", ((Bow)currItem).getUsesLeft());
+                    break;
+                case "Shield":
+                    itemData.put("usesLeft", ((Shield)currItem).getUsesLeft());
+                    break;
             }
             JSONObject itemJSON = new JSONObject(itemData);
             itemsJSON.put(itemJSON);
@@ -286,33 +309,36 @@ public class DungeonManiaController {
         dungeonMap.put("entities", entitiesJSON);
         dungeonMap.put("items", itemsJSON);
         dungeonMap.put("goal-condition", goalsJSON);
-        dungeonMap.put("gameMode", activeGame.getGameMode().toString());
+        dungeonMap.put("gamemode", activeGame.getGamemode().toString());
         String dungeonId = activeGame.getDungeonId();
         String dungeonName = activeGame.getDungeonName();
         dungeonMap.put("dungeonId", dungeonId);
-        dungeonMap.put("dungeonName", dungeonName)
+        dungeonMap.put("dungeonName", dungeonName);
 
         JSONObject dungeonJSON = new JSONObject(dungeonMap);
 
         String dungeonSave = dungeonJSON.toString();
-        PrintWriter fileLocation = new PrintWriter(new FileWriter("saveFiles\\" + name));
-    
 
-
+        try {
+            PrintWriter fileLocation = new PrintWriter(new FileWriter("saveFiles\\" + name + ".json"));
+            fileLocation.print(dungeonSave);
+            fileLocation.close();
+        } catch (IOException e) {
+            return null;
+        }
 
         String goalString = "";
-
-        
+       
 
         for (GoalComponent simpleGoal : activeGame.getSimpleGoals()) {
-            if (!goalString.contains()) {
+            String simpleGoalString = simpleGoal.simpleGoalToString();
+            if (!goalString.contains(simpleGoalString)) {
                 goalString += simpleGoal.simpleGoalToString();
             }
         }
 
         // TODO: BUILDABLES!!!
         
-
         return new DungeonResponse(dungeonId, dungeonName, entityResponses, itemResponses, new ArrayList<String>(), goalString);
     }
 
@@ -343,87 +369,87 @@ public class DungeonManiaController {
             // TODO: Create entities based on type in JSON File using a bunch of if statements
             //create entity object and add it into activegame
             Entity currEntity;
-            String key;
+            int key;
             String colour;
 
             Position currPosition = new Position(entityList.getJSONObject(i).getInt("x"), entityList.getJSONObject(i).getInt("y"));
 
             switch (entityType) {
-                case "wall":
+                case "Wall":
                     currEntity = new Wall(currPosition, activeGame);  
                     break;
-                case "exit":
+                case "Exit":
                     currEntity = new Exit(currPosition, activeGame);
                     break;
-                case "boulder":
+                case "Boulder":
                     currEntity = new Boulder(currPosition, activeGame);
                     break;
-                case "switch":
+                case "Switch":
                     currEntity = new Switch(currPosition, activeGame);
                     break;
-                case "door":
-                    key = entityList.getJSONObject(i).getString("key");
+                case "Door":
+                    key = entityList.getJSONObject(i).getInt("key");
                     currEntity = new Door(currPosition, activeGame, key);
                     break;
-                case "portal":
+                case "Portal":
                     colour = entityList.getJSONObject(i).getString("colour");
                     currEntity = new Portal(currPosition, activeGame, colour);
                     break;
-                case "zombie_toast_spawner":
+                case "Zombie_toast_spawner":
                     currEntity = new ZombieToastSpawner(currPosition, activeGame);
                     break;
-                case "one_ring":
+                case "One_ring":
                     currEntity = new OneRing(currPosition, activeGame);
                     break;
-                case "spider":
+                case "Spider":
                     currEntity = new Spider(currPosition, activeGame);
                     break;
-                case "zombie_toast":
+                case "Zombie_toast":
                     currEntity = new ZombieToast(currPosition, activeGame);
                     break;
-                case "mercenary":
+                case "Mercenary":
                     currEntity = new Mercenary(currPosition, activeGame);
                     break;
-                case "treasure":
+                case "Treasure":
                     currEntity = new Treasure(currPosition, activeGame);
                     break;
-                case "key":
-                    key = entityList.getJSONObject(i).getString("key");
+                case "Key":
+                    key = entityList.getJSONObject(i).getInt("key");
                     currEntity = new Key(currPosition, activeGame, key);
                     break;
-                case "health_position":
+                case "Health_position":
                     currEntity = new HealthPotion(currPosition, activeGame);
                     break;
-                case "invincibility_potion":
+                case "Invincibility_potion":
                     currEntity = new InvincibilityPotion(currPosition, activeGame);
                     break;
-                case "invisibility_potion":
+                case "Invisibility_potion":
                     currEntity = new InvisibilityPotion(currPosition, activeGame);
                     break;
-                case "wood":
+                case "Wood":
                     currEntity = new Wood(currPosition, activeGame);
                     break;
-                case "arrow":
+                case "Arrow":
                     currEntity = new Arrow(currPosition, activeGame); 
                     break;
-                case "bomb":
+                case "Bomb":
                     currEntity = new Bomb(currPosition, activeGame);
                     break;
-                case "sword":
+                case "Sword":
                     currEntity = new Sword(currPosition, activeGame);
                     break;
-                case "armour":
-                    currEntity = new Armour(currPosition, activeGame);
+                case "Armour":
+                    currEntity = new Armour(activeGame);
                     break;
-                case "bow":
-                    currEntity = new Bow(currPosition, activeGame);
+                case "Bow":
+                    currEntity = new Bow(activeGame);
                     break;
-                case "shield":
-                    currEntity = new Shield(currPosition, activeGame);
+                case "Shield":
+                    currEntity = new Shield(activeGame);
                     break;
-                case "player":
+                case "Player":
                     currEntity = new Player(currPosition, activeGame);
-                    currEntity.setHealth(entityList.JSONObject(i).getInt("health"));
+                    currEntity.setHealth(entityList.getJSONObject(i).getInt("health"));
                     break;
             }
             entityResponses.add(new EntityResponse(currEntity.getId(), currEntity.getType(), currEntity.getPosition(), currEntity.isInteractable()));
@@ -440,55 +466,55 @@ public class DungeonManiaController {
             // TODO: Create entities based on type in JSON File using a bunch of if statements
             //create entity object and add it into activegame
             Item currItem;
-            String key;
-            Positon posPlaceholder = new Position(-1, -1);
+            int key;
+            Position posPlaceholder = new Position(-1, -1);
             switch (itemType) {
-                case "one_ring":
+                case "One_ring":
                     currItem = new OneRing(posPlaceholder, activeGame);
                     break;
-                case "treasure":
+                case "Treasure":
                     currItem = new Treasure(posPlaceholder, activeGame);
                     break;
-                case "key":
-                    key = entityList.getJSONObject(i).getString("key");
+                case "Key":
+                    key = entityList.getJSONObject(i).getInt("key");
                     currItem = new Key(posPlaceholder, activeGame, key);
                     break;
-                case "health_position":
+                case "Health_position":
                     currItem = new HealthPotion(posPlaceholder, activeGame);
                     break;
-                case "invincibility_potion":
+                case "Invincibility_potion":
                     currItem = new InvincibilityPotion(posPlaceholder, activeGame);
                     break;
-                case "invisibility_potion":
+                case "Invisibility_potion":
                     currItem = new InvisibilityPotion(posPlaceholder, activeGame);
                     break;
-                case "wood":
+                case "Wood":
                     currItem = new Wood(posPlaceholder, activeGame);
                     break;
-                case "arrow":
+                case "Arrow":
                     currItem = new Arrow(posPlaceholder, activeGame); 
                     break;
-                case "bomb":
+                case "Bomb":
                     currItem = new Bomb(posPlaceholder, activeGame);
                     break;
-                case "sword":
+                case "Sword":
                     currItem = new Sword(posPlaceholder, activeGame);
-                    currEntity.setDurability(itemList.getJSONObject(i).getInt("durability"));
+                    ((Item) currItem).setUsesLeft(itemList.getJSONObject(i).getInt("durability"));
                     break;
-                case "armour":
-                    currItem = new Armour(posPlaceholder, activeGame);
-                    currEntity.setDurability(itemList.getJSONObject(i).getInt("durability"));
-                    break;
-                case "bow":
-                    currItem = new bow(posPlaceholder, activeGame);
-                    currEntity.setDurability(itemList.getJSONObject(i).getInt("durability"));
-                    break;
-                case "shield":
-                    currItem = new shield(posPlaceholder, activeGame);
-                    currEntity.setDurability(itemList.getJSONObject(i).getInt("durability"));
-                    break;
+                // case "Armour":
+                //     currItem = new Armour(posPlaceholder, activeGame);
+                //     currItem.setUsesLeft(itemList.getJSONObject(i).getInt("durability"));
+                //     break;
+                // case "Bow":
+                //     currItem = new bow(posPlaceholder, activeGame);
+                //     currItem.setUsesLeft(itemList.getJSONObject(i).getInt("durability"));
+                //     break;
+                // case "Shield":
+                //     currItem = new shield(posPlaceholder, activeGame);
+                //     currItem.setUsesLeft(itemList.getJSONObject(i).getInt("durability"));
+                //     break;
             }
-            itemResponses.add(new ItemResponse(currItem.getId(), currItem.getType(), currItem.getPosition(), currItem.isInteractable()));
+            itemResponses.add(new ItemResponse(currItem.getId(), currItem.getType()));
 
             activeGame.addEntity(currItem);
         }
@@ -501,7 +527,7 @@ public class DungeonManiaController {
 
         
         // TODO: update ActiveGame
-        return new DungeonResponse(dungeonId, dungeonName, entityResponse, itemResponses, new ArrayList<String>(), goalString);
+        return new DungeonResponse(dungeonId, dungeonName, entityResponses, itemResponses, new ArrayList<String>(), goalString);
     }
 
     public List<String> allGames() {
