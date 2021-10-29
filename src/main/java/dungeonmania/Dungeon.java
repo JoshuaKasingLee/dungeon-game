@@ -11,10 +11,9 @@ public class Dungeon {
     private String dungeonName;
     private Gamemode gamemode;
     private String dungeonId;
-    private List<Entity> entities;
+    private List<Entity> entities = new ArrayList<Entity>();
     private Inventory inventory;    // subject to change name or class to entity
-    private List<Entity> buildables; // subject to change name or class to entity
-    private List<GoalComponent> simpleGoals;
+    private List<GoalComponent> simpleGoals = new ArrayList<GoalComponent>();
     private GoalComponent overallGoal;
 
     public Dungeon(String dungeonName, String gamemodeString, String dungeonId) {
@@ -38,7 +37,6 @@ public class Dungeon {
     public void addEntity(Entity entity) {
         entities.add(entity);
         conditionalAttach(entity);
-
     }
 
     public void conditionalAttach(Entity entity) {
@@ -85,8 +83,15 @@ public class Dungeon {
     }
 
     public void removeFrom(Position position) {
+        List<Entity> entitiesCopy = new ArrayList<Entity>(entities);
+        for (Entity entity : entitiesCopy) {
+            if (entity.getPosition().equals(position)) {
+                removeEntity(entity);
+            }
+        }
 
-        // TODO:!!!!
+
+
     }
 
     public Player getPlayer() {
@@ -192,5 +197,6 @@ public class Dungeon {
     public void setOverallGoal(GoalComponent overallGoal) {
         this.overallGoal = overallGoal;
     }
+
 
 }
