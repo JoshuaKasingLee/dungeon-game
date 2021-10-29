@@ -35,4 +35,15 @@ public class InvisibleState implements CharacterState {
         return type;
     }
     
+
+    
+    /**
+     * @return int return the timeLeft
+     */
+    public int getTimeLeft() {
+        return timeLeft;
+    }
+
+
+
 }

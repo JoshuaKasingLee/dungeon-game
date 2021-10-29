@@ -37,4 +37,21 @@ public class InvincibleState implements CharacterState {
         return type;
     }
     
+
+   
+   
+    /**
+     * @return int return the timeLeft
+     */
+    public int getTimeLeft() {
+        return timeLeft;
+    }
+
+    /**
+     * @param timeLeft the timeLeft to set
+     */
+    public void setTimeLeft(int timeLeft) {
+        this.timeLeft = timeLeft;
+    }
+
 }
