@@ -6,15 +6,15 @@ import java.util.ArrayList;
 import java.util.List;
 import dungeonmania.exceptions.InvalidActionException;
 
-public class Character extends MovingEntity {
+public class Player extends MovingEntity {
     private Inventory inventory = new Inventory();
     private CharacterState characterState;
     public static final int ORIGINAL_HEALTH = 10;
     public static final int CHARACTER_ATTACK_DAMAGE = 3;
     private List<Mercenary> allies = new ArrayList<Mercenary>();
 
-    public Character(Position position, String id, Dungeon dungeon) {
-        super(position, id, "Character", dungeon);
+    public Player(Position position, Dungeon dungeon) {
+        super(position, dungeon);
         this.setHealth(ORIGINAL_HEALTH);
         this.setAttackDamage(CHARACTER_ATTACK_DAMAGE);
         this.characterState = new StandardState(this);
@@ -89,7 +89,7 @@ public class Character extends MovingEntity {
                     if (e.getHealth() <=0 ) {
                         // check for armour
                         if (e.getArmour() > 0) {
-                            Armour a = new Armour(Integer.toString(inventory.count("Armour")), getDungeon());
+                            Armour a = new Armour(getDungeon());
                             inventory.add(a);
                         }
                         getDungeon().removeFrom(e);
@@ -232,10 +232,10 @@ public class Character extends MovingEntity {
         allies.add(mercenary);
     }
 
-    public static void main(String[] args) {   
+    @Override
+    public String setType() {
+        return "Player";
     }
-
-    
 
 }
 

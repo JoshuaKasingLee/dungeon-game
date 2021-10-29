@@ -1,10 +1,10 @@
 package dungeonmania;
 
 public class StandardState implements CharacterState {
-    private Character character;
+    private Player character;
     private String type;
 
-    public StandardState(Character character) {
+    public StandardState(Player character) {
         this.character = character;
         this.type = "Standard";
     }

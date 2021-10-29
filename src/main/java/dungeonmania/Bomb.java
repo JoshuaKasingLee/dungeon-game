@@ -15,7 +15,7 @@ public class Bomb extends Item {
      * drops bomb in Character's current position
      */
     @Override
-    public void activate(Character character) {
+    public void activate(Player character) {
         super.activate(character);
         // setPosition(character.getPosition());
         getDungeon().addTo(this, character.getPosition());

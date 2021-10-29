@@ -24,7 +24,7 @@ public class Inventory {
      * activates and removes last item of given type from inventory
      * @param type
      */
-    public void use(String type, Character character) {
+    public void use(String type, Player character) {
         Item item = this.getItem(type);
         if (item != null) {
             item.activate(character);
@@ -37,7 +37,7 @@ public class Inventory {
         }
     }
 
-    public boolean useKey(Door door, Character character) {
+    public boolean useKey(Door door, Player character) {
         if (door != null) {
             for (Item i : inventory) {
                 if (i instanceof Key && i.correctKey(door)) {
@@ -70,7 +70,7 @@ public class Inventory {
      * creates a bow and adds to inventory
      * adjusts stock of crafting materials
      */
-    public void craftBow(Character character) {
+    public void craftBow(Player character) {
         if (this.count("Wood") >= 1 && this.count("Arrow") >= 3) {
             this.use("Wood", character);
             this.use("Arrow", character);
@@ -87,7 +87,7 @@ public class Inventory {
      * creates a shield and adds to inventory
      * adjusts stock of crafting materials
      */
-    public void craftShield(Character character) {
+    public void craftShield(Player character) {
         if (this.count("Wood") >= 2) {
             // assume we prioritise using treasure over keys for crafting
             if (this.count("Treasure") >= 1) {

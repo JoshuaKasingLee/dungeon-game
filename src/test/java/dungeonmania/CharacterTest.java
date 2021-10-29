@@ -24,7 +24,7 @@ import dungeonmania.util.Position;
 public class CharacterTest {
     @Test
     public void testValidMovement() {
-        Character character = new Character(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
+        Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
         character.moveUp();
         assertEquals(new Position(0, 1), character.getPosition());
         character.moveDown();
@@ -43,7 +43,7 @@ public class CharacterTest {
 
     @Test
     public void testInvalidMovement() {
-        Character character = new Character(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
+        Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
         Door d = new Door(new Position(1, 0), character.getDungeon(), 1);
         character.moveRight();
         assertEquals(new Position(0, 0), character.getPosition());
@@ -60,7 +60,7 @@ public class CharacterTest {
 
     @Test
     public void testBlockedBoulders() {
-        Character character = new Character(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
+        Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
         Boulder b1 = new Boulder(new Position(0, -1), character.getDungeon());
         ZombieToastSpawner z = new ZombieToastSpawner(new Position(0, -2), character.getDungeon());
         character.moveDown();  // should fail since boulder is blocked
@@ -69,7 +69,7 @@ public class CharacterTest {
 
     @Test
     public void testUnlockDoorMovement() {
-        Character character = new Character(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
+        Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
         Door d = new Door(new Position(1, 0), character.getDungeon(), 1);
         character.moveRight();
         assertEquals(new Position(0, 0), character.getPosition());
@@ -83,7 +83,7 @@ public class CharacterTest {
 
     @Test
     public void pickUpItems() {
-        Character character = new Character(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
+        Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
         Inventory inv = character.getInventory();
         Sword s = new Sword(new Position(0, 1), character.getDungeon());
         assertEquals(Arrays.asList(character, s), character.getDungeon().getAllEntities());
@@ -99,7 +99,7 @@ public class CharacterTest {
 
     @Test
     public void useValidItems() {
-        Character character = new Character(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
+        Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
         Inventory inv = character.getInventory();
         HealthPotion i1 = new HealthPotion(new Position(0, 0), character.getDungeon());
         InvisibilityPotion i2 = new InvisibilityPotion(new Position(0, 0), character.getDungeon());
@@ -118,7 +118,7 @@ public class CharacterTest {
 
     @Test
     public void useInvalidItems() {
-        Character character = new Character(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
+        Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
         Inventory inv = character.getInventory();
         Treasure i1 = new Treasure(new Position(0, 0), character.getDungeon());
         Key i2 = new Key(new Position(0, 0), character.getDungeon(), 1);
@@ -154,7 +154,7 @@ public class CharacterTest {
     public void testStandardBattleSpiderHealth() {
         // tests health score after battle (ignoring deaths)
         // NEED TO FIX - ALSO NEED TO DO FIGHT ENEMIES INSTEAD OF JUST BATTLE
-        Character character = new Character(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
+        Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
         CharacterState state = character.getCharacterState();
         assertEquals(state.getType(), "Standard");
        
@@ -171,7 +171,7 @@ public class CharacterTest {
     public void testStandardBattleZombieHealth() {
         // tests health score after battle (ignoring deaths)
         // NEED TO FIX - ALSO NEED TO DO FIGHT ENEMIES INSTEAD OF JUST BATTLE
-        Character character = new Character(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
+        Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
         CharacterState state = character.getCharacterState();
         assertEquals(state.getType(), "Standard");
 
@@ -192,7 +192,7 @@ public class CharacterTest {
     public void testStandardBattleMercenaryHealth() {
         // tests health score after battle (ignoring deaths)
         // NEED TO FIX - ALSO NEED TO DO FIGHT ENEMIES INSTEAD OF JUST BATTLE
-        Character character = new Character(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
+        Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
         CharacterState state = character.getCharacterState();
         assertEquals(state.getType(), "Standard");
 
@@ -215,11 +215,11 @@ public class CharacterTest {
     public void testStandardBattleSword() {
         // tests health score after battle (ignoring deaths)
         // NEED TO FIX - ALSO NEED TO DO FIGHT ENEMIES INSTEAD OF JUST BATTLE
-        Character character = new Character(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
+        Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
         CharacterState state = character.getCharacterState();
         assertEquals(state.getType(), "Standard");
         Inventory inv = character.getInventory();
-        Sword s = new Sword(new Position(0, 0), "s", character.getDungeon());
+        Sword s = new Sword(new Position(0, 0), character.getDungeon());
         inv.add(s);
 
         // mercenary battle - no armour
@@ -236,11 +236,11 @@ public class CharacterTest {
     public void testStandardBattleBow() {
         // tests health score after battle (ignoring deaths)
         // NEED TO FIX - ALSO NEED TO DO FIGHT ENEMIES INSTEAD OF JUST BATTLE
-        Character character = new Character(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
+        Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
         CharacterState state = character.getCharacterState();
         assertEquals(state.getType(), "Standard");
         Inventory inv = character.getInventory();
-        Bow b = new Bow("i1", character.getDungeon());
+        Bow b = new Bow(character.getDungeon());
         inv.add(b);
 
         // mercenary battle - no armour
@@ -258,11 +258,11 @@ public class CharacterTest {
     public void testStandardBattleArmour() {
         // tests health score after battle (ignoring deaths)
         // NEED TO FIX - ALSO NEED TO DO FIGHT ENEMIES INSTEAD OF JUST BATTLE
-        Character character = new Character(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
+        Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
         CharacterState state = character.getCharacterState();
         assertEquals(state.getType(), "Standard");
         Inventory inv = character.getInventory();
-        Armour a = new Armour("i1", character.getDungeon());
+        Armour a = new Armour(character.getDungeon());
         inv.add(a);
 
         // spider battle
@@ -278,18 +278,18 @@ public class CharacterTest {
     public void testStandardBattleShield() {
         // tests health score after battle (ignoring deaths)
         // NEED TO FIX - ALSO NEED TO DO FIGHT ENEMIES INSTEAD OF JUST BATTLE
-        Character character = new Character(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
+        Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
         CharacterState state = character.getCharacterState();
         assertEquals(state.getType(), "Standard");
         Inventory inv = character.getInventory();
-        Shield s = new Shield("s", character.getDungeon());
+        Shield s = new Shield(character.getDungeon());
         inv.add(s);
 
         // spider battle - shield should protect character health completely
         Spider spider = new Spider(new Position(0, 0), character.getDungeon());
         int expectedEnemyHealth = spider.getHealth() - ((character.getHealth() * character.getAttackDamage()) / 5);
         state.battleEnemy(spider);
-        assertEquals(character.getHealth(), Character.ORIGINAL_HEALTH);
+        assertEquals(character.getHealth(), Player.ORIGINAL_HEALTH);
         assertEquals(spider.getHealth(), expectedEnemyHealth);
     }
 
@@ -298,23 +298,23 @@ public class CharacterTest {
     public void testStandardBattleEquipped() {
         // tests health score after battle (ignoring deaths)
         // NEED TO FIX - ALSO NEED TO DO FIGHT ENEMIES INSTEAD OF JUST BATTLE
-        Character character = new Character(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
+        Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
         CharacterState state = character.getCharacterState();
         assertEquals(state.getType(), "Standard");
         Inventory inv = character.getInventory();
-        Sword sword = new Sword(new Position(0, 0), "sword", character.getDungeon());
+        Sword sword = new Sword(new Position(0, 0), character.getDungeon());
         inv.add(sword);
-        Bow bow = new Bow("bow", character.getDungeon());
+        Bow bow = new Bow(character.getDungeon());
         inv.add(bow);
-        Armour armour = new Armour("armour", character.getDungeon());
+        Armour armour = new Armour(character.getDungeon());
         inv.add(armour);
-        Shield shield = new Shield("shield", character.getDungeon());
+        Shield shield = new Shield(character.getDungeon());
         inv.add(shield);
         
         // spider battle - shows sword priority over bow, and shield over armour
         Spider spider = new Spider(new Position(0, 0), character.getDungeon());
         state.battleEnemy(spider);
-        assertEquals(character.getHealth(), Character.ORIGINAL_HEALTH);
+        assertEquals(character.getHealth(), Player.ORIGINAL_HEALTH);
         assertEquals(spider.getHealth(), 0);
     }
 
@@ -322,7 +322,7 @@ public class CharacterTest {
     public void testMixedStandardBattleHealth() {
         // tests health score after battle (ignoring deaths)
         // NEED TO FIX - ALSO NEED TO DO FIGHT ENEMIES INSTEAD OF JUST BATTLE
-        Character character = new Character(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
+        Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
         CharacterState state = character.getCharacterState();
         assertEquals(state.getType(), "Standard");
 
@@ -365,7 +365,7 @@ public class CharacterTest {
     public void testBattleEnemyArmour() {
         // tests health score after battle (ignoring deaths)
         // NEED TO FIX - ALSO NEED TO DO FIGHT ENEMIES INSTEAD OF JUST BATTLE
-        Character character = new Character(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
+        Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
         CharacterState state = character.getCharacterState();
         assertEquals(state.getType(), "Standard");
 
@@ -399,9 +399,9 @@ public class CharacterTest {
 
     @Test
     public void testInvincibleBattle() {
-        Character character = new Character(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
+        Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
         Inventory inv = character.getInventory();
-        InvincibilityPotion i1 = new InvincibilityPotion(new Position(0, 0), "i1", character.getDungeon());
+        InvincibilityPotion i1 = new InvincibilityPotion(new Position(0, 0), character.getDungeon());
         inv.add(i1);
         character.useItem("InvincibilityPotion");
         CharacterState state = character.getCharacterState();
@@ -410,23 +410,23 @@ public class CharacterTest {
         // character cannot lose health points, enemy health instantly depleted
         Spider spider = new Spider(new Position(0, 0), character.getDungeon());
         state.battleEnemy(spider);
-        assertTrue(character.getHealth() == Character.ORIGINAL_HEALTH);
+        assertTrue(character.getHealth() == Player.ORIGINAL_HEALTH);
         assertTrue(spider.getHealth() == 0);
 
         ZombieToast zombie = new ZombieToast(new Position(0, 0), character.getDungeon());
         state.battleEnemy(zombie);
-        assertTrue(character.getHealth() == Character.ORIGINAL_HEALTH);
+        assertTrue(character.getHealth() == Player.ORIGINAL_HEALTH);
         assertTrue(zombie.getHealth() == 0);
 
         Mercenary merc = new Mercenary(new Position(0, 0), character.getDungeon());
         state.battleEnemy(merc);
-        assertTrue(character.getHealth() == Character.ORIGINAL_HEALTH);
+        assertTrue(character.getHealth() == Player.ORIGINAL_HEALTH);
         assertTrue(merc.getHealth() == 0);
     }
 
     @Test
     public void testInvisibleBattle() {
-        Character character = new Character(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
+        Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
         Inventory inv = character.getInventory();
         InvisibilityPotion i1 = new InvisibilityPotion(new Position(0, 0), character.getDungeon());
         inv.add(i1);
@@ -437,17 +437,17 @@ public class CharacterTest {
         // no health deductions should be made
         Spider spider = new Spider(new Position(0, 0), character.getDungeon());
         state.battleEnemy(spider);
-        assertTrue(character.getHealth() == Character.ORIGINAL_HEALTH);
+        assertTrue(character.getHealth() == Player.ORIGINAL_HEALTH);
         assertTrue(spider.getHealth() == Spider.ORIGINAL_HEALTH);
 
         ZombieToast zombie = new ZombieToast(new Position(0, 0), character.getDungeon());
         state.battleEnemy(zombie);
-        assertTrue(character.getHealth() == Character.ORIGINAL_HEALTH);
+        assertTrue(character.getHealth() == Player.ORIGINAL_HEALTH);
         assertTrue(zombie.getHealth() == ZombieToast.ORIGINAL_HEALTH);
 
         Mercenary merc = new Mercenary(new Position(0, 0), character.getDungeon());
         state.battleEnemy(merc);
-        assertTrue(character.getHealth() == Character.ORIGINAL_HEALTH);
+        assertTrue(character.getHealth() == Player.ORIGINAL_HEALTH);
         assertTrue(merc.getHealth() == Mercenary.ORIGINAL_HEALTH);
     }
 
@@ -455,7 +455,7 @@ public class CharacterTest {
     public void testBattleAlly() {
         // tests health score after battle (ignoring deaths)
         // NEED TO FIX - ALSO NEED TO DO FIGHT ENEMIES INSTEAD OF JUST BATTLE
-        Character character = new Character(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
+        Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
         CharacterState state = character.getCharacterState();
         assertEquals(state.getType(), "Standard");
 
@@ -463,13 +463,13 @@ public class CharacterTest {
         Mercenary merc = new Mercenary(new Position(0, 0), character.getDungeon());
         merc.setAlly(true);
         state.battleEnemy(merc);
-        assertEquals(character.getHealth(), Character.ORIGINAL_HEALTH);
+        assertEquals(character.getHealth(), Player.ORIGINAL_HEALTH);
         assertEquals(merc.getHealth(), Mercenary.ORIGINAL_HEALTH);
     }
 
     @Test
     public void fightEnemies() {
-        Character character = new Character(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
+        Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
         Spider spider = new Spider(new Position(0, 1), character.getDungeon());
         assertEquals(Arrays.asList(character, spider), character.getDungeon().getAllEntities());
         character.moveUp();
@@ -479,7 +479,7 @@ public class CharacterTest {
 
     @Test
     public void fightEnemiesInheritArmour() {
-        Character character = new Character(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
+        Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
         Spider spider = new Spider(new Position(0, 1), character.getDungeon());
         spider.giveArmour(Armour.DURABILITY);
         assertEquals(Arrays.asList(character, spider), character.getDungeon().getAllEntities());
@@ -491,7 +491,7 @@ public class CharacterTest {
 
     @Test
     public void characterDeath() {
-        Character character = new Character(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
+        Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
         character.setHealth(1);
         Mercenary merc = new Mercenary(new Position(0, 1), character.getDungeon());
         assertEquals(Arrays.asList(character, merc), character.getDungeon().getAllEntities());
@@ -502,7 +502,7 @@ public class CharacterTest {
 
     @Test
     public void revivalWithOneRing() {
-        Character character = new Character(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
+        Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
         character.setHealth(1);
         Inventory inv = character.getInventory();
         OneRing ring = new OneRing(new Position(0, 0), character.getDungeon());
@@ -515,12 +515,12 @@ public class CharacterTest {
         // fight should happen, one ring should be used since merc can kill character
         assertEquals(Arrays.asList(character, ring, merc), character.getDungeon().getAllEntities());
         assertEquals(Arrays.asList(), inv.listInventory());
-        assertEquals(Character.ORIGINAL_HEALTH, character.getHealth());
+        assertEquals(Player.ORIGINAL_HEALTH, character.getHealth());
     }
 
     @Test
     public void bribeMercenary() {
-        Character character = new Character(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
+        Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
         Inventory inv = character.getInventory();
         Treasure t1 = new Treasure(new Position(0, 0), character.getDungeon());
         Treasure t2 = new Treasure(new Position(0, 0), character.getDungeon());
@@ -556,7 +556,7 @@ public class CharacterTest {
 
     @Test
     public void bribeMercenaryNoTreasure() {
-        Character character = new Character(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
+        Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
         // no treasure - fail
         Mercenary merc1 = new Mercenary(new Position(0, 1), character.getDungeon());
         assertEquals(false, merc1.isAlly());
@@ -565,7 +565,7 @@ public class CharacterTest {
 
     @Test
     public void destroyZombieToastSpawnerSword() {
-        Character character = new Character(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
+        Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
         Inventory inv = character.getInventory();
         Sword s = new Sword(new Position(0, 1), character.getDungeon());
         inv.add(s); // doesn't remove from dungeon
@@ -588,9 +588,9 @@ public class CharacterTest {
 
     @Test
     public void destroyZombieToastSpawnerBow() {
-        Character character = new Character(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
+        Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
         Inventory inv = character.getInventory();
-        Bow b = new Bow("b", character.getDungeon());
+        Bow b = new Bow(character.getDungeon());
         inv.add(b);
         assertEquals(Arrays.asList("Bow"), inv.listInventory());
 
@@ -603,7 +603,7 @@ public class CharacterTest {
 
     @Test
     public void destroyZombieToastSpawnerAttempt() {
-        Character character = new Character(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
+        Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
         ZombieToastSpawner z = new ZombieToastSpawner(new Position(0, 1), character.getDungeon());
         // no weapon - should fail
         assertThrows(InvalidActionException.class, () -> character.destroySpawner(z));

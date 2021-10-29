@@ -17,7 +17,7 @@ public abstract class Item extends Entity {
         this.usesLeft = 1;
     }
 
-    public void activate(Character character) {
+    public void activate(Player character) {
         this.usesLeft = usesLeft - 1;
     }
 

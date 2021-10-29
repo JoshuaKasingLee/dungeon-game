@@ -12,9 +12,9 @@ public class OneRing extends Item {
      * auto-used when character dies if exists in inventory
      */
     @Override
-    public void activate(Character character) {
+    public void activate(Player character) {
         super.activate(character);
-        character.setHealth(Character.ORIGINAL_HEALTH);
+        character.setHealth(Player.ORIGINAL_HEALTH);
     }
 
     @Override

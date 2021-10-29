@@ -1,13 +1,13 @@
 package dungeonmania;
 
 public class InvisibleState implements CharacterState {
-    private Character character;
+    private Player character;
     private int time;
     private String type;
 
     public static final int INVISIBLE_TIME_LIMIT = 10; // 10 ticks
 
-    public InvisibleState(Character character) {
+    public InvisibleState(Player character) {
         this.character = character;
         this.time = 0;
         this.type = "Invisible";

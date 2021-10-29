@@ -8,7 +8,7 @@ public class InvincibilityPotion extends Item {
     }
 
     @Override
-    public void activate(Character character) {
+    public void activate(Player character) {
         super.activate(character);
         character.setCharacterState(new InvincibleState(character));
     }

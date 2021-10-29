@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Arrays;
 
 import dungeonmania.Inventory;
-import dungeonmania.Character;
+import dungeonmania.Player;
 import dungeonmania.util.Position;
 import dungeonmania.response.models.ItemResponse;
 import dungeonmania.exceptions.InvalidActionException;
@@ -36,7 +36,7 @@ public class InventoryTest {
 
     @Test
     public void useInventoryItems() {
-        Character character = new Character(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
+        Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
         Inventory inv = character.getInventory();
         Treasure i1 = new Treasure(new Position(0, 0), character.getDungeon());
         Key i2 = new Key(new Position(0, 0), character.getDungeon(), 1);
@@ -53,7 +53,7 @@ public class InventoryTest {
 
     @Test
     public void useNonExistentItem() {
-        Character character = new Character(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
+        Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
         Inventory inv = character.getInventory();
         Treasure i1 = new Treasure(new Position(0, 0), character.getDungeon());
         inv.add(i1);
@@ -62,7 +62,7 @@ public class InventoryTest {
 
     @Test
     public void countInventory() {
-        Character character = new Character(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
+        Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
         Inventory inv = character.getInventory();
         Treasure i1 = new Treasure(new Position(0, 0), character.getDungeon());
         Key i2 = new Key(new Position(0, 0), character.getDungeon(), 1);
@@ -82,7 +82,7 @@ public class InventoryTest {
 
     @Test
     public void craftBow() {
-        Character character = new Character(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
+        Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
         Inventory inv = character.getInventory();
         Arrow i1 = new Arrow(new Position(0, 0), character.getDungeon());
         Wood i2 = new Wood(new Position(0, 0), character.getDungeon());
@@ -100,7 +100,7 @@ public class InventoryTest {
 
     @Test
     public void craftBowFail() {
-        Character character = new Character(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
+        Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
         Inventory inv = character.getInventory();
         Arrow i1 = new Arrow(new Position(0, 0), character.getDungeon());
         Wood i2 = new Wood(new Position(0, 0), character.getDungeon());
@@ -111,7 +111,7 @@ public class InventoryTest {
 
     @Test
     public void craftShield() {
-        Character character = new Character(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
+        Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
         Inventory inv = character.getInventory();
         Wood i1 = new Wood(new Position(0, 0), character.getDungeon());
         Wood i2 = new Wood(new Position(0, 0), character.getDungeon());
@@ -127,7 +127,7 @@ public class InventoryTest {
 
     @Test
     public void craftShieldWithKey() {
-        Character character = new Character(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
+        Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
         Inventory inv = character.getInventory();
         Wood i1 = new Wood(new Position(0, 0), character.getDungeon());
         Wood i2 = new Wood(new Position(0, 0), character.getDungeon());
@@ -141,7 +141,7 @@ public class InventoryTest {
 
     @Test
     public void craftShieldFail() {
-        Character character = new Character(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
+        Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
         Inventory inv = character.getInventory();
         Key i1 = new Key(new Position(0, 0), character.getDungeon(), 1);
         inv.add(i1);

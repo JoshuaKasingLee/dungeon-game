@@ -1,13 +1,13 @@
 package dungeonmania;
 
 public class InvincibleState implements CharacterState {
-    private Character character;
+    private Player character;
     private int time;
     private String type;
     public static final int INVINCIBLE_TIME_LIMIT = 10; // 10 ticks
 
 
-    public InvincibleState(Character character) {
+    public InvincibleState(Player character) {
         this.character = character;
         this.time = 0;
         this.type = "Invincible";

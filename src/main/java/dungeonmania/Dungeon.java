@@ -35,6 +35,6 @@ public class Dungeon {
     }
     
     public Entity getPlayer() {
-        return new Character(new Position(0, 0), "String id", this);
+        return new Player(new Position(0, 0), this);
     }
 }
