@@ -10,5 +10,7 @@ public interface GoalComponent {
 
     public abstract JSONObject toJSON();
 
+    public abstract String simpleGoalToString();
+
 }
 

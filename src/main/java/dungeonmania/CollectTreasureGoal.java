@@ -37,5 +37,10 @@ public class CollectTreasureGoal implements GoalComponent, Observer {
         return new JSONObject(goalData);
     }
 
+    @Override
+    public String simpleGoalToString() {
+        return ":treasure ";
+    }
+
 
 }

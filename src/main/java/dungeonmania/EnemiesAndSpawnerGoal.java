@@ -1,6 +1,7 @@
 package dungeonmania;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import org.json.JSONObject;
 
@@ -34,5 +35,10 @@ public class EnemiesAndSpawnerGoal implements GoalComponent, Observer  {
         Map<String, Object> goalData = new HashMap<String, Object>();
         goalData.put("goal", "enemies");
         return new JSONObject(goalData);
+    }
+
+    @Override
+    public String simpleGoalToString() {
+        return ":enemies ";
     }
 }

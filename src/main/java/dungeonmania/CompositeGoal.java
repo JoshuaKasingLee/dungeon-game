@@ -18,6 +18,10 @@ public abstract class CompositeGoal implements GoalComponent, Observer {
         subgoals.remove(subgoal);
     }
 
+    @Override
+    public String simpleGoalToString() {
+        return "";
+    }
     
 
 }

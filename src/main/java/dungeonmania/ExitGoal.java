@@ -40,4 +40,9 @@ public class ExitGoal implements GoalComponent, Observer  {
         return new JSONObject(goalData);
     }
 
+    @Override
+    public String simpleGoalToString() {
+        return ":exit ";
+    }
+
 }

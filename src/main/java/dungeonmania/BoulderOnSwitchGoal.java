@@ -27,7 +27,7 @@ public class BoulderOnSwitchGoal implements GoalComponent, Observer  {
     }
 
     @Override
-    public boolean tryToAttach(Entity entity) {
+    public boolean tryToAttach(Subject entity) {
         if (entity instanceof Switch) {
             entity.attach(this);
             unpressedSwitches++;
@@ -39,5 +39,10 @@ public class BoulderOnSwitchGoal implements GoalComponent, Observer  {
         Map<String, Object> goalData = new HashMap<String, Object>();
         goalData.put("goal", "boulder");
         return new JSONObject(goalData);
+    }
+
+    @Override
+    public String simpleGoalToString() {
+        return ":boulder ";
     }
 }
