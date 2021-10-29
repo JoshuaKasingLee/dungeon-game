@@ -34,4 +34,7 @@ public class Dungeon {
         return new ArrayList<Entity>(); // on dungeon map
     }
     
+    public Entity getPlayer() {
+        return new Character(new Position(0, 0), "String id", this);
+    }
 }
