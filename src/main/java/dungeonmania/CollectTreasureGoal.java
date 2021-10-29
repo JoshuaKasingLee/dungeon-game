@@ -18,7 +18,7 @@ public class CollectTreasureGoal implements GoalComponent, Observer {
     }
 
     @Override
-    public boolean tryToAttach(Subject entity) {
+    public void tryToAttach(Subject entity) {
         if (entity instanceof Treasure) {
             entity.attach(this);
             numUncollected++;

@@ -24,8 +24,7 @@ public abstract class CompositeGoal implements GoalComponent {
     }
 
     @Override
-    public boolean tryToAttach(Subject entity) {
-        return false;
+    public void tryToAttach(Subject entity) {
     }
 
 

@@ -1,8 +1,6 @@
 package dungeonmania;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.json.JSONObject;
@@ -29,7 +27,7 @@ public class BoulderOnSwitchGoal implements GoalComponent, Observer  {
     }
 
     @Override
-    public boolean tryToAttach(Subject entity) {
+    public void tryToAttach(Subject entity) {
         if (entity instanceof Switch) {
             entity.attach(this);
             unpressedSwitches++;

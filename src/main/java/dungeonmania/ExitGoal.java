@@ -17,7 +17,7 @@ public class ExitGoal implements GoalComponent, Observer  {
     }
 
     @Override
-    public boolean tryToAttach(Subject entity) {
+    public void tryToAttach(Subject entity) {
         if (entity instanceof Exit) {
             entity.attach(this);
         }
