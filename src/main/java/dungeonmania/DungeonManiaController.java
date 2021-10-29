@@ -66,23 +66,22 @@ public class DungeonManiaController {
 
     public DungeonResponse newGame(String dungeonName, String gameMode) throws IllegalArgumentException {
     
-        // if (!dungeons().contains(dungeonName)) {
-        //     throw new IllegalArgumentException("Invalid dungeonName");
-        // }
+        if (!dungeons().contains(dungeonName)) {
+            throw new IllegalArgumentException("Invalid dungeonName");
+        }
         if (!getGameModes().contains(gameMode)) {
             throw new IllegalArgumentException();
         }
         String fileContents = null;
         
         try {
-            String fileContentsOutput = FileLoader.loadResourceFile("/dungeons/" + dungeonName + ".json");
-            fileContents = fileContentsOutput;
+            fileContents = FileLoader.loadResourceFile("/dungeons/" + dungeonName + ".json");
         } catch(IOException e) {
-            throw new IllegalArgumentException("Invalid dungeonName");
+            System.out.println("YOOOOOOOO YOU DIDN'T LOAD A FILE BRUV");
         }
         String dungeonId = newDungeonId();
 
-        // TODO: Make the Dungeon Class
+        // Make the Dungeon Class
         activeGame = new Dungeon(dungeonName, gameMode, dungeonId);
 
         
@@ -101,7 +100,7 @@ public class DungeonManiaController {
             Position currPosition = new Position(entityList.getJSONObject(i).getInt("x"), entityList.getJSONObject(i).getInt("y"));
 
 
-            // TODO: Create entities based on type in JSON File using a bunch of if statements
+            // Create entities based on type in JSON File using a bunch of if statements
             //create entity object and add it into activegame
             Entity currEntity = null;
             int key;
@@ -203,10 +202,10 @@ public class DungeonManiaController {
 
 
         // do we even need to test for invalid save name? you can always save?
-        // if (allGames().contains(name)) {
-        //     throw new IllegalArgumentException("Invalid saveName");
-        // }
-        // TODO: save activeGame as a JSON and solve it
+        if (allGames().contains(name)) {
+            throw new IllegalArgumentException("Invalid saveName");
+        }
+        // save activeGame as a JSON and solve it
 
         
         List<Entity> entities = activeGame.getEntities();
@@ -250,9 +249,21 @@ public class DungeonManiaController {
                     break;       
                 case "Mercenary":
                     entityData.put("totalArmour", ((Mercenary)currEntity).getArmour());
+                    entityData.put("ally", ((Mercenary)currEntity).isAlly());
                     break; 
                 case "Player":
+                    CharacterState characterState = ((Player)currEntity).getCharacterState();
+                    String stateType = characterState.getType();
                     entityData.put("health", ((Player)currEntity).getHealth());
+                    entityData.put("characterState", stateType);
+                    if (stateType.equals("Invincible")) {
+                        entityData.put("timeLeft", ((InvincibleState)characterState).getTimeLeft());
+                    } else if (stateType.equals("Invisibile")) {
+                        entityData.put("timeLeft", ((InvisibleState)characterState).getTimeLeft());
+                    }
+                    break;
+                case "ZombieToastSpawner":
+                    entityData.put("counter", ((ZombieToastSpawner)currEntity).getCounter());
                     break;
             }
 
@@ -337,9 +348,9 @@ public class DungeonManiaController {
             }
         }
 
-        // TODO: BUILDABLES!!!
+        List<String> buildables = activeGame.getInventory().getBuildables();
         
-        return new DungeonResponse(dungeonId, dungeonName, entityResponses, itemResponses, new ArrayList<String>(), goalString);
+        return new DungeonResponse(dungeonId, dungeonName, entityResponses, itemResponses, buildables, goalString);
     }
 
     public DungeonResponse loadGame(String name) throws IllegalArgumentException {
@@ -347,8 +358,15 @@ public class DungeonManiaController {
             throw new IllegalArgumentException("Invalid saveName");
         }
 
-        String fileContentsOutput = FileLoader.loadResourceFile("/saveFiles/" + name + ".json");
-        JSONObject dungeonObj = new JSONObject(fileContentsOutput);
+        //TODO: Load Mercenary List in player
+
+        String fileContents;
+        try {
+            fileContents = FileLoader.loadResourceFile("/saveFiles/" + name + ".json");
+        } catch (IOException e) {
+            return null;
+        }
+        JSONObject dungeonObj = new JSONObject(fileContents);
 
 
 
@@ -368,9 +386,11 @@ public class DungeonManiaController {
 
             // TODO: Create entities based on type in JSON File using a bunch of if statements
             //create entity object and add it into activegame
-            Entity currEntity;
+            Entity currEntity = null;
             int key;
             String colour;
+            int durability;
+
 
             Position currPosition = new Position(entityList.getJSONObject(i).getInt("x"), entityList.getJSONObject(i).getInt("y"));
 
@@ -396,7 +416,7 @@ public class DungeonManiaController {
                     currEntity = new Portal(currPosition, activeGame, colour);
                     break;
                 case "Zombie_toast_spawner":
-                    currEntity = new ZombieToastSpawner(currPosition, activeGame);
+                    currEntity = new ZombieToastSpawner(currPosition, activeGame, entityList.getJSONObject(i).getInt("counter"));
                     break;
                 case "One_ring":
                     currEntity = new OneRing(currPosition, activeGame);
@@ -405,10 +425,12 @@ public class DungeonManiaController {
                     currEntity = new Spider(currPosition, activeGame);
                     break;
                 case "Zombie_toast":
-                    currEntity = new ZombieToast(currPosition, activeGame);
+                    currEntity = new ZombieToast(currPosition, activeGame, entityList.getJSONObject(i).getInt("totalArmour"));
                     break;
                 case "Mercenary":
-                    currEntity = new Mercenary(currPosition, activeGame);
+                    durability = entityList.getJSONObject(i).getInt("totalArmour");
+                    boolean isAlly = entityList.getJSONObject(i).getBoolean("Ally");
+                    currEntity = new Mercenary(currPosition, activeGame, durability, isAlly);
                     break;
                 case "Treasure":
                     currEntity = new Treasure(currPosition, activeGame);
@@ -448,8 +470,7 @@ public class DungeonManiaController {
                     currEntity = new Shield(activeGame);
                     break;
                 case "Player":
-                    currEntity = new Player(currPosition, activeGame);
-                    currEntity.setHealth(entityList.getJSONObject(i).getInt("health"));
+                    currEntity = new Player(currPosition, activeGame, entityList.getJSONObject(i).getInt("health"));
                     break;
             }
             entityResponses.add(new EntityResponse(currEntity.getId(), currEntity.getType(), currEntity.getPosition(), currEntity.isInteractable()));
@@ -462,10 +483,10 @@ public class DungeonManiaController {
         
         for (int i = 0; i < itemList.length(); i++) {
             String itemType = itemList.getJSONObject(i).getString("type");
-
+            
             // TODO: Create entities based on type in JSON File using a bunch of if statements
             //create entity object and add it into activegame
-            Item currItem;
+            Item currItem = null;
             int key;
             Position posPlaceholder = new Position(-1, -1);
             switch (itemType) {
@@ -524,10 +545,10 @@ public class DungeonManiaController {
         GoalComponent overallGoal = extractAllGoals(goalCondition, activeGame, goalString);
         activeGame.setOverallGoal(overallGoal); 
 
-
+        List<String> buildables = activeGame.getInventory().getBuildables();
         
         // TODO: update ActiveGame
-        return new DungeonResponse(dungeonId, dungeonName, entityResponses, itemResponses, new ArrayList<String>(), goalString);
+        return new DungeonResponse(dungeonId, dungeonName, entityResponses, itemResponses, buildables, goalString);
     }
 
     public List<String> allGames() {
@@ -539,11 +560,82 @@ public class DungeonManiaController {
     }
 
     public DungeonResponse tick(String itemUsed, Direction movementDirection) throws IllegalArgumentException, InvalidActionException {
-        return null;
+        //  Move character and all moving entities.
+        
+        // check for errors for each
+        List<Item> items = activeGame.getInventory().getInventoryList();
+        Player player = activeGame.getPlayer();
+        
+        // potion statechange??
+        switch (itemUsed) {
+            case "invincibility_potion":
+                InvincibleState invincibleState = new InvincibleState(player);
+                activeGame.getPlayer().setCharacterState(invincibleState);
+                break;
+            case "invisibility_potion":
+                InvisibleState invisibleState = new InvisibleState(player);
+                activeGame.getPlayer().setCharacterState(invisibleState);
+                break;
+            case "health_potion":
+                for (Item item : items) {
+                    if (item instanceof HealthPotion) {
+                        ((HealthPotion) item).activate(player);
+                    }
+                }
+                break;
+            case "bomb":
+                for (Item item : items) {
+                    if (item instanceof Bomb) {
+                        ((Bomb) item).explode();
+                    }
+                }
+                break;
+            case "null":
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid item used");
+            
+        }
+        
+
+
+        List<Entity> entities = activeGame.getEntities();
+        List<EntityResponse> entityResponses = new ArrayList<EntityResponse>();
+        for (Entity entity : entities) {
+            if (entity instanceof Player) {
+                ((Player) entity).move(movementDirection); 
+            } else if (entity instanceof Enemy) {
+                ((Enemy) entity).updatePosition(); 
+            } else if (entity instanceof StaticEntity){
+                // CHECK THIS: e.g. when boulder is blocked
+                ((StaticEntity) entity).update(movementDirection);
+            }
+            entityResponses.add(new EntityResponse(entity.getId(), entity.getType(), entity.getPosition(), entity.isInteractable()));
+        }
+
+        List<ItemResponse> itemResponses = new ArrayList<ItemResponse>();
+        for (Item item : items) {
+            itemResponses.add(new ItemResponse(item.getId(), item.getType()));
+        }
+
+        String goalString = "";
+
+        for (GoalComponent simpleGoal : activeGame.getSimpleGoals()) {
+            String simpleGoalString = simpleGoal.simpleGoalToString();
+            if (!goalString.contains(simpleGoalString)) {
+                goalString += simpleGoal.simpleGoalToString();
+            }
+        }
+
+        List<String> buildables = activeGame.getInventory().getBuildables();
+        
+        return new DungeonResponse(activeGame.getDungeonId(), activeGame.getDungeonName(), entityResponses, itemResponses, buildables, goalString);
     }
 
     public DungeonResponse interact(String entityId) throws IllegalArgumentException, InvalidActionException {
+  
         return null;
+
     }
 
     public DungeonResponse build(String buildable) throws IllegalArgumentException, InvalidActionException {
