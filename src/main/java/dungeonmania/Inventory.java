@@ -77,10 +77,25 @@ public class Inventory {
             this.use("Arrow", character);
             this.use("Arrow", character); // NEED TO FIX
             // bow id is given by count of bows in inventory (ok since last item is always used, so won't have double ups)
-            this.add(new Bow(character.getDungeon())); 
+            this.add(new Bow(character.getDungeon()));
         } else {
             throw new InvalidActionException("Insufficient crafting material for Bow");
         }
+    }
+
+    public List<String> getBuildables() {
+        List<String> buildables = new ArrayList<>();
+        if (count("Wood") >= 1 && count("Arrow") >= 3) {
+            buildables.add("Bow");
+        }
+        if (count("Wood") >= 2) {
+            if (count("Treasure") >= 1) {
+                buildables.add("Shield");
+            } else if (this.count("Key") >= 1) {
+                buildables.add("Shield");
+            }
+        }
+        return buildables;
     }
 
     /** 
@@ -150,5 +165,13 @@ public class Inventory {
     }
 
 
+
+
+    /**
+     * @param inventory the inventory to set
+     */
+    public void setInventory(List<Item> inventory) {
+        this.inventory = inventory;
+    }
 
 }
