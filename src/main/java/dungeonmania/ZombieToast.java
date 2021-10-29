@@ -8,8 +8,8 @@ public class ZombieToast extends Enemy {
     public static final int ORIGINAL_HEALTH = 7;
     public static final int ZOMBIE_TOAST_ATTACK_DAMAGE = 3;
 
-    public ZombieToast(Position position, String id, Dungeon dungeon) {
-        super(position, id, "Zombie", dungeon);
+    public ZombieToast(Position position, Dungeon dungeon) {
+        super(position, dungeon);
         this.setHealth(ORIGINAL_HEALTH);
         this.setAttackDamage(ZOMBIE_TOAST_ATTACK_DAMAGE);
         this.setArmour(25); // assume zombie has 25% chance spawning with armour
@@ -28,5 +28,10 @@ public class ZombieToast extends Enemy {
         } else if (randN % 4 == 3) {
             moveRight();
         }
+    }
+
+    @Override
+    public String setType() {
+        return "ZombieToast";
     }
 }

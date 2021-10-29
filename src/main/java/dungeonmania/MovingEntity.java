@@ -7,8 +7,8 @@ public abstract class MovingEntity extends Entity {
     private int health;
     private int attackDamage;
 
-    public MovingEntity(Position position, String id, String type, Dungeon dungeon) {
-        super(position, id, type, dungeon);
+    public MovingEntity(Position position, Dungeon dungeon) {
+        super(position, dungeon);
         this.health = 0;
         this.attackDamage = 0;
     }

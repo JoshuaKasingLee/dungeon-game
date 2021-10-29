@@ -7,8 +7,8 @@ import dungeonmania.util.Position;
 public class Bomb extends Item {
     public final static int BLAST_RADIUS = 3;
 
-    public Bomb (Position position, String id, Dungeon dungeon) {
-        super(position, id, "Bomb", dungeon);
+    public Bomb (Position position, Dungeon dungeon) {
+        super(position, dungeon);
     }
 
     /**
@@ -57,11 +57,8 @@ public class Bomb extends Item {
         return (int) Math.ceil(Math.sqrt(squaredDist));
     }
 
-    public static void main(String[] args) {   
-        List<Position> blastRadiusPositions = blastRadiusPositions(new Position(0,0));
-        for (Position p : blastRadiusPositions) {
-            System.out.println(p.toString());
-        }
+    @Override
+    public String setType() {
+        return "Bomb";
     }
-
 }

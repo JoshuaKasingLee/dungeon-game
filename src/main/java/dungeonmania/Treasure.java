@@ -4,8 +4,12 @@ import dungeonmania.util.Position;
 
 public class Treasure extends Item {
 
-    public Treasure (Position position, String id, Dungeon dungeon) {
-        super(position, id, "Treasure", dungeon);
+    public Treasure (Position position, Dungeon dungeon) {
+        super(position, dungeon);
     }
-    
+ 
+    @Override
+    public String setType() {
+        return "Treasure";
+    }
 }

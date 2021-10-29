@@ -4,8 +4,8 @@ import dungeonmania.util.Position;
 
 public class Wall extends Entity {
 
-    public Wall(Position position, String id, Dungeon dungeon) {
-        super(position, id, "Wall", dungeon);
+    public Wall(Position position, Dungeon dungeon) {
+        super(position, dungeon);
     }
     
 }

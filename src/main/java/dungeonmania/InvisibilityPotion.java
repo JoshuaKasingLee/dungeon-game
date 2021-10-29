@@ -4,8 +4,8 @@ import dungeonmania.util.Position;
 
 public class InvisibilityPotion extends Item {
 
-    public InvisibilityPotion (Position position, String id, Dungeon dungeon) {
-        super(position, id, "InvisibilityPotion", dungeon);
+    public InvisibilityPotion (Position position, Dungeon dungeon) {
+        super(position, dungeon);
     }
 
     @Override
@@ -14,4 +14,8 @@ public class InvisibilityPotion extends Item {
         character.setCharacterState(new InvisibleState(character));
     }
     
+    @Override
+    public String setType() {
+        return "InvisibilityPotion";
+    }
 }

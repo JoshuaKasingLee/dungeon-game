@@ -24,7 +24,7 @@ public class Spider extends Enemy {
     private ArrayList<Position> adjacentPositions;
 
     public Spider(Position position, Dungeon dungeon) {
-        super(position, id, "Spider", dungeon);
+        super(position, dungeon);
         this.setHealth(ORIGINAL_HEALTH);
         this.setAttackDamage(SPIDER_ATTACK_DAMAGE);
         this.startingPosition = position;
@@ -96,5 +96,10 @@ public class Spider extends Enemy {
             }
         }
         return false;
+    }
+
+    @Override
+    public String setType() {
+        return "Spider";
     }
 }

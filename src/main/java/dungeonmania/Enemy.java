@@ -8,8 +8,8 @@ public abstract class Enemy extends MovingEntity {
     private boolean ally;
     private int armour; // num hits left
 
-    public Enemy(Position position, String id, String type, Dungeon dungeon) {
-        super(position, id, type, dungeon);
+    public Enemy(Position position, Dungeon dungeon) {
+        super(position, dungeon);
         this.ally = false;
         this.armour = 0;
     }

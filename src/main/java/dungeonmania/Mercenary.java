@@ -75,4 +75,9 @@ public class Mercenary extends Enemy {
         }
         return distanceOfPositions;
     }
+
+    @Override
+    public String setType() {
+        return "Mercenary";
+    }
 }

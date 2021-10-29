@@ -6,9 +6,13 @@ public class Armour extends Item {
 
     // assume armour can ONLY be collected from enemies -> important for id naming
 
-    public Armour(String id, Dungeon dungeon) {
-        super(null, id, "Armour", dungeon);
+    public Armour(Dungeon dungeon) {
+        super(null, dungeon);
         this.setUsesLeft(DURABILITY);
     }
 
+    @Override
+    public String setType() {
+        return "Armour";
+    }
 }

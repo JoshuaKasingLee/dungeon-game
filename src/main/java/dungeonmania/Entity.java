@@ -9,10 +9,9 @@ public abstract class Entity {
     private Dungeon dungeon;
     private boolean isInteractable;
 
-    public Entity(Position position, String id, String type, Dungeon dungeon) {
+    public Entity(Position position, Dungeon dungeon) {
         this.position = position;
-        this.id = id;
-        this.type = type;
+        this.type = setType();
         this.dungeon = dungeon;
         this.isInteractable = false;
     }
@@ -55,9 +54,7 @@ public abstract class Entity {
     /**
      * @param type the type to set
      */
-    public void setType(String type) {
-        this.type = type;
-    }
+    public abstract String setType();
 
     /**
      * @return Dungeon return the dungeon

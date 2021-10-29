@@ -12,8 +12,8 @@ import dungeonmania.util.Position;
 public abstract class Item extends Entity {
     private int usesLeft;
 
-    public Item(Position position, String id, String type, Dungeon dungeon) {
-        super(position, id, type, dungeon);
+    public Item(Position position, Dungeon dungeon) {
+        super(position, dungeon);
         this.usesLeft = 1;
     }
 

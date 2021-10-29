@@ -5,8 +5,8 @@ import dungeonmania.util.Position;
 public class Key extends Item {
     private int key;
 
-    public Key (Position position, String id, Dungeon dungeon, int key) {
-        super(position, id, "Key", dungeon);
+    public Key (Position position, Dungeon dungeon, int key) {
+        super(position, dungeon);
         this.key = key;
     }
 
@@ -25,4 +25,8 @@ public class Key extends Item {
         return key;
     }
 
+    @Override
+    public String setType() {
+        return "Key";
+    }
 }
