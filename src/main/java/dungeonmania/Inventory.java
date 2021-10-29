@@ -139,7 +139,16 @@ public class Inventory {
     }
 
 
-    public static void main(String[] args) {
+    
+
+
+    /**
+     * @return List<Item> return the inventory
+     */
+    public List<Item> getInventoryList() {
+        return inventory;
     }
+
+
 
 }
