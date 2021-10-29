@@ -2,14 +2,20 @@ package dungeonmania;
 
 public class InvincibleState implements CharacterState {
     private Player character;
-    private int time;
     private String type;
+    private int timeLeft;
     public static final int INVINCIBLE_TIME_LIMIT = 10; // 10 ticks
 
 
     public InvincibleState(Player character) {
         this.character = character;
-        this.time = 0;
+        this.timeLeft = INVINCIBLE_TIME_LIMIT;
+        this.type = "Invincible";
+    }
+
+    public InvincibleState(Player character, int timeLeft) {
+        this.character = character;
+        this.timeLeft = timeLeft;
         this.type = "Invincible";
     }
 
@@ -21,8 +27,8 @@ public class InvincibleState implements CharacterState {
     }
 
     public void updateState() {
-        this.time = time + 1;
-        if (time >= INVINCIBLE_TIME_LIMIT) {
+        timeLeft--;
+        if (timeLeft <= 0) {
             character.setCharacterState(new StandardState(character));
         }
     }
