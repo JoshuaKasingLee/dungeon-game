@@ -27,8 +27,12 @@ public abstract class Enemy extends MovingEntity {
     }
 
 
+    public void setDurability(int durability) {
+        armour = durability;  
+    }
+
     public boolean isAlly() {
-        return this.ally;
+        return ally;
     }
 
     /**
@@ -39,7 +43,7 @@ public abstract class Enemy extends MovingEntity {
     }
 
     public int getArmour() {
-        return this.armour;
+        return armour;
     }
     
     /** 
