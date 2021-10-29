@@ -61,4 +61,19 @@ public class ZombieToastSpawner extends StaticEntity {
         getDungeon().addEntity(new ZombieToast(position, getDungeon()));
     }
 
+
+    /**
+     * @return int return the counter
+     */
+    public int getCounter() {
+        return counter;
+    }
+
+    /**
+     * @param counter the counter to set
+     */
+    public void setCounter(int counter) {
+        this.counter = counter;
+    }
+
 }
