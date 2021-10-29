@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.response.models.ItemResponse;
+import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 
 import java.lang.IllegalArgumentException;
@@ -25,10 +26,10 @@ public class DungeonManiaControllerTest {
         DungeonManiaController controller = new DungeonManiaController();
 
         DungeonResponse dungeonInfo = controller.newGame("maze", "Peaceful");
-        assertEquals(dungeonInfo.getDungeonName(), "maze");
-        assertEquals(dungeonInfo.getGoals(), "exit");
-        assertEquals(dungeonInfo.getInventory(), new ArrayList<>());
-        assertEquals(dungeonInfo.getBuildables(), new ArrayList<>());
+        assertEquals("maze", dungeonInfo.getDungeonName());
+        assertEquals("exit", dungeonInfo.getGoals());
+        assertEquals(new ArrayList<>(), dungeonInfo.getInventory());
+        assertEquals(new ArrayList<>(), dungeonInfo.getBuildables());
        // need one for entities and dungeonID too
     }
 
@@ -54,23 +55,33 @@ public class DungeonManiaControllerTest {
 
         DungeonManiaController controller = new DungeonManiaController();
 
-        assertDoesNotThrow(() -> controller.newGame("advanced", "Standard"));
+        assertDoesNotThrow(() -> controller.newGame("maze", "Standard"));
 
     }
 
     @Test
     public void testNewGameDungeonResponse() {
         DungeonManiaController controller = new DungeonManiaController();
-        assertDoesNotThrow(() -> controller.newGame("boulderGoalTester", "Standard"));
+        DungeonResponse dungeonInfo;
+        assertDoesNotThrow(() -> controller.newGame("simple", "Standard"));
+        dungeonInfo = controller.newGame("simple", "Standard");
+        assertEquals("1", dungeonInfo.getDungeonId());
+        assertEquals("simple", dungeonInfo.getDungeonName());
+        // List<EntityResponse> expEntityResponses = new ArrayList<EntityResponse>();
+        EntityResponse playerResponse = new EntityResponse("1", "Player", new Position(1, 2), false);
+        // expEntityResponses.add(playerResponse);
+        // List<EntityResponse> entityResponseList = new ArrayList<>(Arrays.asList(playerResponse, boulderResponse, switchResponse));
+        assertEquals(playerResponse.getType(), dungeonInfo.getEntities().get(0).getType());
+        assertEquals(playerResponse.getPosition(), dungeonInfo.getEntities().get(0).getPosition());
+        assertEquals(playerResponse.getId(), dungeonInfo.getEntities().get(0).getId());
+        assertEquals(playerResponse.isInteractable(), dungeonInfo.getEntities().get(0).isInteractable());
+        // assertEquals(playerResponse, dungeonInfo.getEntities().get(0));
 
-        EntityResponse playerResponse = new EntityResponse("0", "player", new Position(1, 2), false);
-        EntityResponse boulderResponse = new EntityResponse("1", "boulder", new Position(1, 1), false);
-        EntityResponse switchResponse = new EntityResponse("2", "switch", new Position(1, 0), false);
+        
 
-        List<EntityResponse> entityResponseList = new ArrayList<>(Arrays.asList(playerResponse, boulderResponse, switchResponse));
-        List<ItemResponse> inventoryList = new ArrayList<>();
-        List<String> buildablesList = new ArrayList<>();
-        assertEquals(new DungeonResponse("0", "boulderGoalTester", entityResponseList, inventoryList, buildablesList, ":boulders "), controller.newGame("boulderGoalTester", "Standard"));
+        // List<ItemResponse> inventoryList = new ArrayList<>();
+        // List<String> buildablesList = new ArrayList<>();
+        // assertEquals(new DungeonResponse("0", "boulderGoalTester", entityResponseList, inventoryList, buildablesList, ":boulders "), dungeonInfo);
     }
 
     @Test
@@ -153,20 +164,20 @@ public class DungeonManiaControllerTest {
         assertEquals(new DungeonResponse("0", "boulderGoalTester", entityResponseList, inventoryList, buildablesList, ":boulders "), controller.newGame("boulderGoalTester", "Standard"));
     }
 
-    public void tickHealthPotion() {
-        DungeonManiaController controller = new DungeonManiaController();
-        assertDoesNotThrow(() -> controller.newGame("boulderGoalTester", "Standard"));
-        assertDoesNotThrow(() -> controller.tick(, Direction.UP));
+    // public void tickHealthPotion() {
+    //     DungeonManiaController controller = new DungeonManiaController();
+    //     assertDoesNotThrow(() -> controller.newGame("boulderGoalTester", "Standard"));
+    //     assertDoesNotThrow(() -> controller.tick(null , Direction.UP));
 
-        EntityResponse playerResponse = new EntityResponse("0", "player", new Position(1, 3), false);
-        EntityResponse boulderResponse = new EntityResponse("1", "boulder", new Position(1, 1), false);
-        EntityResponse switchResponse = new EntityResponse("2", "switch", new Position(1, 0), false);
+    //     EntityResponse playerResponse = new EntityResponse("0", "player", new Position(1, 3), false);
+    //     EntityResponse boulderResponse = new EntityResponse("1", "boulder", new Position(1, 1), false);
+    //     EntityResponse switchResponse = new EntityResponse("2", "switch", new Position(1, 0), false);
 
-        List<EntityResponse> entityResponseList = new ArrayList<>(Arrays.asList(playerResponse, boulderResponse, switchResponse));
-        List<ItemResponse> inventoryList = new ArrayList<>();
-        List<String> buildablesList = new ArrayList<>();
-        assertEquals(new DungeonResponse("0", "boulderGoalTester", entityResponseList, inventoryList, buildablesList, ":boulders "), controller.newGame("boulderGoalTester", "Standard"));
-    }
+    //     List<EntityResponse> entityResponseList = new ArrayList<>(Arrays.asList(playerResponse, boulderResponse, switchResponse));
+    //     List<ItemResponse> inventoryList = new ArrayList<>();
+    //     List<String> buildablesList = new ArrayList<>();
+    //     assertEquals(new DungeonResponse("0", "boulderGoalTester", entityResponseList, inventoryList, buildablesList, ":boulders "), controller.newGame("boulderGoalTester", "Standard"));
+    // }
     
 
 
