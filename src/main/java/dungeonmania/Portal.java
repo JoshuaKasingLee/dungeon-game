@@ -59,4 +59,6 @@ public class Portal extends StaticEntity {
     public String getPortalColour() {
         return this.colour;
     }
+
+
 }
