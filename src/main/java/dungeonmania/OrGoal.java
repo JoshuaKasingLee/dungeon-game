@@ -1,17 +1,11 @@
 package dungeonmania;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class OrGoal extends CompositeGoal{
-    private List<GoalComponent> subgoals;
-    public OrGoal() {
-        this.subgoals = new ArrayList<GoalComponent>();
-    }
 
     @Override
     public boolean isComplete() {
