@@ -14,6 +14,9 @@ public class Mercenary extends Enemy {
         setIsInteractable(true);
     }
 
+    public void attackEnemy(Enemy enemy) {
+    }
+
     public void updatePosition() {   
     }
     

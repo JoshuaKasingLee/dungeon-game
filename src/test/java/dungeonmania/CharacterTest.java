@@ -551,6 +551,7 @@ public class CharacterTest {
         character.bribe(merc2);
         assertEquals(true, merc2.isAlly());
         assertEquals(Arrays.asList(), inv.listInventory());
+        assertEquals(Arrays.asList(merc1, merc2), character.getAllies());
     }
 
     @Test
