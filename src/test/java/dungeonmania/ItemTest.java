@@ -24,11 +24,11 @@ import dungeonmania.util.Position;
 public class ItemTest {
     @Test
     public void useInactiveItems() {
-        Character character = new Character(new Position(0, 0), "Kelly", new Dungeon("Dungeon", "Standard", "1"));
+        Character character = new Character(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
         Inventory inv = character.getInventory();
-        Treasure i1 = new Treasure(new Position(0, 0), "i1", character.getDungeon());
-        Wood i2 = new Wood(new Position(0, 0), "i2", character.getDungeon());
-        Arrow i3 = new Arrow(new Position(0, 0), "i3", character.getDungeon());
+        Treasure i1 = new Treasure(new Position(0, 0), character.getDungeon());
+        Wood i2 = new Wood(new Position(0, 0), character.getDungeon());
+        Arrow i3 = new Arrow(new Position(0, 0), character.getDungeon());
         inv.add(i1);
         inv.add(i2);
         inv.add(i3);
@@ -41,10 +41,10 @@ public class ItemTest {
 
     @Test
     public void useNonExistentItems() {
-        Character character = new Character(new Position(0, 0), "Kelly", new Dungeon("Dungeon", "Standard", "1"));
+        Character character = new Character(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
         Inventory inv = character.getInventory();
-        Treasure i1 = new Treasure(new Position(0, 0), "i1", character.getDungeon());
-        Wood i2 = new Wood(new Position(0, 0), "i2", character.getDungeon());
+        Treasure i1 = new Treasure(new Position(0, 0), character.getDungeon());
+        Wood i2 = new Wood(new Position(0, 0), character.getDungeon());
         inv.add(i1);
         inv.add(i2);
         assertThrows(InvalidActionException.class, () -> inv.use("Arrow", character));
@@ -52,10 +52,10 @@ public class ItemTest {
     
     @Test
     public void testHealthPotion() {
-        Character character = new Character(new Position(0, 0), "Kelly", new Dungeon("Dungeon", "Standard", "1"));
+        Character character = new Character(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
         assertEquals(Character.ORIGINAL_HEALTH, character.getHealth());
         Inventory inv = character.getInventory();
-        HealthPotion potion = new HealthPotion(new Position(0, 0), "i1", character.getDungeon());
+        HealthPotion potion = new HealthPotion(new Position(0, 0), character.getDungeon());
         inv.add(potion);
         character.setHealth(2);
         assertEquals(2, character.getHealth());
@@ -65,10 +65,10 @@ public class ItemTest {
 
     @Test
     public void useInvisibilityPotion() {
-        Character character = new Character(new Position(0, 0), "Kelly", new Dungeon("Dungeon", "Standard", "1"));
+        Character character = new Character(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
         assertEquals(Character.ORIGINAL_HEALTH, character.getHealth());
         Inventory inv = character.getInventory();
-        InvisibilityPotion i = new InvisibilityPotion(new Position(0, 0), "i1", character.getDungeon());
+        InvisibilityPotion i = new InvisibilityPotion(new Position(0, 0), character.getDungeon());
         inv.add(i);
         assertEquals("Standard", character.getCharacterState().getType());
         inv.use("InvisibilityPotion", character);
@@ -78,10 +78,10 @@ public class ItemTest {
 
     @Test
     public void useInvincibilityPotion() {
-        Character character = new Character(new Position(0, 0), "Kelly", new Dungeon("Dungeon", "Standard", "1"));
+        Character character = new Character(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
         assertEquals(Character.ORIGINAL_HEALTH, character.getHealth());
         Inventory inv = character.getInventory();
-        InvincibilityPotion i = new InvincibilityPotion(new Position(0, 0), "i1", character.getDungeon());
+        InvincibilityPotion i = new InvincibilityPotion(new Position(0, 0), character.getDungeon());
         inv.add(i);
         assertEquals("Standard", character.getCharacterState().getType());
         inv.use("InvincibilityPotion", character);
@@ -92,9 +92,9 @@ public class ItemTest {
 
     @Test
     public void testArmourLongevity() {
-        Character character = new Character(new Position(0, 0), "Kelly", new Dungeon("Dungeon", "Standard", "1"));
+        Character character = new Character(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
         Inventory inv = character.getInventory();
-        Armour a = new Armour("i1", character.getDungeon());
+        Armour a = new Armour(character.getDungeon());
         inv.add(a);
         inv.use("Armour", character);
         assertEquals(Arrays.asList("Armour"), inv.listInventory());
@@ -105,9 +105,9 @@ public class ItemTest {
 
     @Test
     public void testShieldLongevity() {
-        Character character = new Character(new Position(0, 0), "Kelly", new Dungeon("Dungeon", "Standard", "1"));
+        Character character = new Character(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
         Inventory inv = character.getInventory();
-        Shield s = new Shield("i1", character.getDungeon());
+        Shield s = new Shield(character.getDungeon());
         inv.add(s);
         inv.use("Shield", character);
         assertEquals(Arrays.asList("Shield"), inv.listInventory());
@@ -120,10 +120,10 @@ public class ItemTest {
 
     @Test
     public void useOneRing() {
-        Character character = new Character(new Position(0, 0), "Kelly", new Dungeon("Dungeon", "Standard", "1"));
+        Character character = new Character(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
         assertEquals(Character.ORIGINAL_HEALTH, character.getHealth());
         Inventory inv = character.getInventory();
-        OneRing ring = new OneRing(new Position(0, 0), "ring", character.getDungeon());
+        OneRing ring = new OneRing(new Position(0, 0), character.getDungeon());
         inv.add(ring);
         character.setHealth(-1);
         assertEquals(-1, character.getHealth());
@@ -134,9 +134,9 @@ public class ItemTest {
     
     @Test
     public void testSword() {
-        Character character = new Character(new Position(0, 0), "Kelly", new Dungeon("Dungeon", "Standard", "1"));
+        Character character = new Character(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
         Inventory inv = character.getInventory();
-        Sword s = new Sword(new Position(0, 0), "s", character.getDungeon());
+        Sword s = new Sword(new Position(0, 0), character.getDungeon());
         inv.add(s);
         inv.use("Sword", character);
         // sword effect is tested in character.java
@@ -144,9 +144,9 @@ public class ItemTest {
 
     @Test
     public void testBow() {
-        Character character = new Character(new Position(0, 0), "Kelly", new Dungeon("Dungeon", "Standard", "1"));
+        Character character = new Character(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
         Inventory inv = character.getInventory();
-        Bow b = new Bow("i1", character.getDungeon());
+        Bow b = new Bow(character.getDungeon());
         inv.add(b);
         inv.use("Bow", character);
         // bow effect is tested in character.java
@@ -154,19 +154,19 @@ public class ItemTest {
 
     @Test
     public void testBombExplosion() {
-        Character character = new Character(new Position(0, 0), "Kelly", new Dungeon("Dungeon", "Standard", "1"));
+        Character character = new Character(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
         // Inventory inv = character.getInventory();
-        Bomb b = new Bomb(new Position(0, 0), "b", character.getDungeon());
+        Bomb b = new Bomb(new Position(0, 0), character.getDungeon());
         // inv.add(b);
         // inv.use("Bomb", character); // drop bomb in current position
 
         // within radius
-        Sword s = new Sword(new Position(0, 1), "s", character.getDungeon());
-        Spider spider = new Spider(new Position(-1, -2), "Polly", character.getDungeon());
-        Door d = new Door(new Position(-3, 0), "door", character.getDungeon(), 1);
+        Sword s = new Sword(new Position(0, 1), character.getDungeon());
+        Spider spider = new Spider(new Position(-1, -2), character.getDungeon());
+        Door d = new Door(new Position(-3, 0), character.getDungeon(), 1);
 
         // not within radius
-        Treasure t = new Treasure(new Position(3, 3), "t", character.getDungeon());
+        Treasure t = new Treasure(new Position(3, 3), character.getDungeon());
 
         assertEquals(Arrays.asList(character, b, s, spider, d, t), character.getDungeon().getAllEntities());
         b.explode();
@@ -177,16 +177,16 @@ public class ItemTest {
 
     @Test
     public void testKeyMatch() {
-        Character character = new Character(new Position(0, 0), "Kelly", new Dungeon("Dungeon", "Standard", "1"));
+        Character character = new Character(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
         Inventory inv = character.getInventory();
-        Key k = new Key(new Position(0, 0), "i1", character.getDungeon(), 1);
+        Key k = new Key(new Position(0, 0), character.getDungeon(), 1);
         inv.add(k);
         inv.useKey(null, character);
         assertEquals(Arrays.asList("Key"), inv.listInventory());
-        Door d1 = new Door(new Position(0, 1), "door", character.getDungeon(), 2);
+        Door d1 = new Door(new Position(0, 1), character.getDungeon(), 2);
         assertEquals(false, inv.useKey(d1, character));
 
-        Door d2 = new Door(new Position(1, 0), "door", character.getDungeon(), 1);
+        Door d2 = new Door(new Position(1, 0), character.getDungeon(), 1);
         assertTrue(inv.useKey(d2, character));
         assertEquals(Arrays.asList(), inv.listInventory());
     }

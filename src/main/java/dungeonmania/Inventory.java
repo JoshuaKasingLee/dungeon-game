@@ -77,7 +77,7 @@ public class Inventory {
             this.use("Arrow", character);
             this.use("Arrow", character); // NEED TO FIX
             // bow id is given by count of bows in inventory (ok since last item is always used, so won't have double ups)
-            this.add(new Bow(Integer.toString(this.count("Bow")), character.getDungeon())); 
+            this.add(new Bow(character.getDungeon())); 
         } else {
             throw new InvalidActionException("Insufficient crafting material for Bow");
         }
@@ -94,12 +94,12 @@ public class Inventory {
                 this.use("Wood", character);
                 this.use("Wood", character);
                 this.use("Treasure", character);
-                this.add(new Shield(Integer.toString(this.count("Shield")), character.getDungeon()));  // shield id is given same as shields - see above
+                this.add(new Shield(character.getDungeon())); 
             } else if (this.count("Key") >= 1) {
                 this.use("Wood", character);
                 this.use("Wood", character);
                 this.use("Key", character);
-                this.add(new Shield(Integer.toString(this.count("Shield")), character.getDungeon())); 
+                this.add(new Shield(character.getDungeon())); 
             }
         } else {
             throw new InvalidActionException("Insufficient crafting material for Shield");
