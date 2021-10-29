@@ -154,25 +154,33 @@ public class ItemTest {
 
     @Test
     public void testBombExplosion() {
-        Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
+        Dungeon dungeon = new Dungeon("Dungeon", "Standard", "1");
+        Player character = new Player(new Position(0, 0), dungeon);
+        dungeon.addEntity(character);
         // Inventory inv = character.getInventory();
-        Bomb b = new Bomb(new Position(0, 0), character.getDungeon());
+        Bomb b = new Bomb(new Position(0, 0), dungeon);
+        dungeon.addEntity(b);
         // inv.add(b);
         // inv.use("Bomb", character); // drop bomb in current position
 
         // within radius
-        Sword s = new Sword(new Position(0, 1), character.getDungeon());
-        Spider spider = new Spider(new Position(-1, -2), character.getDungeon());
-        Door d = new Door(new Position(-3, 0), character.getDungeon(), 1);
+        Sword s = new Sword(new Position(0, 1), dungeon);
+        Spider spider = new Spider(new Position(-1, -2), dungeon);
+        Door d = new Door(new Position(-3, 0), dungeon, 1);
+
+        dungeon.addEntity(s);
+        dungeon.addEntity(spider);
+        dungeon.addEntity(d);
 
         // not within radius
         Treasure t = new Treasure(new Position(3, 3), character.getDungeon());
+        dungeon.addEntity(t);
 
-        assertEquals(Arrays.asList(character, b, s, spider, d, t), character.getDungeon().getAllEntities());
+        assertEquals(Arrays.asList(character, b, s, spider, d, t), character.getDungeon().getEntities());
         b.explode();
 
         // only character and treasure should remain
-        assertEquals(Arrays.asList(character, t), character.getDungeon().getAllEntities());
+        assertEquals(Arrays.asList(character, t), character.getDungeon().getEntities());
     }
 
     @Test
