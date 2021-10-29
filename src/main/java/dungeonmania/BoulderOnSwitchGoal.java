@@ -32,6 +32,7 @@ public class BoulderOnSwitchGoal implements GoalComponent, Observer  {
             entity.attach(this);
             unpressedSwitches++;
         }
+
     }
 
     @Override
