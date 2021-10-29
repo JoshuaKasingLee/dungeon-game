@@ -73,19 +73,9 @@ public class DungeonManiaController {
         }
 
         String dungeonId = newDungeonId();
-        Gamemode dungeonMode;
-        if (gameMode.equals("Peaceful")) {
-            dungeonMode = new Peaceful();
-        }
-        else if (gameMode.equals("Standard")) {
-            dungeonMode = new Standard();
-        }
-        else if (gameMode.equals("Hard")) {
-            dungeonMode = new Hard();
-        }
 
         // TODO: Make the Dungeon Class
-        activeGame = new Dungeon(dungeonName, dungeonMode, dungeonId);
+        activeGame = new Dungeon(dungeonName, gameMode, dungeonId);
         
         String fileContentsOutput = FileLoader.loadResourceFile("/dungeons/" + dungeonName + ".json");
         JSONObject dungeonObj = new JSONObject(fileContentsOutput);
@@ -268,7 +258,7 @@ public class DungeonManiaController {
         for (int i = 0; i < items.size(); i++) {
             Entity currItem = items.get(i);
 
-            entityResponses.add(new EntityResponse(currItem.getId(), currEntity.getType()));
+            itemResponses.add(new ItemResponse(currItem.getId(), currEntity.getType()));
 
 
             String currType = currItem.getType();

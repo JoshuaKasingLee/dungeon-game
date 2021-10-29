@@ -14,15 +14,27 @@ public class Dungeon {
     private Gamemode gameMode;
     private String dungeonId;
     private List<Entity> entities;
-    private List<Entity> inventory;    // subject to change name or class to entity
+    private List<Item> inventory;    // subject to change name or class to entity
     private List<Entity> buildables; // subject to change name or class to entity
     private List<GoalComponent> simpleGoals;
     private GoalComponent overallGoal;
 
-    public Dungeon(String dungeonName, Gamemode gameMode, String dungeonId) {
+    public Dungeon(String dungeonName, String gameModeString, String dungeonId) {
         this.dungeonName = dungeonName;
-        this.gameMode = gameMode;
+        initialiseGameMode(gameModeString);
         this.dungeonId = dungeonId;
+    }
+
+    public void initialiseGameMode(String gameModeString) {
+        if (gameMode.equals("Peaceful")) {
+            gameMode = new Peaceful();
+        }
+        else if (gameMode.equals("Standard")) {
+            gameMode = new Standard();
+        }
+        else if (gameMode.equals("Hard")) {
+            gameMode = new Hard();
+        }
     }
 
     public void addEntity(Entity entity) {
