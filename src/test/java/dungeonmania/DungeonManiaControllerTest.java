@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
+import dungeonmania.response.models.ItemResponse;
 import dungeonmania.util.Position;
 
 import java.lang.IllegalArgumentException;
