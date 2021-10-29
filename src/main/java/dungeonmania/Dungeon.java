@@ -6,12 +6,13 @@ import java.util.List;
 
 public class Dungeon {
     private String dungeonName;
-    private String gameMode;
+    private Gamemode gamemode;
     private String dungeonId;
+    private List<Entity> entityList = new ArrayList<Entity>();
 
-    public Dungeon(String dungeonName, String gameMode, String dungeonId) {
+    public Dungeon(String dungeonName, String gamemode, String dungeonId) {
         this.dungeonName = dungeonName;
-        this.gameMode = gameMode;
+        this.gamemode = new Gamemode(gamemode);
         this.dungeonId = dungeonId;
     }
 
@@ -19,10 +20,11 @@ public class Dungeon {
         return new ArrayList<Entity>();
     }
 
-    public void addTo(Entity entity, Position position) {
+    public void addEntity(Entity entity) {
+        entityList.add(entity);
     }
 
-    public void removeFrom(Entity entity) {
+    public void removeEntity(Entity entity) {
     }
 
     public void removeFrom(Position position) {
@@ -37,4 +39,12 @@ public class Dungeon {
     public Entity getPlayer() {
         return new Player(new Position(0, 0), this);
     }
+
+    /**
+     * @return Gamemode return the gameMode
+     */
+    public Gamemode getGamemode() {
+        return gamemode;
+    }
 }
+    

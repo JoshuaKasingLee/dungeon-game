@@ -82,7 +82,7 @@ public class Player extends MovingEntity {
                         if (inventory.getItem("OneRing") != null) {
                             inventory.use("OneRing", this);
                         } else {
-                            getDungeon().removeFrom(this);
+                            getDungeon().removeEntity(this);
                         }  
                     }
                     // if enemy health is below zero
@@ -92,7 +92,7 @@ public class Player extends MovingEntity {
                             Armour a = new Armour(getDungeon());
                             inventory.add(a);
                         }
-                        getDungeon().removeFrom(e);
+                        getDungeon().removeEntity(e);
                     }
                 }
             }
@@ -105,7 +105,7 @@ public class Player extends MovingEntity {
         for (Entity e : getDungeon().getEntities(pos)) {
             if (e instanceof Item) {
                 Item i = (Item) e;
-                getDungeon().removeFrom(i);
+                getDungeon().removeEntity(i);
                 inventory.add(i);
             }
         }
@@ -152,11 +152,11 @@ public class Player extends MovingEntity {
             if (p.equals(getPosition())) {
                 if (inventory.getItem("Sword") != null) {
                     inventory.use("Sword", this);
-                    getDungeon().removeFrom(spawner);
+                    getDungeon().removeEntity(spawner);
                     break;
                 } else if (inventory.getItem("Bow") != null) {
                     inventory.use("Bow", this);
-                    getDungeon().removeFrom(spawner);
+                    getDungeon().removeEntity(spawner);
                     break;
                 } else {
                     throw new InvalidActionException("Cannot destory ZombieToastspawner without weapon");

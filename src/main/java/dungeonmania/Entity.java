@@ -1,13 +1,18 @@
 package dungeonmania;
 
+import java.util.List;
+import java.util.Arrays;
+import java.util.ArrayList;
+
 import dungeonmania.util.Position;
 
 public abstract class Entity {
     private Position position;
     private String id;
     private String type;
-    private Dungeon dungeon;
     private boolean isInteractable;
+    private Gamemode gamemode;
+    private Dungeon dungeon;
 
     public Entity(Position position, Dungeon dungeon) {
         this.position = position;
@@ -83,5 +88,13 @@ public abstract class Entity {
     public void setIsInteractable(boolean isInteractable) {
         this.isInteractable = isInteractable;
     }
+    
+    public List<Entity> getEntities() {
+        return dungeon.getAllEntities();
+    }
 
+    public void removeEntity() {
+        dungeon.removeEntity(this);
+    }
 }
+

@@ -17,8 +17,8 @@ public class Bomb extends Item {
     @Override
     public void activate(Player character) {
         super.activate(character);
-        // setPosition(character.getPosition());
-        getDungeon().addTo(this, character.getPosition());
+        this.setPosition(character.getPosition());
+        getDungeon().addEntity(this);
     }
 
     /**
@@ -31,7 +31,7 @@ public class Bomb extends Item {
             getDungeon().removeFrom(p);
         }
         // remove bomb
-        getDungeon().removeFrom(this);
+        getDungeon().removeEntity(this);
     }
 
     private static List<Position> blastRadiusPositions(Position pos) {

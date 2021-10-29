@@ -19,6 +19,6 @@ public class HealthPotion extends Item {
 
     @Override
     public String setType() {
-        return "HealthArrow";
+        return "HealthPotion";
     }
 }
