@@ -15,6 +15,12 @@ public class ZombieToast extends Enemy {
         this.setArmour(25); // assume zombie has 25% chance spawning with armour
     }
 
+    public ZombieToast(Position position, Dungeon dungeon, int durability) {
+        this(position, dungeon);
+        setDurability(durability);
+        
+    }
+
     @Override
     public void updatePosition() {
         Random rand = new Random();
