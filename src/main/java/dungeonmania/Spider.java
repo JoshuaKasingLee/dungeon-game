@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.ArrayList;
 
 import dungeonmania.util.Position;
-import dungeonmania.util.Direction;
 
 public class Spider extends Enemy {
     public static final int ORIGINAL_HEALTH = 5;
