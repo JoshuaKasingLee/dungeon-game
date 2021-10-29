@@ -11,7 +11,7 @@ public class ExitGoal implements GoalComponent, Observer  {
     public ExitGoal() {
         onExit = false;
     }
-
+    @Override
     public boolean isComplete() {
         return onExit;
     }

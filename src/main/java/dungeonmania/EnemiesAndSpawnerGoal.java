@@ -11,7 +11,7 @@ public class EnemiesAndSpawnerGoal implements GoalComponent, Observer  {
     public EnemiesAndSpawnerGoal() {
         numLiving = 0;
     }
-
+    @Override
     public boolean IsComplete() {
         return (numLiving == 0);
     }

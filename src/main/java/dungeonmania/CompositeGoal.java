@@ -37,11 +37,6 @@ public abstract class CompositeGoal implements GoalComponent {
         return subgoals;
     }
 
-    /**
-     * @param subgoals the subgoals to set
-     */
-    public void setSubgoals(List<GoalComponent> subgoals) {
-        this.subgoals = subgoals;
-    }
+
 
 }

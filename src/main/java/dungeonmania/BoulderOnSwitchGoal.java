@@ -13,10 +13,12 @@ public class BoulderOnSwitchGoal implements GoalComponent, Observer  {
         unpressedSwitches = 0;
     }
 
-    public boolean IsComplete() {
+    @Override
+    public boolean isComplete() {
         return (unpressedSwitches == 0);
     }
 
+    @Override
     public void update(Subject entity) {
         Switch currSwitch = (Switch) entity;
         if (currSwitch.hasBoulder()) {
