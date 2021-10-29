@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class CompositeGoal implements GoalComponent {
-    protected List<GoalComponent> subgoals;
+    private List<GoalComponent> subgoals;
 
     public CompositeGoal() {
         this.subgoals = new ArrayList<GoalComponent>();

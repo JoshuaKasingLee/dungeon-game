@@ -1,6 +1,7 @@
 package dungeonmania;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -9,7 +10,7 @@ public class OrGoal extends CompositeGoal{
 
     @Override
     public boolean isComplete() {
-        return subgoals.stream().anyMatch(goal -> (goal.isComplete()));
+        return getSubgoals().stream().anyMatch(goal -> (goal.isComplete()));
     }
 
     @Override
@@ -18,6 +19,7 @@ public class OrGoal extends CompositeGoal{
         goalData.put("goal", "OR");
 
         JSONArray subgoalsJSON = new JSONArray();
+        List<GoalComponent> subgoals = getSubgoals();
         for (GoalComponent subgoal : subgoals) {
             subgoalsJSON.put(subgoal.toJSON());
         }
