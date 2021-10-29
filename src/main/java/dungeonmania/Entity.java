@@ -8,11 +8,11 @@ import java.util.List;
 public abstract class Entity implements Subject {
     private Position position;
     private String id = newEntityId();
-    private boolean Interactable;
+    private boolean interactable = false;
     private Gamemode gamemode;
     private List<Observer> goalObservers = new ArrayList<Observer>();
     private String type;
-    private Dungeon activeDungeon;
+    private Dungeon dungeon;
 
     private static int entityIdCounter = 0; 
     public static synchronized String newEntityId() {
@@ -20,21 +20,21 @@ public abstract class Entity implements Subject {
     }
 
     
-    public Entity(Position position, Dungeon activeDungeon) {
+    public Entity(Position position, Dungeon dungeon) {
         this.position = position;
-        this.activeDungeon = activeDungeon;
-        this.type = findType();
+        this.dungeon = dungeon;
+        this.type = setType();
     }
 
     public int getXPosition() {
-        position.getX();
+        return position.getX();
     }
 
     public int getYPosition() {
-        position.getY();
+        return position.getY();
     }
 
-    public abstract String findType();
+    public abstract String setType();
 
     @Override
     public void attach(Observer o) {
@@ -55,55 +55,72 @@ public abstract class Entity implements Subject {
         } 
     }
 
-    /*
+    public void removeEntity() {
+        dungeon.removeEntity(this);
+    }
+
+    public List<Entity> getEntities() {
+        return dungeon.getEntities();
+    }
+
+
+
+
+    /**
      * @return Position return the position
      */
     public Position getPosition() {
         return position;
     }
 
-    /*
-    * @param position the position to set
-    */
+    /**
+     * @param position the position to set
+     */
     public void setPosition(Position position) {
         this.position = position;
     }
 
-    /*
-    * @return String return the id
-    */
+    /**
+     * @return String return the id
+     */
     public String getId() {
         return id;
     }
 
-    /*
-    * @param id the id to set
-    */
+    /**
+     * @param id the id to set
+     */
     public void setId(String id) {
         this.id = id;
     }
 
-    /*
-    * @return String return the type
-    */
-    public String getType() {
-        return type;
+    /**
+     * @return boolean return the interactable
+     */
+    public boolean isInteractable() {
+        return interactable;
     }
 
-    /*
+    /**
+     * @param interactable the interactable to set
+     */
+    public void setInteractable(boolean interactable) {
+        this.interactable = interactable;
+    }
+
+    /**
      * @return Gamemode return the gamemode
      */
     public Gamemode getGamemode() {
         return gamemode;
     }
 
-    /*
+    /**
      * @param gamemode the gamemode to set
      */
     public void setGamemode(Gamemode gamemode) {
         this.gamemode = gamemode;
     }
-
 
     /**
      * @return List<Observer> return the goalObservers
@@ -119,34 +136,25 @@ public abstract class Entity implements Subject {
         this.goalObservers = goalObservers;
     }
 
-
     /**
-     * @return boolean return the Interactable
+     * @return String return the type
      */
-    public boolean isInteractable() {
-        return Interactable;
+    public String getType() {
+        return type;
     }
 
     /**
-     * @param Interactable the Interactable to set
+     * @return Dungeon return the dungeon
      */
-    public void setInteractable(boolean Interactable) {
-        this.Interactable = Interactable;
-    }
-
-
-    /**
-     * @return Dungeon return the activeDungeon
-     */
-    public Dungeon getActiveDungeon() {
-        return activeDungeon;
+    public Dungeon getDungeon() {
+        return dungeon;
     }
 
     /**
-     * @param activeDungeon the activeDungeon to set
+     * @param dungeon the dungeon to set
      */
-    public void setActiveDungeon(Dungeon activeDungeon) {
-        this.activeDungeon = activeDungeon;
+    public void setDungeon(Dungeon dungeon) {
+        this.dungeon = dungeon;
     }
 
 }

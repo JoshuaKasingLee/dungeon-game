@@ -5,35 +5,33 @@ import java.util.List;
 import dungeonmania.util.Position;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class Dungeon {
 
     private String dungeonName;
-    private Gamemode gameMode;
+    private Gamemode gamemode;
     private String dungeonId;
     private List<Entity> entities;
-    private List<Item> inventory;    // subject to change name or class to entity
+    private Inventory inventory;    // subject to change name or class to entity
     private List<Entity> buildables; // subject to change name or class to entity
     private List<GoalComponent> simpleGoals;
     private GoalComponent overallGoal;
 
-    public Dungeon(String dungeonName, String gameModeString, String dungeonId) {
+    public Dungeon(String dungeonName, String gamemodeString, String dungeonId) {
         this.dungeonName = dungeonName;
-        initialiseGameMode(gameModeString);
+        initialiseGameMode(gamemodeString); 
         this.dungeonId = dungeonId;
     }
 
-    public void initialiseGameMode(String gameModeString) {
-        if (gameMode.equals("Peaceful")) {
-            gameMode = new Peaceful();
+    public void initialiseGameMode(String gamemodeString) {
+        if (gamemodeString.equals("Peaceful")) {
+            gamemode = new Peaceful();
         }
-        else if (gameMode.equals("Standard")) {
-            gameMode = new Standard();
+        else if (gamemodeString.equals("Standard")) {
+            gamemode = new Standard();
         }
-        else if (gameMode.equals("Hard")) {
-            gameMode = new Hard();
+        else if (gamemodeString.equals("Hard")) {
+            gamemode = new Hard();
         }
     }
 
@@ -82,19 +80,31 @@ public class Dungeon {
         addEntity(entity);
     }
 
-    public void removeFrom(Entity entity) {
+    public void removeEntity(Entity entity) {
         entities.remove(entity);
+    }
+
+    public void removeFrom(Position position) {
+
+        // TODO:!!!!
     }
 
     public Player getPlayer() {
         for (Entity entity : entities) {
             if (entity instanceof Player) {
-                return entity;
+                return (Player) entity;
             }
         }
         return null;
     }
-        
+
+    /**
+     * @return Inventory return the inventory
+     */
+    public Inventory getInventory() {
+        return inventory;
+    }
+    
 
     /**
      * @return String return the dungeonName
@@ -111,17 +121,17 @@ public class Dungeon {
     }
 
     /**
-     * @return Gamemode return the gameMode
+     * @return Gamemode return the gamemode
      */
-    public Gamemode getGameMode() {
-        return gameMode;
+    public Gamemode getGamemode() {
+        return gamemode;
     }
 
     /**
-     * @param gameMode the gameMode to set
+     * @param gamemode the gamemode to set
      */
-    public void setGameMode(Gamemode gameMode) {
-        this.gameMode = gameMode;
+    public void setGamemode(Gamemode gamemode) {
+        this.gamemode = gamemode;
     }
 
     /**
@@ -139,11 +149,14 @@ public class Dungeon {
     }
 
     /**
-     * @return List<Entity> return the entities
+     * @return entities return the entities
      */
     public List<Entity> getEntities() {
         return entities;
     }
+
+
+
 
     /**
      * @param entities the entities to set
@@ -178,13 +191,6 @@ public class Dungeon {
      */
     public void setOverallGoal(GoalComponent overallGoal) {
         this.overallGoal = overallGoal;
-    }
-
-    /**
-     * @return List<Entity> return the inventory
-     */
-    public List<Entity> getInventory() {
-        return inventory;
     }
 
 }

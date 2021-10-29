@@ -8,7 +8,7 @@ public abstract class Gamemode {
     public Gamemode(boolean battle, int spawnTimer, int startingHealth) {
         this.battle = battle;
         this.spawnTimer = spawnTimer;
-        this.startingHealth = startingHealth;
+        this.startingHealth = startingHealth;        
     }
 
     public abstract String toString();
