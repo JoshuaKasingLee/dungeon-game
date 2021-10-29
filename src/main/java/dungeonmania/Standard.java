@@ -15,4 +15,10 @@ public class Standard extends Gamemode {
     public int checkStartingHealth() {
         return 0; //subject ot change
     }
+
+    @Override
+    public String toString() {
+        return "Standard";
+    }
+
 }

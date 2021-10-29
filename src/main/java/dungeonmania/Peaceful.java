@@ -1,5 +1,6 @@
 package dungeonmania;
 
+
 public class Peaceful extends Gamemode {
 
     public Peaceful() {
@@ -14,6 +15,11 @@ public class Peaceful extends Gamemode {
     }
     public int checkStartingHealth() {
         return 0; //subject ot change
+    }
+
+    @Override
+    public String toString() {
+        return "Peaceful";
     }
 
 }

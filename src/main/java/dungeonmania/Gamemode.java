@@ -15,6 +15,7 @@ public abstract class Gamemode {
     public abstract boolean checkBattle();
     public abstract int checkSpawnTimer();
     public abstract int checkStartingHealth();
+    public abstract String toString();
 
     /**
      * @return boolean return the battle

@@ -184,7 +184,7 @@ public class DungeonManiaController {
         String goalString = "";
         GoalComponent overallGoal = extractAllGoals(goalCondition, activeGame, goalString);
         activeGame.setOverallGoal(overallGoal); 
-            
+        
         return new DungeonResponse(dungeonId, dungeonName, entityResponses, new ArrayList<ItemResponse>(), new ArrayList<String>(), goalString);
     }
     
@@ -206,9 +206,14 @@ public class DungeonManiaController {
         // entityJSON.put("y", currEntity.getYPosition);
         // entityJSON.put("type", currEntity.findType());
         // entitiesJSON.put(entityJSON);
-
-        for (int i = 0; i < entities.size(), i++) {
+        List<EntityResponse> entityResponses;
+        
+        for (int i = 0; i < entities.size(); i++) {
             Entity currEntity = entities.get(i);
+
+            entityResponses.add(new EntityResponse(currEntity.getId(), currEntity.getType(), currEntity.getPosition(), currEntity.isInteractable()));
+
+            
             String currType = currEntity.findType();
             Map<String, Object> entityData = new HashMap<String, Object>();
             entityData.put("x", currEntity.getXPosition());
@@ -245,8 +250,14 @@ public class DungeonManiaController {
         List<Entity> items = activeGame.getInventory();
         JSONArray itemsJSON = new JSONArray();
 
+        List<ItemResponse> itemResponses;
+
         for (int i = 0; i < items.size(); i++) {
             Entity currItem = items.get(i);
+
+            entityResponses.add(new EntityResponse(currItem.getId(), currEntity.getType()));
+
+
             String currType = currItem.getType();
             Map<String, Object> itemData = new HashMap<String, Object>();
             itemData.put("type", currItem.findType());
@@ -272,16 +283,32 @@ public class DungeonManiaController {
         dungeonMap.put("entities", entitiesJSON);
         dungeonMap.put("items", itemsJSON);
         dungeonMap.put("goal-condition", goalsJSON);
+        dungeonMap.put("gameMode", activeGame.getGameMode().toString());
 
         JSONObject dungeonJSON = new JSONObject(dungeonMap);
 
         String dungeonSave = dungeonJSON.toString();
         String dungeonId = activeGame.getDungeonId();
         PrintWriter fileLocation = new PrintWriter(new FileWriter("saveFiles\\" + dungeonId));
-
+    
         String dungeonName = activeGame.getDungeonName();
 
-        return new DungeonResponse(dungeonId, dungeonName, new ArrayList<EntityResponse>(), new ArrayList<ItemResponse>(), new ArrayList<String>(), "Temp");
+
+
+        String goalString = "";
+
+        
+
+        for (GoalComponent simpleGoal : activeGame.getSimpleGoals()) {
+            if (!goalString.contains()) {
+                goalString += simpleGoal.simpleGoalToString();
+            }
+        }
+
+        // TODO: BUILDABLES!!!
+        
+
+        return new DungeonResponse(dungeonId, dungeonName, entityResponses, itemResponses, new ArrayList<String>(), goalString);
     }
 
     public DungeonResponse loadGame(String name) throws IllegalArgumentException {
