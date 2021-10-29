@@ -10,8 +10,15 @@ public class ZombieToastSpawner extends StaticEntity {
 
     public ZombieToastSpawner(Position position, Dungeon dungeon) {
         super(position, dungeon);
-        setIsInteractable(true);
+        setInteractable(true);
     }
+
+    public ZombieToastSpawner(Position position, Dungeon dungeon, int counter) {
+        super(position, dungeon);
+        this.counter = counter;
+        setInteractable(true);
+    }
+
 
     @Override
     public String setType() {
