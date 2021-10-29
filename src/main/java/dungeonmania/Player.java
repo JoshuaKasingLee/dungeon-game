@@ -20,6 +20,11 @@ public class Player extends MovingEntity {
         this.characterState = new StandardState(this);
     }
 
+    public Player(Position position, Dungeon dungeon, int currHealth) {
+        this(position, dungeon);
+        setHealth(currHealth);
+    }
+
     // assume we pick items after we fight enemies
     @Override
     public void move(Direction direction) {
