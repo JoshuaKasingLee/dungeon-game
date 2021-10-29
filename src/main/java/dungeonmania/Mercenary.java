@@ -28,9 +28,10 @@ public class Mercenary extends Enemy {
         setInteractable(true);
     }
 
-    public Mercenary(Position position, Dungeon dungeon, int durability) {
+    public Mercenary(Position position, Dungeon dungeon, int durability, boolean isAlly) {
         this(position, dungeon);
         setDurability(durability);
+        setAlly(isAlly);
     }
 
     @Override
