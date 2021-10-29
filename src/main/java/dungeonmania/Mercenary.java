@@ -20,8 +20,8 @@ public class Mercenary extends Enemy {
     private Position playerPosition = getDungeon().getPlayer().getPosition();
 
 
-    public Mercenary(Position position, String id, Dungeon dungeon) {
-        super(position, id, "Mercenary", dungeon);
+    public Mercenary(Position position, Dungeon dungeon) {
+        super(position, dungeon);
         this.setHealth(ORIGINAL_HEALTH);
         this.setAttackDamage(MERCENARY_ATTACK_DAMAGE);
         this.setArmour(50); // assume zombie has 50% chance spawning with armour
