@@ -573,73 +573,79 @@ public class DungeonManiaController {
         //  Move character and all moving entities.
         
         // check for errors for each
-        List<Item> items = activeGame.getInventory().getInventoryList();
         Player player = activeGame.getPlayer();
-        
-        // potion statechange??
-        switch (itemUsed) {
-            case "invincibility_potion":
-                InvincibleState invincibleState = new InvincibleState(player);
-                activeGame.getPlayer().setCharacterState(invincibleState);
-                break;
-            case "invisibility_potion":
-                InvisibleState invisibleState = new InvisibleState(player);
-                activeGame.getPlayer().setCharacterState(invisibleState);
-                break;
-            case "health_potion":
-                for (Item item : items) {
-                    if (item instanceof HealthPotion) {
-                        ((HealthPotion) item).activate(player);
-                    }
-                }
-                break;
-            case "bomb":
-                for (Item item : items) {
-                    if (item instanceof Bomb) {
-                        ((Bomb) item).explode();
-                    }
-                }
-                break;
-            case "null":
-                break;
-            default:
-                throw new IllegalArgumentException("Invalid item used");
-            
+
+        player.useItem(itemUsed);
+
+
+        // Only move if no item was used.
+        if (itemUsed.equals(null) || itemUsed.equals("")) {
+
         }
         
-
-
-        List<Entity> entities = activeGame.getEntities();
-        List<EntityResponse> entityResponses = new ArrayList<EntityResponse>();
-        for (Entity entity : entities) {
-            if (entity instanceof Player) {
-                ((Player) entity).move(movementDirection); 
-            } else if (entity instanceof Enemy) {
-                ((Enemy) entity).updatePosition(); 
-            } else if (entity instanceof StaticEntity){
-                // CHECK THIS: e.g. when boulder is blocked
-                ((StaticEntity) entity).update(movementDirection);
-            }
-            entityResponses.add(new EntityResponse(entity.getId(), entity.getType(), entity.getPosition(), entity.isInteractable()));
-        }
-
-        List<ItemResponse> itemResponses = new ArrayList<ItemResponse>();
-        for (Item item : items) {
-            itemResponses.add(new ItemResponse(item.getId(), item.getType()));
-        }
-
-        String goalString = "";
-
-        for (GoalComponent simpleGoal : activeGame.getSimpleGoals()) {
-            String simpleGoalString = simpleGoal.simpleGoalToString();
-            if (!goalString.contains(simpleGoalString)) {
-                goalString += simpleGoal.simpleGoalToString();
-            }
-        }
-
-        List<String> buildables = activeGame.getInventory().getBuildables();
+        // // potion statechange??
+        // switch (itemUsed) {
+        //     case "invincibility_potion":
+        //         InvincibleState invincibleState = new InvincibleState(player);
+        //         activeGame.getPlayer().setCharacterState(invincibleState);
+        //         break;
+        //     case "invisibility_potion":
+        //         InvisibleState invisibleState = new InvisibleState(player);
+        //         activeGame.getPlayer().setCharacterState(invisibleState);
+        //         break;
+        //     case "health_potion":
+        //         for (Item item : items) {
+        //             if (item instanceof HealthPotion) {
+        //                 ((HealthPotion) item).activate(player);
+        //             }
+        //         }
+        //         break;
+        //     case "bomb":
+        //         for (Item item : items) {
+        //             if (item instanceof Bomb) {
+        //                 ((Bomb) item).explode();
+        //             }
+        //         }
+        //         break;
+        //     case null:
+        //         break;
+        //     default:
+        //         throw new IllegalArgumentException("Invalid item used");
+        // }
         
-        return new DungeonResponse(activeGame.getDungeonId(), activeGame.getDungeonName(), entityResponses, itemResponses, buildables, goalString);
+
+
+        // List<Entity> entities = activeGame.getEntities();
+        // List<EntityResponse> entityResponses = new ArrayList<EntityResponse>();
+        // for (Entity entity : entities) {
+        //     if (entity instanceof Player) {
+        //         ((Player) entity).move(movementDirection); 
+        //     } else if (entity instanceof Enemy) {
+        //         ((Enemy) entity).updatePosition(); 
+        //     } else if (entity instanceof StaticEntity){
+        //         // CHECK THIS: e.g. when boulder is blocked
+        //         ((StaticEntity) entity).update(movementDirection);
+        //     }
+        //     entityResponses.add(new EntityResponse(entity.getId(), entity.getType(), entity.getPosition(), entity.isInteractable()));
+        // }
+
+        // List<ItemResponse> itemResponses = new ArrayList<ItemResponse>();
+        // for (Item item : items) {
+        //     itemResponses.add(new ItemResponse(item.getId(), item.getType()));
+        // }
+
+        // String goalString = "";
+
+        // for (GoalComponent simpleGoal : activeGame.getSimpleGoals()) {
+        //     String simpleGoalString = simpleGoal.simpleGoalToString();
+        //     if (!goalString.contains(simpleGoalString)) {
+        //         goalString += simpleGoal.simpleGoalToString();
+        //     }
+        // }
+
+        // List<String> buildables = activeGame.getInventory().getBuildables();
+        // return new DungeonResponse(activeGame.getDungeonId(), activeGame.getDungeonName(), entityResponses, itemResponses, buildables, goalString);
+        return null;
     }
 
     public DungeonResponse interact(String entityId) throws IllegalArgumentException, InvalidActionException {
@@ -723,8 +729,6 @@ public class DungeonManiaController {
 
     //     }
     // }
-
-    
 
 
 
