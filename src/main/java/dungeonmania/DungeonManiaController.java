@@ -571,21 +571,62 @@ public class DungeonManiaController {
         
         Player player = activeGame.getPlayer();
 
-        // Use item if appropriate.
+        // Use item if appropriate. This does nothing if itemUsed is null or empty.
+        // Throws exceptions where appropriate.
         player.useItem(itemUsed);
-
-        // Move all enemies
+        
         List<Entity> entities = activeGame.getEntities();
+        List<EntityResponse> entityResponses = new ArrayList<EntityResponse>();
         for (Entity entity: entities) {
+            // Move all enemies
             if (entity instanceof Enemy) {
                 ((Enemy) entity).updatePosition();
             }
+            
+            // Move character and update boulders accordingly.
+            else if (movementDirection != null) {
+                if (entity instanceof Player) {
+                    ((Player)entity).move(movementDirection);
+                } else if (entity instanceof Boulder) {
+                    ((Boulder) entity).update(movementDirection);
+                }
+            }
+            entityResponses.add(new EntityResponse(entity.getId(), entity.getType(), entity.getPosition(), entity.isInteractable()));
         }
 
-        // Only move if no item was used.
-        if (itemUsed.equals(null) || itemUsed.equals("")) {
-
+        List<Item> items = activeGame.getInventory().getInventoryList();        
+        List<ItemResponse> itemResponses = new ArrayList<ItemResponse>();
+        for (Item item : items) {
+            itemResponses.add(new ItemResponse(item.getId(), item.getType()));
         }
+
+
+        String goalString = "";
+
+        for (GoalComponent simpleGoal : activeGame.getSimpleGoals()) {
+            String simpleGoalString = simpleGoal.simpleGoalToString();
+            if (!goalString.contains(simpleGoalString)) {
+                goalString += simpleGoal.simpleGoalToString();
+            }
+        }
+
+        List<String> buildables = activeGame.getInventory().getBuildables();
+        return new DungeonResponse(activeGame.getDungeonId(), activeGame.getDungeonName(), entityResponses, itemResponses, buildables, goalString);
+
+        
+        // // Move character and update boulders accordingly.
+        // if (movementDirection != null) {
+            //     player.move(movementDirection);
+            //     for (Entity entity: entities) {
+                //         if (entity instanceof Boulder) {
+        //             ((Boulder) entity).update(movementDirection);
+        //         }
+        //     }
+        // }
+
+
+
+
         
         // // potion statechange??
         // switch (itemUsed) {
@@ -633,23 +674,8 @@ public class DungeonManiaController {
         //     entityResponses.add(new EntityResponse(entity.getId(), entity.getType(), entity.getPosition(), entity.isInteractable()));
         // }
 
-        // List<ItemResponse> itemResponses = new ArrayList<ItemResponse>();
-        // for (Item item : items) {
-        //     itemResponses.add(new ItemResponse(item.getId(), item.getType()));
-        // }
 
-        // String goalString = "";
-
-        // for (GoalComponent simpleGoal : activeGame.getSimpleGoals()) {
-        //     String simpleGoalString = simpleGoal.simpleGoalToString();
-        //     if (!goalString.contains(simpleGoalString)) {
-        //         goalString += simpleGoal.simpleGoalToString();
-        //     }
-        // }
-
-        // List<String> buildables = activeGame.getInventory().getBuildables();
-        // return new DungeonResponse(activeGame.getDungeonId(), activeGame.getDungeonName(), entityResponses, itemResponses, buildables, goalString);
-        return null;
+        // return null;
     }
 
     public DungeonResponse interact(String entityId) throws IllegalArgumentException, InvalidActionException {
