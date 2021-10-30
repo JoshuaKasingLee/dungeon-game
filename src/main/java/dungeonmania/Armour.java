@@ -6,9 +6,9 @@ public class Armour extends Item {
 
     // assume armour can ONLY be collected from enemies -> important for id naming
 
-    public Armour(Dungeon dungeon) {
+    public Armour(Dungeon dungeon, int usesLeft) {
         super(null, dungeon);
-        this.setUsesLeft(DURABILITY);
+        this.setUsesLeft(usesLeft);
     }
 
     @Override

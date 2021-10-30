@@ -127,7 +127,7 @@ public class CharacterTest {
         Wood i3 = new Wood(new Position(0, 0), character.getDungeon());
         Arrow i4 = new Arrow(new Position(0, 0), character.getDungeon());
         Shield i5 = new Shield(character.getDungeon());
-        Armour i6 = new Armour(character.getDungeon());
+        Armour i6 = new Armour(character.getDungeon(), Armour.DURABILITY);
         Bow i7 = new Bow(character.getDungeon());
         Sword i8 = new Sword(new Position(0, 0), character.getDungeon());
         OneRing i9 = new OneRing(new Position(0, 0), character.getDungeon());
@@ -200,17 +200,17 @@ public class CharacterTest {
 
         // mercenary battle - no armour
         Mercenary merc = new Mercenary(new Position(0, 0), character.getDungeon());
-        // merc.giveArmour(0);
-        // // expect 3 rounds to kill mercenary
-        // int expectedCharHealth1 = character.getHealth() - ((merc.getHealth() * merc.getAttackDamage()) / 10);
-        // int expectedEnemyHealth1 = merc.getHealth() - ((character.getHealth() * character.getAttackDamage()) / 5);
-        // int expectedCharHealth2 = expectedCharHealth1 - ((expectedEnemyHealth1 * merc.getAttackDamage()) / 10);
-        // int expectedEnemyHealth2 = expectedEnemyHealth1 - ((expectedCharHealth1 * character.getAttackDamage()) / 5);
-        // int expectedCharHealth3 = expectedCharHealth2 - ((expectedEnemyHealth2 * merc.getAttackDamage()) / 10);
-        // int expectedEnemyHealth3 = expectedEnemyHealth2 - ((expectedCharHealth2 * character.getAttackDamage()) / 5);
-        // state.battleEnemy(merc);
-        // assertEquals(character.getHealth(), expectedCharHealth3);
-        // assertEquals(merc.getHealth(), expectedEnemyHealth3);
+        merc.giveArmour(0);
+        // expect 3 rounds to kill mercenary
+        int expectedCharHealth1 = character.getHealth() - ((merc.getHealth() * merc.getAttackDamage()) / 10);
+        int expectedEnemyHealth1 = merc.getHealth() - ((character.getHealth() * character.getAttackDamage()) / 5);
+        int expectedCharHealth2 = expectedCharHealth1 - ((expectedEnemyHealth1 * merc.getAttackDamage()) / 10);
+        int expectedEnemyHealth2 = expectedEnemyHealth1 - ((expectedCharHealth1 * character.getAttackDamage()) / 5);
+        int expectedCharHealth3 = expectedCharHealth2 - ((expectedEnemyHealth2 * merc.getAttackDamage()) / 10);
+        int expectedEnemyHealth3 = expectedEnemyHealth2 - ((expectedCharHealth2 * character.getAttackDamage()) / 5);
+        state.battleEnemy(merc);
+        assertEquals(character.getHealth(), expectedCharHealth3);
+        assertEquals(merc.getHealth(), expectedEnemyHealth3);
     }
 
     @Test
@@ -264,7 +264,7 @@ public class CharacterTest {
         CharacterState state = character.getCharacterState();
         assertEquals(state.getType(), "Standard");
         Inventory inv = character.getInventory();
-        Armour a = new Armour(character.getDungeon());
+        Armour a = new Armour(character.getDungeon(), Armour.DURABILITY);
         inv.add(a);
 
         // spider battle
@@ -308,7 +308,7 @@ public class CharacterTest {
         inv.add(sword);
         Bow bow = new Bow(character.getDungeon());
         inv.add(bow);
-        Armour armour = new Armour(character.getDungeon());
+        Armour armour = new Armour(character.getDungeon(), Armour.DURABILITY);
         inv.add(armour);
         Shield shield = new Shield(character.getDungeon());
         inv.add(shield);
@@ -474,7 +474,7 @@ public class CharacterTest {
         Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
         Spider spider = new Spider(new Position(0, 1), character.getDungeon());
         assertEquals(Arrays.asList(character, spider), character.getDungeon().getEntities());
-        character.moveUp();
+        character.move(Direction.DOWN);
         // fight should happen
         assertEquals(Arrays.asList(character), character.getDungeon().getEntities());
     }
@@ -483,7 +483,7 @@ public class CharacterTest {
     public void fightEnemiesInheritArmour() {
         Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
         Spider spider = new Spider(new Position(0, 1), character.getDungeon());
-        spider.giveArmour(Armour.DURABILITY);
+        spider.giveArmour(5);
         assertEquals(Arrays.asList(character, spider), character.getDungeon().getEntities());
         character.move(Direction.DOWN);
         // fight should happen
@@ -497,7 +497,7 @@ public class CharacterTest {
         character.setHealth(1);
         Mercenary merc = new Mercenary(new Position(0, 1), character.getDungeon());
         assertEquals(Arrays.asList(character, merc), character.getDungeon().getEntities());
-        character.moveUp();
+        character.move(Direction.DOWN);
         // fight should eliminate character
         assertEquals(Arrays.asList(merc), character.getDungeon().getEntities());
     }
@@ -513,7 +513,7 @@ public class CharacterTest {
 
         Mercenary merc = new Mercenary(new Position(0, 1), character.getDungeon());
         assertEquals(Arrays.asList(character, ring, merc), character.getDungeon().getEntities());
-        character.moveUp();
+        character.move(Direction.DOWN);
         // fight should happen, one ring should be used since merc can kill character
         assertEquals(Arrays.asList(character, ring, merc), character.getDungeon().getEntities());
         assertEquals(Arrays.asList(), inv.listInventory());
@@ -599,7 +599,7 @@ public class CharacterTest {
         ZombieToastSpawner z = new ZombieToastSpawner(new Position(0, 2), character.getDungeon());
         z.setPosition(new Position(0,1));
         character.destroySpawner(z);
-        assertEquals(Arrays.asList(character, b), character.getDungeon().getEntities());
+        assertEquals(Arrays.asList(character), character.getDungeon().getEntities());
     }
 
     @Test

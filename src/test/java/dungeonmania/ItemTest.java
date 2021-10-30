@@ -88,7 +88,7 @@ public class ItemTest {
     public void testArmourLongevity() {
         Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
         Inventory inv = character.getInventory();
-        Armour a = new Armour(character.getDungeon());
+        Armour a = new Armour(character.getDungeon(), Armour.DURABILITY);
         inv.add(a);
         inv.use("Armour", character);
         assertEquals(Arrays.asList("Armour"), inv.listInventory());

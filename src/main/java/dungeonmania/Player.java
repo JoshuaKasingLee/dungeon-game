@@ -99,7 +99,7 @@ public class Player extends MovingEntity {
                     if (e.getHealth() <=0 ) {
                         // check for armour
                         if (e.getArmour() > 0) {
-                            Armour a = new Armour(getDungeon());
+                            Armour a = new Armour(getDungeon(), e.getArmour());
                             inventory.add(a);
                         }
                         getDungeon().removeEntity(e);
@@ -233,14 +233,14 @@ public class Player extends MovingEntity {
     }
 
     public static void main(String[] args) {
-        Position p = new Position(0,0);
-        System.out.println(p.toString());
-        System.out.println(p.translateBy(Direction.DOWN).toString());
         Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
-        Boulder b1 = new Boulder(new Position(0, -1), character.getDungeon());
-        ZombieToastSpawner z = new ZombieToastSpawner(new Position(0, -2), character.getDungeon());
-        character.move(Direction.DOWN);  // should fail since boulder is blocked
-        // assertEquals(new Position(0, 0), character.getPosition());
+        Spider spider = new Spider(new Position(0, 1), character.getDungeon());
+        spider.giveArmour(5);
+        // assertEquals(Arrays.asList(character, spider), character.getDungeon().getEntities());
+        character.move(Direction.DOWN);
+        // fight should happen
+        // assertEquals(Arrays.asList(character), character.getDungeon().getEntities());
+        // assertEquals(Arrays.asList("Armour"), character.getInventory().listInventory());
     }
 }
 
