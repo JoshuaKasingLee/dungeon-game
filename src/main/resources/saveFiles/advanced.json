@@ -1,0 +1,1 @@
+{"goal-condition":{"goal":"exit"},"dungeonName":"exit","entities":[{"x":1,"y":1,"health":10,"type":"Player","characterState":"Standard"},{"x":1,"type":"Exit","y":2}],"items":[],"gamemode":"Standard","dungeonId":"1"}
