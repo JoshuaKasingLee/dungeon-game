@@ -61,14 +61,16 @@ public abstract class MovingEntity extends Entity {
     }
     
     public void moveUp() {
-        Position newPos = new Position(getPosition().getX(), getPosition().getY() + 1);
+        // Position newPos = new Position(getPosition().getX(), getPosition().getY() + 1);
+        Position newPos = getPosition().translateBy(Direction.UP);
         if (checkValidMove(newPos, Direction.UP)) {
             setPosition(newPos);
         }
     }
 
     public void moveDown() {
-        Position newPos = new Position(getPosition().getX(), getPosition().getY() - 1);
+        // Position newPos = new Position(getPosition().getX(), getPosition().getY() - 1);
+        Position newPos = getPosition().translateBy(Direction.DOWN);
         if (checkValidMove(newPos, Direction.DOWN)) {
             setPosition(newPos);
         }
@@ -76,14 +78,16 @@ public abstract class MovingEntity extends Entity {
     }
 
     public void moveLeft() {
-        Position newPos = new Position(getPosition().getX() - 1, getPosition().getY());
+        // Position newPos = new Position(getPosition().getX() - 1, getPosition().getY());
+        Position newPos = getPosition().translateBy(Direction.LEFT);
         if (checkValidMove(newPos, Direction.LEFT)) {
             setPosition(newPos);
         }
     }
 
     public void moveRight() {
-        Position newPos = new Position(getPosition().getX() + 1, getPosition().getY());
+        // Position newPos = new Position(getPosition().getX() + 1, getPosition().getY());
+        Position newPos = getPosition().translateBy(Direction.RIGHT);
         if (checkValidMove(newPos, Direction.RIGHT)) {
             setPosition(newPos);
         }
@@ -92,7 +96,6 @@ public abstract class MovingEntity extends Entity {
     // need to override for spider
     // assumes zombies + mercenaries can also push boulders, etc. -> everything a player can do except key/door
     public boolean checkValidMove(Position pos, Direction dir) {
-
         // check for obstructions
         for (Entity e : getDungeon().getEntities(pos)) {
             // assume can't walk on top of spawner

@@ -57,7 +57,7 @@ public class Mercenary extends Enemy {
     }
 
     public List<Position> getPossiblePositions() {
-        List<Position> possiblePositions = new ArrayList<>();
+        List<Position> possiblePositions = new ArrayList<Position>();
         // Up position
         possiblePositions.add(new Position(x, y-1));
 

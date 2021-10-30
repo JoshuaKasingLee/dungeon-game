@@ -54,7 +54,7 @@ public class Dungeon {
     }
     
     public List<Entity> getEntities(Position position) {
-        List<Entity> entitiesAtPos = new ArrayList<>();
+        List<Entity> entitiesAtPos = new ArrayList<Entity>();
         for (Entity entity : entities) {
             if (entity.getPosition().equals(position)) {
                 entitiesAtPos.add(entity);

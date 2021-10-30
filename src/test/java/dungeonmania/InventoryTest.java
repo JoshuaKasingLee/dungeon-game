@@ -1,23 +1,15 @@
 package dungeonmania;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.TestInstance.Lifecycle;
 
-import java.util.ArrayList;
-import java.util.List;
+// import java.util.ArrayList;
+// import java.util.List;
 import java.util.Arrays;
 
-import dungeonmania.Inventory;
-import dungeonmania.Player;
 import dungeonmania.util.Position;
-import dungeonmania.response.models.ItemResponse;
 import dungeonmania.exceptions.InvalidActionException;
 
 

@@ -46,9 +46,13 @@ public class Player extends MovingEntity {
             // assume boulders never exist on the edge of the dungeon (i.e. there is always a wall border)
             // assume boulder can be pushed onto items/other moving entities
             if (e instanceof Boulder) {
+                System.out.println(pos.toString());
                 Position newPos = pos.translateBy(dir);
+                System.out.println(newPos.toString());
                 for (Entity e1 : getDungeon().getEntities(newPos)) {
+                    System.out.println(e1.getType());
                     if (e1 instanceof Wall || e1 instanceof Boulder || e1 instanceof ZombieToastSpawner || !checkUnlockedDoor(newPos)) {
+                        System.out.println("hi");
                         return false;
                     }
                 }   
@@ -68,9 +72,11 @@ public class Player extends MovingEntity {
             if (e instanceof Door) {
                 Door door = (Door) e;
                 return inventory.useKey(door, this); // if wrong key, will return false here
+            } else {
+                return true;
             }
         }
-        return false;
+        return true;
     }
 
     // fighting functions
@@ -226,5 +232,15 @@ public class Player extends MovingEntity {
         return "Player";
     }
 
+    public static void main(String[] args) {
+        Position p = new Position(0,0);
+        System.out.println(p.toString());
+        System.out.println(p.translateBy(Direction.DOWN).toString());
+        Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
+        Boulder b1 = new Boulder(new Position(0, -1), character.getDungeon());
+        ZombieToastSpawner z = new ZombieToastSpawner(new Position(0, -2), character.getDungeon());
+        character.move(Direction.DOWN);  // should fail since boulder is blocked
+        // assertEquals(new Position(0, 0), character.getPosition());
+    }
 }
 
