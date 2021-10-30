@@ -1,0 +1,31 @@
+{
+    "goal-condition": {
+        "goal": "boulders"
+    },
+    "dungeonName": "bribingTester",
+    "entities": [
+        {
+            "x": 0,
+            "health": 10,
+            "type": "Player",
+            "entityId": "0",
+            "y": 0
+        },
+        {
+            "x": 0,
+            "entityId": "1",
+            "totalArmour": 0,
+            "type": "Mercenary",
+            "ally": false,
+            "y": 2
+        }
+    ],
+    "items": [
+        {
+            "type": "Treasure",
+            "entityId": "2"
+        }
+    ],
+    "gamemode": "Standard",
+    "dungeonId": "0"
+}
