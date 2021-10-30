@@ -12,7 +12,7 @@ public class Dungeon {
     private Gamemode gamemode;
     private String dungeonId;
     private List<Entity> entities = new ArrayList<Entity>();
-    private Inventory inventory;    // subject to change name or class to entity
+    private Inventory inventory = new Inventory();    // subject to change name or class to entity
     private List<GoalComponent> simpleGoals = new ArrayList<GoalComponent>();
     private GoalComponent overallGoal;
 
