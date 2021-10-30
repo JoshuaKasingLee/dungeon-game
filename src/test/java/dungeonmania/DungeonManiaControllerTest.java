@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
+import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.response.models.ItemResponse;
@@ -148,36 +149,113 @@ public class DungeonManiaControllerTest {
     }
 
     @Test
-    public void tickMovement() {
+    public void testTickInvalidItem() {
         DungeonManiaController controller = new DungeonManiaController();
-        assertDoesNotThrow(() -> controller.newGame("boulderGoalTester", "Standard"));
-        assertDoesNotThrow(() -> controller.tick(null, Direction.UP));
+        assertDoesNotThrow(() -> controller.newGame("exit", "Standard"));
 
-        // EntityResponse playerResponse = new EntityResponse("0", "player", new Position(1, 3), false);
-        // EntityResponse boulderResponse = new EntityResponse("1", "boulder", new Position(1, 1), false);
-        // EntityResponse switchResponse = new EntityResponse("2", "switch", new Position(1, 0), false);
-
-        // List<EntityResponse> entityResponseList = new ArrayList<>(Arrays.asList(playerResponse, boulderResponse, switchResponse));
-        // List<ItemResponse> inventoryList = new ArrayList<>();
-        // List<String> buildablesList = new ArrayList<>();
-        // assertEquals(new DungeonResponse("0", "boulderGoalTester", entityResponseList, inventoryList, buildablesList, ":boulders "), controller.newGame("boulderGoalTester", "Standard"));
+        assertThrows(IllegalArgumentException.class, () -> controller.tick("random", null));
     }
 
-    // public void tickHealthPotion() {
-    //     DungeonManiaController controller = new DungeonManiaController();
-    //     assertDoesNotThrow(() -> controller.newGame("boulderGoalTester", "Standard"));
-    //     assertDoesNotThrow(() -> controller.tick(null , Direction.UP));
+    @Test
+    public void testTickItemNotInInventory() {
+        DungeonManiaController controller = new DungeonManiaController();
+        assertDoesNotThrow(() -> controller.newGame("exit", "Standard"));
 
-    //     EntityResponse playerResponse = new EntityResponse("0", "player", new Position(1, 3), false);
-    //     EntityResponse boulderResponse = new EntityResponse("1", "boulder", new Position(1, 1), false);
-    //     EntityResponse switchResponse = new EntityResponse("2", "switch", new Position(1, 0), false);
+        assertThrows(IllegalArgumentException.class, () -> controller.tick("invincibility-potion", null));
+    }
 
-    //     List<EntityResponse> entityResponseList = new ArrayList<>(Arrays.asList(playerResponse, boulderResponse, switchResponse));
-    //     List<ItemResponse> inventoryList = new ArrayList<>();
-    //     List<String> buildablesList = new ArrayList<>();
-    //     assertEquals(new DungeonResponse("0", "boulderGoalTester", entityResponseList, inventoryList, buildablesList, ":boulders "), controller.newGame("boulderGoalTester", "Standard"));
-    // }
-    
+    @Test
+    public void testTickMovement() {
+        DungeonManiaController controller = new DungeonManiaController();
+        DungeonResponse dungeonInfoPre = controller.newGame("boulderGoalTester", "Standard");
+
+        assertEquals("Player", dungeonInfoPre.getEntities().get(0).getType());
+        assertEquals("Boulder", dungeonInfoPre.getEntities().get(1).getType());
+        assertEquals("Switch", dungeonInfoPre.getEntities().get(2).getType());
+        assertEquals(3, dungeonInfoPre.getEntities().size());
+
+        assertEquals(3, controller.getActiveGame().getEntities().size());
+
+
+        DungeonResponse dungeonInfo = controller.tick(null, Direction.UP);
+        assertEquals(3, dungeonInfo.getEntities().size());
+
+        assertEquals(new ArrayList<>(), dungeonInfo.getInventory());
+
+        assertEquals("Player", dungeonInfo.getEntities().get(0).getType());
+        assertEquals(new Position(1, 1), dungeonInfo.getEntities().get(0).getPosition());
+        assertEquals("0", dungeonInfo.getEntities().get(0).getId());
+        assertEquals(false, dungeonInfo.getEntities().get(0).isInteractable());
+
+        assertEquals("Player", dungeonInfo.getEntities().get(0).getType());
+        assertEquals("Boulder", dungeonInfo.getEntities().get(1).getType());
+        assertEquals("Switch", dungeonInfo.getEntities().get(2).getType());
+        assertEquals(3, dungeonInfo.getEntities().size());
+    }
+
+    @Test
+    public void testInteractInvalidEntityId() {
+        DungeonManiaController controller = new DungeonManiaController();
+        assertDoesNotThrow(() -> controller.newGame("exit", "Standard"));
+
+        assertThrows(IllegalArgumentException.class, () -> controller.interact("random"));
+    }
+
+    @Test
+    public void testInteractNoGoldOrWeapon() {
+        DungeonManiaController controller = new DungeonManiaController();
+        assertDoesNotThrow(() -> controller.newGame("interactInvalidTester", "Standard"));
+
+        assertThrows(IllegalArgumentException.class, () -> controller.interact("mercenary"));
+        assertThrows(IllegalArgumentException.class, () -> controller.interact("zombie_toast_spawner"));
+    }
+
+    @Test
+    public void testInteractBribingSuccessful() {
+        DungeonManiaController controller = new DungeonManiaController();
+        assertDoesNotThrow(() -> controller.loadGame("interactTesterSuccessful"));
+
+        Dungeon activeGame = controller.getActiveGame();
+        assertEquals("Mercenary", activeGame.getEntities().get(1).getType());
+        
+        Inventory inv = activeGame.getInventory();
+
+        assertEquals(Arrays.asList("Treasure"), inv.listInventory());
+
+        assertEquals("Treasure", activeGame.getInventory().getInventoryList().get(0).getType());
+        
+        // Treasure treasure = new Treasure(new Position(3, 3), activeGame);
+        // activeGame.moveToInventory(treasure);
+        // assertEquals("Treasure", activeGame.getInventory().getInventoryList().get(1).getType());
+
+        controller.interact("1");
+
+        Dungeon dungeon = controller.getActiveGame();
+        List<Entity> entities = dungeon.getEntities();
+        boolean isAlly = false;
+
+        for (Entity entity: entities) {
+            if (entity instanceof Mercenary) {
+                isAlly = ((Mercenary)entity).isAlly();
+            }
+        }
+
+        assertEquals(true, isAlly);
+    }
+
+    @Test
+    public void testBuildables() {
+        DungeonManiaController controller = new DungeonManiaController();
+        assertThrows(IllegalArgumentException.class, () -> controller.build("random"));
+
+    }
+
+
+
+
+    //TODO: Test exception thrown when merc and zombie spawner too far
+    //TODO: Test zombie toast spawner is killed
+    // TODO: Test potion usage.
 
 
 }
