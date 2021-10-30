@@ -170,15 +170,15 @@ public class DungeonManiaController {
                 case "sword":
                     currEntity = new Sword(currPosition, activeGame);
                     break;
-                case "armour":
-                    currEntity = new Armour(activeGame);
-                    break;
-                case "bow":
-                    currEntity = new Bow(activeGame);
-                    break;
-                case "shield":
-                    currEntity = new Shield(activeGame);
-                    break;
+                // case "armour":
+                //     currEntity = new Armour(activeGame);
+                //     break;
+                // case "bow":
+                //     currEntity = new Bow(activeGame);
+                //     break;
+                // case "shield":
+                //     currEntity = new Shield(activeGame);
+                //     break;
                 case "player":
                     currEntity = new Player(currPosition, activeGame);
                     break;
@@ -463,15 +463,13 @@ public class DungeonManiaController {
                 case "Sword":
                     currEntity = new Sword(currPosition, activeGame);
                     break;
-                case "Armour":
-                    currEntity = new Armour(activeGame);
-                    break;
-                case "Bow":
-                    currEntity = new Bow(activeGame);
-                    break;
-                case "Shield":
-                    currEntity = new Shield(activeGame);
-                    break;
+
+                // case "Bow":
+                //     currEntity = new Bow(activeGame);
+                //     break;
+                // case "Shield":
+                //     currEntity = new Shield(activeGame);
+                //     break;
                 case "Player":
                     currEntity = new Player(currPosition, activeGame, entityList.getJSONObject(i).getInt("health"));
                     break;
@@ -523,20 +521,19 @@ public class DungeonManiaController {
                     break;
                 case "Sword":
                     currItem = new Sword(posPlaceholder, activeGame);
-                    ((Item) currItem).setUsesLeft(itemList.getJSONObject(i).getInt("durability"));
+                    ((Item) currItem).setUsesLeft(itemList.getJSONObject(i).getInt("usesLeft"));
                     break;
-                // case "Armour":
-                //     currItem = new Armour(posPlaceholder, activeGame);
-                //     currItem.setUsesLeft(itemList.getJSONObject(i).getInt("durability"));
-                //     break;
-                // case "Bow":
-                //     currItem = new bow(posPlaceholder, activeGame);
-                //     currItem.setUsesLeft(itemList.getJSONObject(i).getInt("durability"));
-                //     break;
-                // case "Shield":
-                //     currItem = new shield(posPlaceholder, activeGame);
-                //     currItem.setUsesLeft(itemList.getJSONObject(i).getInt("durability"));
-                //     break;
+                case "Armour":
+                    currItem = new Armour(activeGame, itemList.getJSONObject(i).getInt("usesLeft"));
+                    break;
+                case "Bow":
+                    currItem = new Bow(activeGame);
+                    currItem.setUsesLeft(itemList.getJSONObject(i).getInt("usesLeft"));
+                    break;
+                case "Shield":
+                    currItem = new Shield(activeGame);
+                    currItem.setUsesLeft(itemList.getJSONObject(i).getInt("usesLeft"));
+                    break;
             }
             itemResponses.add(new ItemResponse(currItem.getId(), currItem.getType()));
 
@@ -572,11 +569,18 @@ public class DungeonManiaController {
     public DungeonResponse tick(String itemUsed, Direction movementDirection) throws IllegalArgumentException, InvalidActionException {
         //  Move character and all moving entities.
         
-        // check for errors for each
         Player player = activeGame.getPlayer();
 
+        // Use item if appropriate.
         player.useItem(itemUsed);
 
+        // Move all enemies
+        List<Entity> entities = activeGame.getEntities();
+        for (Entity entity: entities) {
+            if (entity instanceof Enemy) {
+                ((Enemy) entity).updatePosition();
+            }
+        }
 
         // Only move if no item was used.
         if (itemUsed.equals(null) || itemUsed.equals("")) {
