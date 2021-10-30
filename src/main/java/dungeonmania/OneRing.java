@@ -15,7 +15,7 @@ public class OneRing extends Item {
     @Override
     public void activate(Player character) {
         super.activate(character);
-        character.setHealth(Player.ORIGINAL_HEALTH);
+        character.setHealth(character.getDungeon().getGamemode().getStartingHealth());
     }
 
     @Override

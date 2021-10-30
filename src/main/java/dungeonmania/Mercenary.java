@@ -9,6 +9,7 @@ import dungeonmania.util.Position;
 public class Mercenary extends Enemy {
     public static final int ORIGINAL_HEALTH = 10;
     public static final int MERCENARY_ATTACK_DAMAGE = 4;
+    public static final int BATTLE_RADIUS = 3;
 
     private int x = getPosition().getX();
     private int y = getPosition().getY();
@@ -86,5 +87,39 @@ public class Mercenary extends Enemy {
     @Override
     public String setType() {
         return "Mercenary";
+    }
+
+
+    public boolean withinPlayerRadius(Player player) {
+        for (Position p : battleRadiusPositions(getPosition())) {
+            if (player.getPosition().equals(p)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // below functions are from bomb
+
+    public List<Position> battleRadiusPositions(Position pos) {
+        List<Position> battleRadiusPositions = new ArrayList<Position>();
+        int currX = pos.getX();
+        int currY = pos.getY();
+        for (int i = currX - BATTLE_RADIUS; i <= currX + BATTLE_RADIUS; i++) {
+            for (int j = currY - BATTLE_RADIUS; j <= currY + BATTLE_RADIUS; j++) {
+                Position p = new Position(i, j);
+                if (calculateDistance(p, pos) <= BATTLE_RADIUS) {
+                    battleRadiusPositions.add(p);
+                }
+            }
+        }
+        return battleRadiusPositions;
+    }
+
+    private static int calculateDistance(Position pos1, Position pos2) {
+        Position dirVector = Position.calculatePositionBetween(pos1, pos2);
+        int squaredDist = (dirVector.getX() * dirVector.getX()) + (dirVector.getY() * dirVector.getY());
+        // always rounds up
+        return (int) Math.ceil(Math.sqrt(squaredDist));
     }
 }
