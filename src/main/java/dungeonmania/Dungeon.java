@@ -103,6 +103,11 @@ public class Dungeon {
         return null;
     }
 
+    public void moveToInventory(Item item) {
+        inventory.add(item);
+        entities.remove(item);
+    }
+
     /**
      * @return Inventory return the inventory
      */
