@@ -6,6 +6,7 @@ public class Treasure extends Item {
 
     public Treasure (Position position, Dungeon dungeon) {
         super(position, dungeon);
+        dungeon.addEntity(this);
     }
  
     @Override

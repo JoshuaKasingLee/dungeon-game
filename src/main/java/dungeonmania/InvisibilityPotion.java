@@ -6,6 +6,7 @@ public class InvisibilityPotion extends Item {
 
     public InvisibilityPotion (Position position, Dungeon dungeon) {
         super(position, dungeon);
+        dungeon.addEntity(this);
     }
 
     @Override

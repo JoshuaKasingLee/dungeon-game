@@ -6,6 +6,7 @@ public class Arrow extends Item {
 
     public Arrow (Position position, Dungeon dungeon) {
         super(position, dungeon);
+        dungeon.addEntity(this);
     }
     
     @Override

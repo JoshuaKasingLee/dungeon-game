@@ -5,6 +5,7 @@ import dungeonmania.util.Position;
 public class OneRing extends Item {
     public OneRing (Position position, Dungeon dungeon) {
         super(position, dungeon);
+        dungeon.addEntity(this);
     }
 
     /**

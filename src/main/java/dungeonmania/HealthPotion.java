@@ -6,6 +6,7 @@ public class HealthPotion extends Item {
 
     public HealthPotion (Position position, Dungeon dungeon) {
         super(position, dungeon);
+        dungeon.addEntity(this);
     }
 
     /**

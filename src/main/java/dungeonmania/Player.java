@@ -11,7 +11,6 @@ public class Player extends MovingEntity {
     private CharacterState characterState;
     public static final int ORIGINAL_HEALTH = 10;
     public static final int CHARACTER_ATTACK_DAMAGE = 3;
-    private List<Mercenary> allies = new ArrayList<Mercenary>();
 
     public Player(Position position, Dungeon dungeon) {
         super(position, dungeon);
@@ -140,7 +139,6 @@ public class Player extends MovingEntity {
             if (p.equals(getPosition())) {
                 inventory.use("Treasure", this); // will throw exception in use if no treasure
                 mercenary.setAlly(true);
-                addAllies(mercenary);
                 break;
             } else {
                 throw new InvalidActionException("Mercenary is not within 2 cardinal tiles");
@@ -221,20 +219,6 @@ public class Player extends MovingEntity {
      */
     public void setCharacterState(CharacterState characterState) {
         this.characterState = characterState;
-    }
-
-    /**
-     * @return List<Mercenary> return the allies
-     */
-    public List<Mercenary> getAllies() {
-        return allies;
-    }
-
-    /**
-     * @param mercenary add allies to list
-     */
-    public void addAllies(Mercenary mercenary) {
-        allies.add(mercenary);
     }
 
     @Override

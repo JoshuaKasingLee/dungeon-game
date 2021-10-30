@@ -11,6 +11,7 @@ public abstract class MovingEntity extends Entity {
         super(position, dungeon);
         this.health = 0;
         this.attackDamage = 0;
+        dungeon.addEntity(this);
     }
 
     // basic getters and setters

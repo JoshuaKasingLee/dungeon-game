@@ -8,6 +8,7 @@ public class Key extends Item {
     public Key (Position position, Dungeon dungeon, int key) {
         super(position, dungeon);
         this.key = key;
+        dungeon.addEntity(this);
     }
 
     @Override

@@ -8,6 +8,7 @@ public class Sword extends Item {
     public Sword(Position position, Dungeon dungeon) {
         super(position, dungeon);
         this.setUsesLeft(3);
+        dungeon.addEntity(this);
     }
 
     @Override

@@ -9,6 +9,7 @@ public class Bomb extends Item {
 
     public Bomb (Position position, Dungeon dungeon) {
         super(position, dungeon);
+        dungeon.addEntity(this);
     }
 
     /**

@@ -6,6 +6,7 @@ import dungeonmania.util.Direction;
 public abstract class StaticEntity extends Entity {
     public StaticEntity(Position position, Dungeon dungeon) {
         super(position, dungeon);
+        dungeon.addEntity(this);
     }
 
     /**
