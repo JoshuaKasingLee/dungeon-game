@@ -77,7 +77,7 @@ public class DungeonManiaController {
         try {
             fileContents = FileLoader.loadResourceFile("/dungeons/" + dungeonName + ".json");
         } catch(IOException e) {
-            System.out.println("YOOOOOOOO YOU DIDN'T LOAD A FILE BRUV");
+            System.out.println("File couldn't be loaded");
         }
         String dungeonId = newDungeonId();
 
@@ -191,21 +191,21 @@ public class DungeonManiaController {
         
         JSONObject goalCondition = dungeonObj.getJSONObject("goal-condition");
 
-        String goalString = "";
-        GoalComponent overallGoal = extractAllGoals(goalCondition, activeGame, goalString);
+        GoalComponent overallGoal = extractAllGoals(goalCondition, activeGame);
         activeGame.setOverallGoal(overallGoal); 
+        
+        String goalString = "";
+        for (GoalComponent simpleGoal : activeGame.getSimpleGoals()) {
+            String simpleGoalString = simpleGoal.simpleGoalToString();
+            if (!goalString.contains(simpleGoalString)) {
+                goalString += simpleGoal.simpleGoalToString();
+            }
+        }
         
         return new DungeonResponse(dungeonId, dungeonName, entityResponses, new ArrayList<ItemResponse>(), new ArrayList<String>(), goalString);
     }
     
-    public DungeonResponse saveGame(String name) throws IllegalArgumentException {
-
-
-        // do we even need to test for invalid save name? you can always save?
-        if (allGames().contains(name)) {
-            throw new IllegalArgumentException("Invalid saveName");
-        }
-        // save activeGame as a JSON and solve it
+    public DungeonResponse saveGame(String name) {
 
         
         List<Entity> entities = activeGame.getEntities();
@@ -331,10 +331,12 @@ public class DungeonManiaController {
         String dungeonSave = dungeonJSON.toString();
 
         try {
-            PrintWriter fileLocation = new PrintWriter(new FileWriter("saveFiles\\" + name + ".json"));
+            PrintWriter fileLocation = new PrintWriter(new FileWriter("./src/main/resources/saveFiles/" + name + ".json"));
             fileLocation.print(dungeonSave);
             fileLocation.close();
         } catch (IOException e) {
+            System.out.println("Working Directory = " + System.getProperty("user.dir"));
+            System.out.println(e.toString());
             return null;
         }
 
@@ -349,7 +351,6 @@ public class DungeonManiaController {
         }
 
         List<String> buildables = activeGame.getInventory().getBuildables();
-        
         return new DungeonResponse(dungeonId, dungeonName, entityResponses, itemResponses, buildables, goalString);
     }
 
@@ -364,6 +365,8 @@ public class DungeonManiaController {
         try {
             fileContents = FileLoader.loadResourceFile("/saveFiles/" + name + ".json");
         } catch (IOException e) {
+            System.out.println("Working Directory = " + System.getProperty("user.dir"));
+            System.out.println(e.toString());
             return null;
         }
         JSONObject dungeonObj = new JSONObject(fileContents);
@@ -374,7 +377,7 @@ public class DungeonManiaController {
         // WE NEED TO CONVERT TO STRING!!
         String dungeonName = dungeonObj.getString("dungeonName");
         String dungeonId = dungeonObj.getString("dungeonId");
-        String dungeonMode = dungeonObj.getString("gameMode");
+        String dungeonMode = dungeonObj.getString("gamemode");
 
         Dungeon activeGame = new Dungeon(dungeonName, dungeonMode, dungeonId);
         JSONArray entityList = dungeonObj.getJSONArray("entities");
@@ -541,9 +544,16 @@ public class DungeonManiaController {
         }
 
         JSONObject goalCondition = dungeonObj.getJSONObject("goal-condition");
-        String goalString = "";
-        GoalComponent overallGoal = extractAllGoals(goalCondition, activeGame, goalString);
+        GoalComponent overallGoal = extractAllGoals(goalCondition, activeGame);
         activeGame.setOverallGoal(overallGoal); 
+
+        String goalString = "";
+        for (GoalComponent simpleGoal : activeGame.getSimpleGoals()) {
+            String simpleGoalString = simpleGoal.simpleGoalToString();
+            if (!goalString.contains(simpleGoalString)) {
+                goalString += simpleGoal.simpleGoalToString();
+            }
+        }
 
         List<String> buildables = activeGame.getInventory().getBuildables();
         
@@ -648,7 +658,7 @@ public class DungeonManiaController {
     }
 
 
-    public GoalComponent extractAllGoals(JSONObject goalCondition, Dungeon activeGame, String goalString) {
+    public GoalComponent extractAllGoals(JSONObject goalCondition, Dungeon activeGame) {
         GoalComponent overallGoal = null;
         switch (goalCondition.getString("goal")) {                
             case "AND":
@@ -656,7 +666,7 @@ public class DungeonManiaController {
 
                 JSONArray subgoalsAnd = goalCondition.getJSONArray("subgoals");
                 for (int i = 0; i < subgoalsAnd.length(); i++) {
-                    GoalComponent goal = extractAllGoals(subgoalsAnd.getJSONObject(i), activeGame, goalString);
+                    GoalComponent goal = extractAllGoals(subgoalsAnd.getJSONObject(i), activeGame);
                     newAndGoal.addSubgoal(goal);
                 }
 
@@ -668,7 +678,7 @@ public class DungeonManiaController {
 
                 JSONArray subgoalsOr = goalCondition.getJSONArray("subgoals");
                 for (int i = 0; i < subgoalsOr.length(); i++) {
-                    GoalComponent goal = extractAllGoals(subgoalsOr.getJSONObject(i), activeGame, goalString);
+                    GoalComponent goal = extractAllGoals(subgoalsOr.getJSONObject(i), activeGame);
                     newOrGoal.addSubgoal(goal);
                 }
 
@@ -678,30 +688,30 @@ public class DungeonManiaController {
             case "enemies":
                 overallGoal = new EnemiesAndSpawnerGoal();
                 activeGame.addSimpleGoals(overallGoal);
-                if (!goalString.contains("enemies")) {
-                    goalString += ":enemies ";
-                }
+                // if (!goalString.contains("enemies")) {
+                //     goalString += ":enemies ";
+                // }
                 break;
             case "treasure":
                 overallGoal = new CollectTreasureGoal();
                 activeGame.addSimpleGoals(overallGoal);
-                if (!goalString.contains("treasure")) {
-                    goalString += ":treasure ";
-                }
+                // if (!goalString.contains("treasure")) {
+                //     goalString += ":treasure ";
+                // }
                 break;
-            case "boulder":
+            case "boulders":
                 overallGoal = new BoulderOnSwitchGoal();
                 activeGame.addSimpleGoals(overallGoal);
-                if (!goalString.contains("boulder")) {
-                    goalString += ":boulders ";
-                }
+                // if (!goalString.contains("boulder")) {
+                //     goalString += ":boulder ";
+                // }
                 break;
             case "exit":
                 overallGoal = new ExitGoal();
                 activeGame.addSimpleGoals(overallGoal);
-                if (!goalString.contains("exit")) {
-                    goalString += ":exit ";
-                }
+                // if (!goalString.contains("exit")) {
+                //     goalString += ":exit ";
+                // }
                 break;  
         }
         return overallGoal;
@@ -716,5 +726,20 @@ public class DungeonManiaController {
 
     
 
+
+
+    /**
+     * @return Dungeon return the activeGame
+     */
+    public Dungeon getActiveGame() {
+        return activeGame;
+    }
+
+    /**
+     * @param activeGame the activeGame to set
+     */
+    public void setActiveGame(Dungeon activeGame) {
+        this.activeGame = activeGame;
+    }
 
 }
