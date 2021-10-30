@@ -291,7 +291,7 @@ public class CharacterTest {
         Spider spider = new Spider(new Position(0, 0), character.getDungeon());
         int expectedEnemyHealth = spider.getHealth() - ((character.getHealth() * character.getAttackDamage()) / 5);
         state.battleEnemy(spider);
-        assertEquals(character.getHealth(), Player.ORIGINAL_HEALTH);
+        assertEquals(character.getHealth(), Player.ORIGINAL_HEALTH_STANDARD);
         assertEquals(spider.getHealth(), expectedEnemyHealth);
     }
 
@@ -316,7 +316,7 @@ public class CharacterTest {
         // spider battle - shows sword priority over bow, and shield over armour
         Spider spider = new Spider(new Position(0, 0), character.getDungeon());
         state.battleEnemy(spider);
-        assertEquals(character.getHealth(), Player.ORIGINAL_HEALTH);
+        assertEquals(character.getHealth(), Player.ORIGINAL_HEALTH_STANDARD);
         assertEquals(spider.getHealth(), 0);
     }
 
@@ -412,17 +412,17 @@ public class CharacterTest {
         // character cannot lose health points, enemy health instantly depleted
         Spider spider = new Spider(new Position(0, 0), character.getDungeon());
         state.battleEnemy(spider);
-        assertTrue(character.getHealth() == Player.ORIGINAL_HEALTH);
+        assertTrue(character.getHealth() == Player.ORIGINAL_HEALTH_STANDARD);
         assertTrue(spider.getHealth() == 0);
 
         ZombieToast zombie = new ZombieToast(new Position(0, 0), character.getDungeon());
         state.battleEnemy(zombie);
-        assertTrue(character.getHealth() == Player.ORIGINAL_HEALTH);
+        assertTrue(character.getHealth() == Player.ORIGINAL_HEALTH_STANDARD);
         assertTrue(zombie.getHealth() == 0);
 
         Mercenary merc = new Mercenary(new Position(0, 0), character.getDungeon());
         state.battleEnemy(merc);
-        assertTrue(character.getHealth() == Player.ORIGINAL_HEALTH);
+        assertTrue(character.getHealth() == Player.ORIGINAL_HEALTH_STANDARD);
         assertTrue(merc.getHealth() == 0);
     }
 
@@ -439,17 +439,17 @@ public class CharacterTest {
         // no health deductions should be made
         Spider spider = new Spider(new Position(0, 0), character.getDungeon());
         state.battleEnemy(spider);
-        assertTrue(character.getHealth() == Player.ORIGINAL_HEALTH);
+        assertTrue(character.getHealth() == Player.ORIGINAL_HEALTH_STANDARD);
         assertTrue(spider.getHealth() == Spider.ORIGINAL_HEALTH);
 
         ZombieToast zombie = new ZombieToast(new Position(0, 0), character.getDungeon());
         state.battleEnemy(zombie);
-        assertTrue(character.getHealth() == Player.ORIGINAL_HEALTH);
+        assertTrue(character.getHealth() == Player.ORIGINAL_HEALTH_STANDARD);
         assertTrue(zombie.getHealth() == ZombieToast.ORIGINAL_HEALTH);
 
         Mercenary merc = new Mercenary(new Position(0, 0), character.getDungeon());
         state.battleEnemy(merc);
-        assertTrue(character.getHealth() == Player.ORIGINAL_HEALTH);
+        assertTrue(character.getHealth() == Player.ORIGINAL_HEALTH_STANDARD);
         assertTrue(merc.getHealth() == Mercenary.ORIGINAL_HEALTH);
     }
 
@@ -465,7 +465,7 @@ public class CharacterTest {
         Mercenary merc = new Mercenary(new Position(0, 0), character.getDungeon());
         merc.setAlly(true);
         state.battleEnemy(merc);
-        assertEquals(character.getHealth(), Player.ORIGINAL_HEALTH);
+        assertEquals(character.getHealth(), Player.ORIGINAL_HEALTH_STANDARD);
         assertEquals(merc.getHealth(), Mercenary.ORIGINAL_HEALTH);
     }
 
@@ -517,7 +517,7 @@ public class CharacterTest {
         // fight should happen, one ring should be used since merc can kill character
         assertEquals(Arrays.asList(character, ring, merc), character.getDungeon().getEntities());
         assertEquals(Arrays.asList(), inv.listInventory());
-        assertEquals(Player.ORIGINAL_HEALTH, character.getHealth());
+        assertEquals(Player.ORIGINAL_HEALTH_STANDARD, character.getHealth());
     }
 
     @Test
@@ -608,6 +608,49 @@ public class CharacterTest {
         ZombieToastSpawner z = new ZombieToastSpawner(new Position(0, 1), character.getDungeon());
         // no weapon - should fail
         assertThrows(InvalidActionException.class, () -> character.destroySpawner(z));
+    }
+
+    @Test
+    public void testPeacefulBattleHealth() {
+        // tests health score after battle (ignoring deaths)
+        // NEED TO FIX - ALSO NEED TO DO FIGHT ENEMIES INSTEAD OF JUST BATTLE
+        Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Peaceful", "1"));
+        CharacterState state = character.getCharacterState();
+        assertEquals(state.getType(), "Standard");
+       
+        // spider battle
+        Spider spider = new Spider(new Position(0, 0), character.getDungeon());
+        int expectedEnemyHealth = spider.getHealth() - ((character.getHealth() * character.getAttackDamage()) / 5);
+        state.battleEnemy(spider); // if spider is killed it may not exist after this
+        assertTrue(character.getHealth() == Player.ORIGINAL_HEALTH_STANDARD);
+        assertEquals(spider.getHealth(), expectedEnemyHealth);
+
+        ZombieToast zombie = new ZombieToast(new Position(0, 0), character.getDungeon());
+        state.battleEnemy(zombie);
+        assertEquals(character.getHealth(), Player.ORIGINAL_HEALTH_STANDARD);
+    }
+
+    @Test
+    public void testGamemodeHardHealth() {
+        // tests health score after battle (ignoring deaths)
+        // NEED TO FIX - ALSO NEED TO DO FIGHT ENEMIES INSTEAD OF JUST BATTLE
+        Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Hard", "1"));
+        Inventory inv = character.getInventory();
+        CharacterState state = character.getCharacterState();
+        assertEquals(state.getType(), "Standard");
+
+        InvincibilityPotion i1 = new InvincibilityPotion(new Position(0, 0), character.getDungeon());
+        inv.add(i1);
+        character.useItem("InvincibilityPotion");
+        state = character.getCharacterState();
+        assertEquals(state.getType(), "Standard");
+
+        assertTrue(character.getHealth() == Player.ORIGINAL_HEALTH_HARD);
+        character.setHealth(0);
+        assertTrue(character.getHealth() == 0);
+        inv.add(new HealthPotion(new Position(0, 0), character.getDungeon()));
+        character.useItem("HealthPotion");
+        assertTrue(character.getHealth() == Player.ORIGINAL_HEALTH_HARD);
     }
 
 }
