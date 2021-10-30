@@ -47,20 +47,20 @@ public class ItemTest {
     @Test
     public void testHealthPotion() {
         Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
-        assertEquals(Player.ORIGINAL_HEALTH, character.getHealth());
+        assertEquals(Player.ORIGINAL_HEALTH_STANDARD, character.getHealth());
         Inventory inv = character.getInventory();
         HealthPotion potion = new HealthPotion(new Position(0, 0), character.getDungeon());
         inv.add(potion);
         character.setHealth(2);
         assertEquals(2, character.getHealth());
         inv.use("HealthPotion", character);
-        assertEquals(Player.ORIGINAL_HEALTH, character.getHealth());
+        assertEquals(Player.ORIGINAL_HEALTH_STANDARD, character.getHealth());
     }
 
     @Test
     public void useInvisibilityPotion() {
         Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
-        assertEquals(Player.ORIGINAL_HEALTH, character.getHealth());
+        assertEquals(Player.ORIGINAL_HEALTH_STANDARD, character.getHealth());
         Inventory inv = character.getInventory();
         InvisibilityPotion i = new InvisibilityPotion(new Position(0, 0), character.getDungeon());
         inv.add(i);
@@ -73,7 +73,7 @@ public class ItemTest {
     @Test
     public void useInvincibilityPotion() {
         Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
-        assertEquals(Player.ORIGINAL_HEALTH, character.getHealth());
+        assertEquals(Player.ORIGINAL_HEALTH_STANDARD, character.getHealth());
         Inventory inv = character.getInventory();
         InvincibilityPotion i = new InvincibilityPotion(new Position(0, 0), character.getDungeon());
         inv.add(i);
@@ -115,14 +115,14 @@ public class ItemTest {
     @Test
     public void useOneRing() {
         Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
-        assertEquals(Player.ORIGINAL_HEALTH, character.getHealth());
+        assertEquals(Player.ORIGINAL_HEALTH_STANDARD, character.getHealth());
         Inventory inv = character.getInventory();
         OneRing ring = new OneRing(new Position(0, 0), character.getDungeon());
         inv.add(ring);
         character.setHealth(-1);
         assertEquals(-1, character.getHealth());
         inv.use("OneRing", character);
-        assertEquals(Player.ORIGINAL_HEALTH, character.getHealth());
+        assertEquals(Player.ORIGINAL_HEALTH_STANDARD, character.getHealth());
         // more testing in character.java
     }
     

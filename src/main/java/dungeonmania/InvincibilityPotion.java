@@ -11,7 +11,10 @@ public class InvincibilityPotion extends Item {
     @Override
     public void activate(Player character) {
         super.activate(character);
-        character.setCharacterState(new InvincibleState(character));
+        if (character.getDungeon().getGamemode().getInvincible()) {
+            character.setCharacterState(new InvincibleState(character));
+        }
+        
     }
 
     @Override

@@ -20,7 +20,6 @@ public abstract class Enemy extends MovingEntity {
             this.setHealth(newHealth);
             this.armour = armour - 1;
         } else {
-            System.out.println("hello");
             int newHealth = getHealth() - ((other.getHealth() * other.getAttackDamage()) / 5 );
             this.setHealth(newHealth);
         } 
