@@ -11,6 +11,17 @@ public class StandardState implements CharacterState {
 
 
     public void battleEnemy(Enemy enemy) {
+        // update mercenary position if they are within battle enemy
+        // assume position is updated once per battle, not per round
+        for (Entity e : character.getDungeon().getEntities()) {
+            if (e instanceof Mercenary) {
+                Mercenary m = (Mercenary) e;
+                if (!m.isAlly()) {
+                    m.updatePosition();
+                }
+            }
+        }
+
         while (enemy.getHealth() > 0 && character.getHealth() > 0 && !enemy.isAlly()) {
             // assume original health points at start of round are used in battle
             int enemyOriginalHealth = enemy.getHealth();
@@ -31,6 +42,17 @@ public class StandardState implements CharacterState {
                 enemy.updateHealth(character);
             }
 
+            // assume mercenary fights even if enemies has is already zero
+            for (Entity e : character.getDungeon().getEntities()) {
+                if (e instanceof Mercenary) {
+                    Mercenary m = (Mercenary) e;
+                    if (m.isAlly()) {
+                        enemy.updateHealth(m);
+                    }
+                }
+            }
+
+            // assume enemy only hits the player, not mercernaries
             // prioritise using shield over armour
             // assume can only use one protection per round - to save protection e.g. no point using armour if shield already deflects all attack
             // equip protection to receive attack
