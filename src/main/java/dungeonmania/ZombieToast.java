@@ -17,10 +17,14 @@ public class ZombieToast extends Enemy {
 
     public ZombieToast(Position position, Dungeon dungeon, int durability) {
         this(position, dungeon);
-        setDurability(durability);
+        giveArmour(durability);
         
     }
 
+    /** 
+     * updates zombietoast's position for 1 tick
+     * moves zombie in random valid direction
+     */
     @Override
     public void updatePosition() {
         Random rand = new Random();
@@ -35,7 +39,10 @@ public class ZombieToast extends Enemy {
             moveRight();
         }
     }
-
+    
+    /** 
+     * @return String
+     */
     @Override
     public String setType() {
         return "ZombieToast";

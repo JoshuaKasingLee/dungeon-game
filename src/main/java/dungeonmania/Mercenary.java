@@ -31,7 +31,7 @@ public class Mercenary extends Enemy {
 
     public Mercenary(Position position, Dungeon dungeon, int durability, boolean isAlly) {
         this(position, dungeon);
-        setDurability(durability);
+        giveArmour(durability);
         setAlly(isAlly);
     }
 
@@ -57,6 +57,10 @@ public class Mercenary extends Enemy {
         // }
     }
 
+    
+    /** 
+     * @return List<Position>
+     */
     public List<Position> getPossiblePositions() {
         List<Position> possiblePositions = new ArrayList<Position>();
         // Up position
@@ -73,6 +77,10 @@ public class Mercenary extends Enemy {
         return possiblePositions;
     }
     
+    
+    /** 
+     * @return List<Double>
+     */
     public List<Double> getDistanceOfPositions() {
         // List<Double> distanceOfPositions = new ArrayList<Double>();
         // for (Position possiblePosition : possiblePositions) {
@@ -84,12 +92,22 @@ public class Mercenary extends Enemy {
         return new ArrayList<Double>();
     }
 
+    
+    /** 
+     * @return String
+     */
     @Override
     public String setType() {
         return "Mercenary";
     }
 
 
+    
+    /** 
+     * returns true if player is within mercenary's battle radius, false if else
+     * @param player
+     * @return boolean
+     */
     public boolean withinPlayerRadius(Player player) {
         for (Position p : battleRadiusPositions(getPosition())) {
             if (player.getPosition().equals(p)) {
@@ -99,9 +117,14 @@ public class Mercenary extends Enemy {
         return false;
     }
 
-    // below functions are from bomb
+    // helper functions
 
-    public List<Position> battleRadiusPositions(Position pos) {
+    /** 
+     * returns list of all positions within mercenary's battle radius
+     * @param pos
+     * @return List<Position>
+     */
+    private static List<Position> battleRadiusPositions(Position pos) {
         List<Position> battleRadiusPositions = new ArrayList<Position>();
         int currX = pos.getX();
         int currY = pos.getY();
@@ -116,6 +139,12 @@ public class Mercenary extends Enemy {
         return battleRadiusPositions;
     }
 
+    /** 
+     * returns distance between two positions, rounded to nearest whole number
+     * @param pos1
+     * @param pos2
+     * @return int
+     */
     private static int calculateDistance(Position pos1, Position pos2) {
         Position dirVector = Position.calculatePositionBetween(pos1, pos2);
         int squaredDist = (dirVector.getX() * dirVector.getX()) + (dirVector.getY() * dirVector.getY());

@@ -25,7 +25,12 @@ public class Player extends MovingEntity {
         setHealth(currHealth);
     }
 
-    // assume we pick items after we fight enemies
+     // move functions
+    
+    /** 
+     * moves the player one unit in current direction, fighting all enemies and picking up all items
+     * @param direction
+     */
     @Override
     public void move(Direction direction) {
         super.move(direction);
@@ -34,18 +39,18 @@ public class Player extends MovingEntity {
         characterState.updateState();
     }
 
-    // move checking functions
-
+    /** 
+     * returns true if a move to the given position is valid, false if else
+     * @param pos
+     * @param dir
+     * @return boolean
+     */
     @Override
     public boolean checkValidMove(Position pos, Direction dir) {
-        // check for obstructions
         for (Entity e : getDungeon().getEntities(pos)) {
-            // assume can't walk on top of spawner
             if (e instanceof Wall || e instanceof ZombieToastSpawner || !checkUnlockedDoor(pos)) {
                 return false;
             }
-            // assume boulders never exist on the edge of the dungeon (i.e. there is always a wall border)
-            // assume boulder can be pushed onto items/other moving entities
             if (e instanceof Boulder) {
                 System.out.println(pos.toString());
                 Position newPos = pos.translateBy(dir);
@@ -64,7 +69,7 @@ public class Player extends MovingEntity {
 
     /** 
      * checks whether door exists in position, and if so returns true if we can unlock it
-     * returns false if no door or no correct key
+     * returns false if door and no correct key
      * @param pos
      * @return boolean
      */
@@ -81,7 +86,12 @@ public class Player extends MovingEntity {
     }
 
     // fighting functions
-
+    
+    /** 
+     * simulates battle between two entities on same position
+     * removes loser from dungeon, and player inherits armour if enemy possesses it
+     * @param pos
+     */
     public void fightEnemies(Position pos) {
         for (Entity entity : getDungeon().getEntities(pos)) {
             if (entity instanceof Enemy) {
@@ -98,7 +108,6 @@ public class Player extends MovingEntity {
                     }
                     // if enemy health is below zero
                     if (e.getHealth() <=0 ) {
-                        // check for armour
                         if (e.getArmour() > 0) {
                             Armour a = new Armour(getDungeon(), e.getArmour());
                             inventory.add(a);
@@ -111,7 +120,11 @@ public class Player extends MovingEntity {
     }
 
     // item functions
-
+    
+    /** 
+     * add items in given position to player inventory, and remove from dungeon
+     * @param pos
+     */
     public void pickItems(Position pos) {
         for (Entity e : getDungeon().getEntities(pos)) {
             if (e instanceof Item) {
@@ -122,23 +135,27 @@ public class Player extends MovingEntity {
         }
     }
 
-    // assume that:
-    // items that need to be triggered to use;
-    // potions, bombs
-    // items that are auto-used:
-    // weaponry, armour/shields, one-ring - if we try to use these ourselves, they will not do anything -> reference implementation
+    /** 
+     * allows player to activate desired item
+     * throws IllegalArgumentException if item cannot be activated
+     * @param type
+     */
     public void useItem(String type) {
         if (type.equals("HealthPotion") || type.equals("InvincibilityPotion") || type.equals("InvisibilityPotion") || type.equals("Bomb")) {
             inventory.use(type, this);
         } else if (type.equals(null) || type.equals("")) {
-            // do nothing
         } else {
             throw new IllegalArgumentException("Cannot use" + type);
         }
     }
 
-    // assume only need to give 1 gold to be bribed
-    // assume 2 cardinally adjacent tiles does NOT mean diagonally adjacent
+    // interact functions
+    
+    /** 
+     * gives input mercenary gold in order to become an ally
+     * throws InvalidActionException if no treasure or mercenary not within 2 tiles
+     * @param mercenary
+     */
     public void bribe(Mercenary mercenary) {
         Position mercPos = mercenary.getPosition();
         List<Position> cardinalAdjMercPos = getCardinalAdjPositions2(mercPos);
@@ -152,13 +169,17 @@ public class Player extends MovingEntity {
             }
         }
     }
-
-    // assume weapons get "used" when used to destroy zombie toast spawner
+    
+    /** 
+     * removes input spawner from dungeon map by using weapon
+     * throws InvalidActionException if player does not possess weapon or spawner is not adjacent
+     * @param spawner
+     */
     public void destroySpawner(ZombieToastSpawner spawner) {
         Position spawnerPos = spawner.getPosition();
         List<Position> cardinalAdjMercPos = getCardinalAdjPositions1(spawnerPos);
         for (Position p : cardinalAdjMercPos) {
-            // assume sword is used before bow
+            
             if (p.equals(getPosition())) {
                 if (inventory.getItem("Sword") != null) {
                     inventory.use("Sword", this);
@@ -172,14 +193,18 @@ public class Player extends MovingEntity {
                     throw new InvalidActionException("Cannot destory ZombieToastspawner without weapon");
                 }
             } else {
-                throw new InvalidActionException("ZombieToastspawner is not cardinally adjacent");
+                throw new InvalidActionException("ZombieToastSpawner is not cardinally adjacent");
             }
         }
     }
 
     // helper functions
 
-    // gets list of positions within 1 cardinally adjacent tiles
+    /** 
+     * returns list of positions within 1 cardinally adjacent tile
+     * @param pos
+     * @return List<Position>
+     */
     private List<Position> getCardinalAdjPositions1(Position pos) {
         List<Position> cardinalAdjPositions = new ArrayList<>();
         List<Position> adjPositions = pos.getAdjacentPositions();
@@ -190,7 +215,11 @@ public class Player extends MovingEntity {
         return cardinalAdjPositions;
     }
 
-    // gets list of positions within 2 cardinally adjacent tiles
+    /** 
+     * returns list of positions within 2 cardinally adjacent tiles
+     * @param pos
+     * @return List<Position>
+     */
     private List<Position> getCardinalAdjPositions2(Position pos) {
         List<Position> cardinalAdjPositions = new ArrayList<>();
         List<Position> adjPositions = pos.getAdjacentPositions();
@@ -227,21 +256,16 @@ public class Player extends MovingEntity {
     public void setCharacterState(CharacterState characterState) {
         this.characterState = characterState;
     }
-
+    
+    /** 
+     * @return String
+     */
     @Override
     public String setType() {
         return "Player";
     }
-
+    
     public static void main(String[] args) {
-        Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
-        Spider spider = new Spider(new Position(0, 1), character.getDungeon());
-        spider.giveArmour(5);
-        // assertEquals(Arrays.asList(character, spider), character.getDungeon().getEntities());
-        character.move(Direction.DOWN);
-        // fight should happen
-        // assertEquals(Arrays.asList(character), character.getDungeon().getEntities());
-        // assertEquals(Arrays.asList("Armour"), character.getInventory().listInventory());
     }
 }
 

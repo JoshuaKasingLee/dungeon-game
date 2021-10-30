@@ -10,8 +10,12 @@ public class Key extends Item {
         this.key = key;
         dungeon.addEntity(this);
     }
-
-    @Override
+    
+    /** 
+     * returns true if the key matches the given door, false if else
+     * @param door
+     * @return boolean
+     */
     public boolean correctKey(Door door) {
         if (getKey() == door.getKey()) {
             return true;
@@ -19,13 +23,18 @@ public class Key extends Item {
         return false;
     }
 
+    // basic getters and setters
+
     /**
      * @return int return the key
      */
     public int getKey() {
         return key;
     }
-
+    
+    /** 
+     * @return String
+     */
     @Override
     public String setType() {
         return "Key";

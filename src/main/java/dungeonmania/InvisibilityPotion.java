@@ -9,12 +9,19 @@ public class InvisibilityPotion extends Item {
         dungeon.addEntity(this);
     }
 
+    /** 
+     * changes player state to invincible
+     * @param player
+     */
     @Override
-    public void activate(Player character) {
-        super.activate(character);
-        character.setCharacterState(new InvisibleState(character));
+    public void activate(Player player) {
+        super.activate(player);
+        player.setCharacterState(new InvisibleState(player));
     }
     
+    /** 
+     * @return String
+     */
     @Override
     public String setType() {
         return "InvisibilityPotion";
