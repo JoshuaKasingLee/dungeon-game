@@ -38,12 +38,12 @@ public class BoulderOnSwitchGoal implements GoalComponent, Observer  {
     @Override
     public JSONObject toJSON() {
         Map<String, Object> goalData = new HashMap<String, Object>();
-        goalData.put("goal", "boulder");
+        goalData.put("goal", "boulders");
         return new JSONObject(goalData);
     }
 
     @Override
     public String simpleGoalToString() {
-        return ":boulder ";
+        return ":boulders ";
     }
 }
