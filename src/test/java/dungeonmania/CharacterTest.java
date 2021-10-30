@@ -556,6 +556,23 @@ public class CharacterTest {
     }
 
     @Test
+    public void mercenaryAllyBattle() {
+        Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
+        Mercenary merc1 = new Mercenary(new Position(0, 3), character.getDungeon());
+        merc1.setAlly(true);
+        
+        Mercenary merc2 = new Mercenary(new Position(0, 1), character.getDungeon());
+        merc2.giveArmour(0);
+        assertEquals(Arrays.asList(character, merc1, merc2), character.getDungeon().getEntities());
+        int expectedCharHealth = character.getHealth() - ((merc2.getHealth() * merc2.getAttackDamage()) / 10);
+
+        // should only take 1 round of battle to defeat now when with ally
+        character.move(Direction.DOWN);
+        assertEquals(Arrays.asList(character, merc1), character.getDungeon().getEntities());
+        assertEquals(expectedCharHealth, character.getHealth());
+    }
+
+    @Test
     public void bribeMercenaryNoTreasure() {
         Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
         // no treasure - fail
