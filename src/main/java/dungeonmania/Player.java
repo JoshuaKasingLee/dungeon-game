@@ -146,11 +146,10 @@ public class Player extends MovingEntity {
             if (p.equals(getPosition())) {
                 inventory.use("Treasure", this); // will throw exception in use if no treasure
                 mercenary.setAlly(true);
-                break;
-            } else {
-                throw new InvalidActionException("Mercenary is not within 2 cardinal tiles");
+                return;
             }
         }
+        throw new InvalidActionException("Mercenary is not within 2 cardinal tiles");
     }
 
     // assume weapons get "used" when used to destroy zombie toast spawner
