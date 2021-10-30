@@ -34,18 +34,19 @@ public class StandardState implements CharacterState {
             // prioritise using shield over armour
             // assume can only use one protection per round - to save protection e.g. no point using armour if shield already deflects all attack
             // equip protection to receive attack
-            if (inventory.getItem("Shield") != null) {
-                inventory.use("Shield", character);
-                // do nothing
-            } else if (inventory.getItem("Armour") != null) {
-                inventory.use("Armour", character);
-                int newHealth = character.getHealth() - ((enemyOriginalHealth * enemy.getAttackDamage()) / 20 );
-                character.setHealth(newHealth);
-            } else {
-                int newHealth = character.getHealth() - ((enemyOriginalHealth * enemy.getAttackDamage()) / 10 );
-                character.setHealth(newHealth);
+            if (character.getDungeon().getGamemode().isBattle()) {
+                if (inventory.getItem("Shield") != null) {
+                    inventory.use("Shield", character);
+                    // do nothing
+                } else if (inventory.getItem("Armour") != null) {
+                    inventory.use("Armour", character);
+                    int newHealth = character.getHealth() - ((enemyOriginalHealth * enemy.getAttackDamage()) / 20 );
+                    character.setHealth(newHealth);
+                } else {
+                    int newHealth = character.getHealth() - ((enemyOriginalHealth * enemy.getAttackDamage()) / 10 );
+                    character.setHealth(newHealth);
+                }
             }
-
             // System.out.println(character.getHealth());
             // System.out.println(enemy.getHealth());
              
