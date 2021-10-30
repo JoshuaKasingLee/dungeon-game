@@ -14,8 +14,8 @@ public class Mercenary extends Enemy {
     private int y = getPosition().getY();
     // distance list
     // position list
-    private List<Position> possiblePositions = getPossiblePositions();
-    private List<Double> distanceOfPositions = getDistanceOfPositions();
+    // private List<Position> possiblePositions = getPossiblePositions();
+    // private List<Double> distanceOfPositions = getDistanceOfPositions();
 
     private Position playerPosition = getDungeon().getPlayer().getPosition();
 
@@ -36,24 +36,24 @@ public class Mercenary extends Enemy {
 
     @Override
     public void updatePosition() {
-        // create an array of 4 possible positions between character and mercenary (up, down, left, right)
-        // go in the shortest direction between the two // if blocked, don't move
-        int direction = distanceOfPositions.indexOf(Collections.min(distanceOfPositions));
+        // // create an array of 4 possible positions between character and mercenary (up, down, left, right)
+        // // go in the shortest direction between the two // if blocked, don't move
+        // int direction = distanceOfPositions.indexOf(Collections.min(distanceOfPositions));
 
-        switch(direction) {
-            case 0:
-                moveUp();
-                break;
-            case 1:
-                moveDown();
-                break;
-            case 2:
-                moveLeft();
-                break;
-            case 3:
-                moveRight();
-                break;
-        }
+        // switch(direction) {
+        //     case 0:
+        //         moveUp();
+        //         break;
+        //     case 1:
+        //         moveDown();
+        //         break;
+        //     case 2:
+        //         moveLeft();
+        //         break;
+        //     case 3:
+        //         moveRight();
+        //         break;
+        // }
     }
 
     public List<Position> getPossiblePositions() {
@@ -73,13 +73,14 @@ public class Mercenary extends Enemy {
     }
     
     public List<Double> getDistanceOfPositions() {
-        List<Double> distanceOfPositions = new ArrayList<Double>();
-        for (Position possiblePosition : possiblePositions) {
-            Position tempPosition = Position.calculatePositionBetween(possiblePosition, playerPosition);
-            distanceOfPositions.add(Math.sqrt(tempPosition.getX()*tempPosition.getX() + 
-                                              tempPosition.getY()*tempPosition.getY()));
-        }
-        return distanceOfPositions;
+        // List<Double> distanceOfPositions = new ArrayList<Double>();
+        // for (Position possiblePosition : possiblePositions) {
+        //     Position tempPosition = Position.calculatePositionBetween(possiblePosition, playerPosition);
+        //     distanceOfPositions.add(Math.sqrt(tempPosition.getX()*tempPosition.getX() + 
+        //                                       tempPosition.getY()*tempPosition.getY()));
+        // }
+        // return distanceOfPositions;
+        return new ArrayList<Double>();
     }
 
     @Override
