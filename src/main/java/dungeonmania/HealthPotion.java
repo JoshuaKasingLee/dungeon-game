@@ -13,11 +13,14 @@ public class HealthPotion extends Item {
      * regenerates given entity's health back to full
      */
     @Override
-    public void activate(Player character) {
-        super.activate(character);
-        character.setHealth(character.getDungeon().getGamemode().getStartingHealth());
+    public void activate(Player player) {
+        super.activate(player);
+        player.setHealth(player.getDungeon().getGamemode().getStartingHealth());
     }
-
+    
+    /** 
+     * @return String
+     */
     @Override
     public String setType() {
         return "HealthPotion";

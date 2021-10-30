@@ -1,41 +1,48 @@
 package dungeonmania;
 
 public class InvisibleState implements CharacterState {
-    private Player character;
-    // private int time;
+    private Player player;
     private int timeLeft;
     private String type;
+    public static final int INVISIBLE_TIME_LIMIT = 10;
 
-    public static final int INVISIBLE_TIME_LIMIT = 10; // 10 ticks
-
-    public InvisibleState(Player character) {
-        this.character = character;
+    public InvisibleState(Player player) {
+        this.player = player;
         this.timeLeft = INVISIBLE_TIME_LIMIT;
         this.type = "Invisible";
     }
 
-    public InvisibleState(Player character, int timeLeft) {
-        this.character = character;
+    public InvisibleState(Player player, int timeLeft) {
+        this.player = player;
         this.timeLeft = timeLeft;
         this.type = "Invisible";
     }
 
+    /** 
+     * battles do not occur in invisible state
+     * @param enemy
+     */
     public void battleEnemy(Enemy enemy) {
     }
 
+    /** 
+     * updates the timer of how long player has left in state
+     */
     public void updateState() {
-        // this.time = time + 1;
         timeLeft--;
         if (timeLeft <= 0) {
-            character.setCharacterState(new StandardState(character));
+            player.setCharacterState(new StandardState(player));
         }
     }
 
+    // basic getters and setters
+    
+    /** 
+     * @return String
+     */
     public String getType() {
         return type;
     }
-    
-
     
     /**
      * @return int return the timeLeft
@@ -43,7 +50,4 @@ public class InvisibleState implements CharacterState {
     public int getTimeLeft() {
         return timeLeft;
     }
-
-
-
 }

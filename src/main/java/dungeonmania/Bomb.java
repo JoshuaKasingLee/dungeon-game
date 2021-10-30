@@ -12,29 +12,36 @@ public class Bomb extends Item {
         dungeon.addEntity(this);
     }
 
+    // bomb usage functions
+
     /**
-     * drops bomb in Character's current position
+     * drops bomb in dungeon in player's current position
      */
     @Override
-    public void activate(Player character) {
-        super.activate(character);
-        this.setPosition(character.getPosition());
+    public void activate(Player player) {
+        super.activate(player);
+        this.setPosition(player.getPosition());
         getDungeon().addEntity(this);
     }
 
     /**
-     * creations explosion - destroys all entities in the bomb's blast radius, except for the character
-     * assume bomb does not explode if boulder is already on switch?
+     * creates explosion - destroys all entities in the bomb's blast radius, except for the player
      */
     public void explode() {
         Position bombPos = getPosition();
         for (Position p : blastRadiusPositions(bombPos)) {
             getDungeon().removeFrom(p);
         }
-        // remove bomb
         getDungeon().removeEntity(this);
     }
 
+    // helper functions
+    
+    /** 
+     * returns list of all positions within bomb's blast radius
+     * @param pos
+     * @return List<Position>
+     */
     private static List<Position> blastRadiusPositions(Position pos) {
         List<Position> blastRadiusPositions = new ArrayList<Position>();
         int currX = pos.getX();
@@ -51,13 +58,24 @@ public class Bomb extends Item {
         return blastRadiusPositions;
     }
 
+    
+    /** 
+     * returns distance between two positions, rounded to nearest whole number
+     * @param pos1
+     * @param pos2
+     * @return int
+     */
     private static int calculateDistance(Position pos1, Position pos2) {
         Position dirVector = Position.calculatePositionBetween(pos1, pos2);
         int squaredDist = (dirVector.getX() * dirVector.getX()) + (dirVector.getY() * dirVector.getY());
-        // always rounds up
-        return (int) Math.ceil(Math.sqrt(squaredDist));
+        return (int) Math.ceil(Math.sqrt(squaredDist)); // always rounds up
     }
+    
+    // basic setters
 
+    /** 
+     * @return String
+     */
     @Override
     public String setType() {
         return "Bomb";

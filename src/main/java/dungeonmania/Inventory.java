@@ -11,46 +11,17 @@ public class Inventory {
 
     public Inventory() {
     }
+
+    // general inventory functions
     
     /** 
-     * adds given item to inventory list
+     * adds given item to end of inventory list
      * @param item
      */
     public void add(Item item) {
         inventory.add(item);
     }
-    
-    /** 
-     * activates and removes last item of given type from inventory
-     * @param type
-     */
-    public void use(String type, Player character) {
-        Item item = this.getItem(type);
-        if (item != null) {
-            item.activate(character);
-            if (item.getUsesLeft() == 0) {
-                inventory.remove(item);
-            }
-            
-        } else {
-            throw new InvalidActionException(type + "does not exist in inventory");
-        }
-    }
 
-    public boolean useKey(Door door, Player character) {
-        if (door != null) {
-            for (Item i : inventory) {
-                if (i instanceof Key && i.correctKey(door)) {
-                    i.activate(character);
-                    inventory.remove(i);
-                    return true;
-                }
-            }
-        }
-        // no error throwing?
-        return false;
-    }
-    
     /** 
      * returns how many of the input item type is in the inventory
      * @param type
@@ -65,24 +36,91 @@ public class Inventory {
         }
         return count;
     }
+    
+    /** 
+     * activates and removes last item of given type from inventory
+     * if item does not exist, throws InvalidActionException
+     * @param type
+     */
+    public void use(String type, Player player) {
+        Item item = this.getItem(type);
+        if (item != null) {
+            item.activate(player);
+            if (item.getUsesLeft() == 0) {
+                inventory.remove(item);
+            }
+        } else {
+            throw new InvalidActionException(type + "does not exist in inventory");
+        }
+    }
 
     /** 
-     * creates a bow and adds to inventory
-     * adjusts stock of crafting materials
+     * given a door, return true if player possesses correct key and unlocks door
+     * return false if else
+     * @param door
+     * @param player
+     * @return boolean
      */
-    public void craftBow(Player character) {
+    public boolean useKey(Door door, Player player) {
+        if (door != null) {
+            for (Item i : inventory) {
+                if (i instanceof Key) {
+                    Key k = (Key) i;
+                    if (k.correctKey(door)) {
+                        i.activate(player);
+                        inventory.remove(i);
+                        return true;
+                    } 
+                }
+            }
+        }
+        return false;
+    }
+
+    // crafting functions
+
+    /** 
+     * creates a bow and adds to inventory, adjusts stock of crafting materials
+     * returns InvalidActionException if insufficient crafting material
+     */
+    public void craftBow(Player player) {
         if (this.count("Wood") >= 1 && this.count("Arrow") >= 3) {
-            this.use("Wood", character);
-            this.use("Arrow", character);
-            this.use("Arrow", character);
-            this.use("Arrow", character); // NEED TO FIX
-            // bow id is given by count of bows in inventory (ok since last item is always used, so won't have double ups)
-            this.add(new Bow(character.getDungeon()));
+            this.use("Wood", player);
+            this.use("Arrow", player);
+            this.use("Arrow", player);
+            this.use("Arrow", player);
+            this.add(new Bow(player.getDungeon()));
         } else {
             throw new InvalidActionException("Insufficient crafting material for Bow");
         }
     }
 
+    /** 
+     * creates a shield and adds to inventory, adjusts stock of crafting materials
+     * returns InvalidActionException if insufficient crafting material
+     */
+    public void craftShield(Player player) {
+        if (this.count("Wood") >= 2) {
+            // assume we prioritise using treasure over keys for crafting
+            if (this.count("Treasure") >= 1) {
+                this.use("Wood", player);
+                this.use("Wood", player);
+                this.use("Treasure", player);
+                this.add(new Shield(player.getDungeon())); 
+            } else if (this.count("Key") >= 1) {
+                this.use("Wood", player);
+                this.use("Wood", player);
+                this.use("Key", player);
+                this.add(new Shield(player.getDungeon())); 
+            }
+        } else {
+            throw new InvalidActionException("Insufficient crafting material for Shield");
+        }
+    }
+
+    /** 
+     * @return List<String>
+     */
     public List<String> getBuildables() {
         List<String> buildables = new ArrayList<>();
         if (count("Wood") >= 1 && count("Arrow") >= 3) {
@@ -98,43 +136,15 @@ public class Inventory {
         return buildables;
     }
 
-    /** 
-     * creates a shield and adds to inventory
-     * adjusts stock of crafting materials
+    // getters
+
+    /**
+     * @return List<Item> return the inventory
      */
-    public void craftShield(Player character) {
-        if (this.count("Wood") >= 2) {
-            // assume we prioritise using treasure over keys for crafting
-            if (this.count("Treasure") >= 1) {
-                this.use("Wood", character);
-                this.use("Wood", character);
-                this.use("Treasure", character);
-                this.add(new Shield(character.getDungeon())); 
-            } else if (this.count("Key") >= 1) {
-                this.use("Wood", character);
-                this.use("Wood", character);
-                this.use("Key", character);
-                this.add(new Shield(character.getDungeon())); 
-            }
-        } else {
-            throw new InvalidActionException("Insufficient crafting material for Shield");
-        }
+    public List<Item> getInventoryList() {
+        return inventory;
     }
 
-    // for testing
-
-    /** 
-     * returns list of item types in inventory, in order
-     * @return List<String>
-     */
-    public List<String> listInventory() {
-        List<String> invList = new ArrayList<String>();
-        for (Item i : inventory) {
-            invList.add(i.getType());
-        }
-        return invList;
-    }
-    
     /** 
      * returns the last item of the given type from inventory
      * if item type does not exist in inventory, return null
@@ -153,25 +163,17 @@ public class Inventory {
         return null;
     }
 
+    // for testing
 
-    
-
-
-    /**
-     * @return List<Item> return the inventory
+    /** 
+     * returns list of item types in inventory, in order
+     * @return List<String>
      */
-    public List<Item> getInventoryList() {
-        return inventory;
+    public List<String> listInventory() {
+        List<String> invList = new ArrayList<String>();
+        for (Item i : inventory) {
+            invList.add(i.getType());
+        }
+        return invList;
     }
-
-
-
-
-    /**
-     * @param inventory the inventory to set
-     */
-    public void setInventory(List<Item> inventory) {
-        this.inventory = inventory;
-    }
-
 }

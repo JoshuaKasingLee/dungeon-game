@@ -8,16 +8,19 @@ public class OneRing extends Item {
         dungeon.addEntity(this);
     }
 
-    /**
-     * regenerates character's health back to full
-     * auto-used when character dies if exists in inventory
+    /** 
+     * regenerates player's health back to full
+     * @param player
      */
     @Override
-    public void activate(Player character) {
-        super.activate(character);
-        character.setHealth(character.getDungeon().getGamemode().getStartingHealth());
+    public void activate(Player player) {
+        super.activate(player);
+        player.setHealth(player.getDungeon().getGamemode().getStartingHealth());
     }
 
+    /** 
+     * @return String
+     */
     @Override
     public String setType() {
         return "OneRing";

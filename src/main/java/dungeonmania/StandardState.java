@@ -1,19 +1,21 @@
 package dungeonmania;
 
 public class StandardState implements CharacterState {
-    private Player character;
+    private Player player;
     private String type;
 
-    public StandardState(Player character) {
-        this.character = character;
+    public StandardState(Player player) {
+        this.player = player;
         this.type = "Standard";
     }
-
-
+    
+    /** 
+     * simulate battle between player and given enemy
+     * @param enemy
+     */
     public void battleEnemy(Enemy enemy) {
         // update mercenary position if they are within battle enemy
-        // assume position is updated once per battle, not per round
-        for (Entity e : character.getDungeon().getEntities()) {
+        for (Entity e : player.getDungeon().getEntities()) {
             if (e instanceof Mercenary) {
                 Mercenary m = (Mercenary) e;
                 if (!m.isAlly()) {
@@ -22,28 +24,26 @@ public class StandardState implements CharacterState {
             }
         }
 
-        while (enemy.getHealth() > 0 && character.getHealth() > 0 && !enemy.isAlly()) {
+        // commence battle until an entity loses
+        while (enemy.getHealth() > 0 && player.getHealth() > 0 && !enemy.isAlly()) {
             // assume original health points at start of round are used in battle
             int enemyOriginalHealth = enemy.getHealth();
+            Inventory inventory = player.getInventory();
 
-            Inventory inventory = character.getInventory();
-
-            // prioritise using sword over bow
-            // assume can only use one weapon per round - to save weapons e.g. no point using bow if sword already instantly kills
             // equip weapon to fight enemy
             if (inventory.getItem("Sword") != null) {
-                inventory.use("Sword", character);
-                enemy.setHealth(0); // doesn't matter if enemy has armour (assume sword > armour)
+                inventory.use("Sword", player);
+                enemy.setHealth(0);
             } else if (inventory.getItem("Bow") != null) {
-                inventory.use("Bow", character);
-                enemy.updateHealth(character);
-                enemy.updateHealth(character);
+                inventory.use("Bow", player);
+                enemy.updateHealth(player);
+                enemy.updateHealth(player);
             } else {
-                enemy.updateHealth(character);
+                enemy.updateHealth(player);
             }
 
-            // assume mercenary fights even if enemies has is already zero
-            for (Entity e : character.getDungeon().getEntities()) {
+            // if player has allies, contribute their health deductions
+            for (Entity e : player.getDungeon().getEntities()) {
                 if (e instanceof Mercenary) {
                     Mercenary m = (Mercenary) e;
                     if (m.isAlly()) {
@@ -51,40 +51,33 @@ public class StandardState implements CharacterState {
                     }
                 }
             }
-
-            // assume enemy only hits the player, not mercernaries
-            // prioritise using shield over armour
-            // assume can only use one protection per round - to save protection e.g. no point using armour if shield already deflects all attack
+           
             // equip protection to receive attack
-            if (character.getDungeon().getGamemode().isBattle()) {
+            if (player.getDungeon().getGamemode().isBattle()) {
                 if (inventory.getItem("Shield") != null) {
-                    inventory.use("Shield", character);
-                    // do nothing
+                    inventory.use("Shield", player);
                 } else if (inventory.getItem("Armour") != null) {
-                    inventory.use("Armour", character);
-                    int newHealth = character.getHealth() - ((enemyOriginalHealth * enemy.getAttackDamage()) / 20 );
-                    character.setHealth(newHealth);
+                    inventory.use("Armour", player);
+                    int newHealth = player.getHealth() - ((enemyOriginalHealth * enemy.getAttackDamage()) / 20 );
+                    player.setHealth(newHealth);
                 } else {
-                    int newHealth = character.getHealth() - ((enemyOriginalHealth * enemy.getAttackDamage()) / 10 );
-                    character.setHealth(newHealth);
+                    int newHealth = player.getHealth() - ((enemyOriginalHealth * enemy.getAttackDamage()) / 10 );
+                    player.setHealth(newHealth);
                 }
             }
-            // System.out.println(character.getHealth());
-            // System.out.println(enemy.getHealth());
-             
         }
     }
 
+    /** 
+     * player's state remains as is
+     */
     public void updateState() {
-        // remain in standard state
     }
 
+    /** 
+     * @return String
+     */
     public String getType() {
         return type;
     }
-    
-
-
-
-
 }
