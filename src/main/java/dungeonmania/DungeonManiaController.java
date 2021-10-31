@@ -597,7 +597,13 @@ public class DungeonManiaController {
                 if (entity instanceof Player) {
                     ((Player) entity).move(movementDirection);
                     // move(movementDirection);
-                } else if (entity instanceof StaticEntity) {
+                } 
+            }
+        }
+
+        for (Entity entity: entitiesCopy) {
+            if (movementDirection != null) {
+                if (entity instanceof StaticEntity) {
                     ((StaticEntity) entity).update(movementDirection);
                 }
             }
