@@ -22,10 +22,11 @@ public class Player extends MovingEntity {
         this.characterState = new StandardState(this);
     }
 
-    public Player(Position position, Dungeon dungeon, int currHealth) {
+    public Player(Position position, Dungeon dungeon, int currHealth, boolean teleported) {
         this(position, dungeon);
         this.inventory = dungeon.getInventory();
         setHealth(currHealth);
+        this.teleported = teleported;
     }
 
      // move functions

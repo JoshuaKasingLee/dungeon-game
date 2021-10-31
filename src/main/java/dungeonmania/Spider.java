@@ -39,6 +39,15 @@ public class Spider extends Enemy {
         this.positionNumber = 0;
     }
 
+    public Spider(Position position, Dungeon dungeon, Position startingPosition, int positionNumber) {
+        super(position, dungeon);
+        this.setHealth(ORIGINAL_HEALTH);
+        this.setAttackDamage(SPIDER_ATTACK_DAMAGE);
+        this.startingPosition = startingPosition;
+        this.adjacentPositions = setPositions(position);
+        this.positionNumber = positionNumber;
+    }
+
     // spider functions
     
     /** 
@@ -57,7 +66,7 @@ public class Spider extends Enemy {
         possiblePositions.add(new Position(x+1, y));
         return possiblePositions;
     }
-
+    
     /** 
      * returns list of distance between player and possible spider positions
      * @return List<Double>
