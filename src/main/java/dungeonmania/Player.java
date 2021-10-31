@@ -52,13 +52,9 @@ public class Player extends MovingEntity {
                 return false;
             }
             if (e instanceof Boulder) {
-                System.out.println(pos.toString());
                 Position newPos = pos.translateBy(dir);
-                System.out.println(newPos.toString());
                 for (Entity e1 : getDungeon().getEntities(newPos)) {
-                    System.out.println(e1.getType());
                     if (e1 instanceof Wall || e1 instanceof Boulder || e1 instanceof ZombieToastSpawner || !checkUnlockedDoor(newPos)) {
-                        System.out.println("hi");
                         return false;
                     }
                 }   

@@ -43,6 +43,11 @@ public class Mercenary extends Enemy {
         // go in the shortest direction between the two // if blocked, don't move
         int direction = distanceOfPositions.indexOf(Collections.min(distanceOfPositions));
 
+        Entity player = getDungeon().getEntities().stream().filter(n -> n.getType().equals("Player")).findFirst().orElse(null);
+        if (getPosition().equals(player.getPosition())) {
+            return;
+        }
+
         switch(direction) {
             case 0:
                 moveUp();
@@ -86,9 +91,6 @@ public class Mercenary extends Enemy {
     public List<Double> getDistanceOfPositions() {
         List<Double> distanceOfPositions = new ArrayList<Double>();
         for (Position possiblePosition : possiblePositions) {
-            // Position tempPosition = Position.calculatePositionBetween(possiblePosition, playerPosition);
-            // distanceOfPositions.add(Math.sqrt(tempPosition.getX()*tempPosition.getX() + 
-            //                                   tempPosition.getY()*tempPosition.getY()));
             distanceOfPositions.add(calculateDistance(possiblePosition, playerPosition));
         }
         return distanceOfPositions;
@@ -145,12 +147,12 @@ public class Mercenary extends Enemy {
      * returns distance between two positions, rounded to nearest whole number
      * @param pos1
      * @param pos2
-     * @return int
+     * @return double
      */
     private static double calculateDistance(Position pos1, Position pos2) {
         Position dirVector = Position.calculatePositionBetween(pos1, pos2);
         double squaredDist = (dirVector.getX() * dirVector.getX()) + (dirVector.getY() * dirVector.getY());
         // always rounds up
-        return (double) Math.ceil(Math.sqrt(squaredDist));
+        return (double) (Math.sqrt(squaredDist));
     }
 }
