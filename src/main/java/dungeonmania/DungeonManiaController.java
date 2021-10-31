@@ -808,7 +808,7 @@ public class DungeonManiaController {
 
     
     /** 
-     * create list of entity responses
+     * creates list of entity responses
      * @return List<EntityResponse>
      */
     public List<EntityResponse> createEntityResponseList() {
