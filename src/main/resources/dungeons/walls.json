@@ -66,5 +66,8 @@
         "y": 1,
         "type": "player"
       }
-    ]
+    ],
+    "goal-condition": {
+      "goal": "None"
+    }
   }

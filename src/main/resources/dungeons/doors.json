@@ -45,5 +45,8 @@
         "y": 2,
         "type": "player"
       }
-    ]
+    ],
+    "goal-condition": {
+      "goal": "None"
+    }
   }
