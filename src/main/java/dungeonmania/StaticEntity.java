@@ -18,7 +18,7 @@ public abstract class StaticEntity extends Entity {
     // Change this to lambda function?
     public Position getPlayerPosition() {
         for (Entity entity : this.getEntities()) {
-            if (entity.getType() == "Player") {
+            if (entity instanceof Player) {
                 return entity.getPosition();
             }
         }
