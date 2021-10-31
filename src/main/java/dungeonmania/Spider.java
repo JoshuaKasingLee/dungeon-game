@@ -49,7 +49,7 @@ public class Spider extends Enemy {
 
     @Override
     public void updatePosition() {
-        Entity player = getDungeon().getEntities().stream().filter(n -> n.getType().equals("Player")).findFirst().orElse(null);
+        Entity player = getDungeon().getEntities().stream().filter(n -> n.getType().equals("player")).findFirst().orElse(null);
 
         if (((Player)player).getCharacterState().getType().equals("Invincible")) {
             this.possiblePositions = getPossiblePositions();

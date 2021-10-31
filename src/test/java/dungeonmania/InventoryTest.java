@@ -23,7 +23,7 @@ public class InventoryTest {
         inv.add(i1);
         inv.add(i2);
         inv.add(i3);
-        assertEquals(Arrays.asList("Treasure", "Key", "Wood"), inv.listInventory());
+        assertEquals(Arrays.asList("treasure", "key", "wood"), inv.listInventory());
     }
 
     @Test
@@ -36,10 +36,10 @@ public class InventoryTest {
         inv.add(i1);
         inv.add(i2);
         inv.add(i3);
-        inv.use("Key", character);
-        assertEquals(Arrays.asList("Treasure", "Wood"), inv.listInventory());
-        inv.use("Treasure", character);
-        inv.use("Wood", character);
+        inv.use("key", character);
+        assertEquals(Arrays.asList("treasure", "wood"), inv.listInventory());
+        inv.use("treasure", character);
+        inv.use("wood", character);
         assertEquals(Arrays.asList(), inv.listInventory());
     }
 
@@ -49,7 +49,7 @@ public class InventoryTest {
         Inventory inv = character.getInventory();
         Treasure i1 = new Treasure(new Position(0, 0), character.getDungeon());
         inv.add(i1);
-        assertThrows(InvalidActionException.class, () -> inv.use("Key", character));
+        assertThrows(InvalidActionException.class, () -> inv.use("key", character));
     }
 
     @Test
@@ -66,10 +66,10 @@ public class InventoryTest {
         inv.add(i3);
         inv.add(i4);
         inv.add(i5);
-        assertEquals(3, inv.count("Treasure"));
-        assertEquals(2, inv.count("Key"));
-        inv.use("Treasure", character);
-        assertEquals(2, inv.count("Treasure"));
+        assertEquals(3, inv.count("treasure"));
+        assertEquals(2, inv.count("key"));
+        inv.use("treasure", character);
+        assertEquals(2, inv.count("treasure"));
     }
 
     @Test
@@ -87,7 +87,7 @@ public class InventoryTest {
         inv.add(i4);
         inv.add(i5);
         inv.craftBow(character);
-        assertEquals(Arrays.asList("Key", "Bow"), inv.listInventory());
+        assertEquals(Arrays.asList("key", "bow"), inv.listInventory());
     }
 
     @Test
@@ -114,7 +114,7 @@ public class InventoryTest {
         inv.add(i3);
         inv.add(i4);
         inv.craftShield(character);
-        assertEquals(Arrays.asList("Key", "Shield"), inv.listInventory()); // test key remains
+        assertEquals(Arrays.asList("key", "shield"), inv.listInventory()); // test key remains
     }
 
     @Test
@@ -128,7 +128,7 @@ public class InventoryTest {
         inv.add(i2);
         inv.add(i3);
         inv.craftShield(character);
-        assertEquals(Arrays.asList("Shield"), inv.listInventory()); // test key remains
+        assertEquals(Arrays.asList("shield"), inv.listInventory()); // test key remains
     }
 
     @Test
@@ -138,7 +138,7 @@ public class InventoryTest {
         Key i1 = new Key(new Position(0, 0), character.getDungeon(), 1);
         inv.add(i1);
         assertThrows(InvalidActionException.class, () -> inv.craftShield(character));
-        assertEquals(Arrays.asList("Key"), inv.listInventory());
+        assertEquals(Arrays.asList("key"), inv.listInventory());
     }
     
 }

@@ -170,7 +170,7 @@ public class EnemyMoveTest {
         Inventory inv = player.getInventory();
         InvincibilityPotion i1 = new InvincibilityPotion(new Position(0, 0), player.getDungeon());
         inv.add(i1);
-        player.useItem("InvincibilityPotion");
+        player.useItem("invincibility_potion");
         CharacterState state = player.getCharacterState();
         assertEquals(state.getType(), "Invincible");
 
@@ -197,7 +197,7 @@ public class EnemyMoveTest {
         Inventory inv = player.getInventory();
         InvincibilityPotion i1 = new InvincibilityPotion(new Position(0, 0), player.getDungeon());
         inv.add(i1);
-        player.useItem("InvincibilityPotion");
+        player.useItem("invincibility_potion");
         CharacterState state = player.getCharacterState();
         assertEquals(state.getType(), "Invincible");
 
@@ -224,7 +224,7 @@ public class EnemyMoveTest {
         Inventory inv = player.getInventory();
         InvincibilityPotion i1 = new InvincibilityPotion(new Position(0, 0), player.getDungeon());
         inv.add(i1);
-        player.useItem("InvincibilityPotion");
+        player.useItem("invincibility_potion");
         CharacterState state = player.getCharacterState();
         assertEquals(state.getType(), "Invincible");
 
@@ -251,7 +251,7 @@ public class EnemyMoveTest {
         Inventory inv = player.getInventory();
         InvisibilityPotion i1 = new InvisibilityPotion(new Position(0, 0), player.getDungeon());
         inv.add(i1);
-        player.useItem("InvisibilityPotion");
+        player.useItem("invisibility_potion");
         CharacterState state = player.getCharacterState();
         assertEquals(state.getType(), "Invisible");
 

@@ -100,8 +100,8 @@ public class Player extends MovingEntity {
                     characterState.battleEnemy(e);
                     // if character health is below zero
                     if (this.getHealth() <= 0) {
-                        if (inventory.getItem("OneRing") != null) {
-                            inventory.use("OneRing", this);
+                        if (inventory.getItem("one_ring") != null) {
+                            inventory.use("one_ring", this);
                         } else {
                             getDungeon().removeEntity(this);
                         }  
@@ -141,7 +141,7 @@ public class Player extends MovingEntity {
      * @param type
      */
     public void useItem(String type) {
-        if (type.equals("HealthPotion") || type.equals("InvincibilityPotion") || type.equals("InvisibilityPotion") || type.equals("Bomb")) {
+        if (type.equals("health_potion") || type.equals("invincibility_potion") || type.equals("invisibility_potion") || type.equals("bomb")) {
             inventory.use(type, this);
         } else if (type.equals(null) || type.equals("")) {
         } else {
@@ -161,7 +161,7 @@ public class Player extends MovingEntity {
         List<Position> cardinalAdjMercPos = getCardinalAdjPositions2(mercPos);
         for (Position p : cardinalAdjMercPos) {
             if (p.equals(getPosition())) {
-                inventory.use("Treasure", this); // will throw exception in use if no treasure
+                inventory.use("treasure", this); // will throw exception in use if no treasure
                 mercenary.setAlly(true);
                 return;
             }
@@ -180,12 +180,12 @@ public class Player extends MovingEntity {
         for (Position p : cardinalAdjMercPos) {
             
             if (p.equals(getPosition())) {
-                if (inventory.getItem("Sword") != null) {
-                    inventory.use("Sword", this);
+                if (inventory.getItem("sword") != null) {
+                    inventory.use("sword", this);
                     getDungeon().removeEntity(spawner);
                     break;
-                } else if (inventory.getItem("Bow") != null) {
-                    inventory.use("Bow", this);
+                } else if (inventory.getItem("bow") != null) {
+                    inventory.use("bow", this);
                     getDungeon().removeEntity(spawner);
                     break;
                 } else {

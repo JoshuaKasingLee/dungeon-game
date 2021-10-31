@@ -84,11 +84,11 @@ public class Inventory {
      * returns InvalidActionException if insufficient crafting material
      */
     public void craftBow(Player player) {
-        if (this.count("Wood") >= 1 && this.count("Arrow") >= 3) {
-            this.use("Wood", player);
-            this.use("Arrow", player);
-            this.use("Arrow", player);
-            this.use("Arrow", player);
+        if (this.count("wood") >= 1 && this.count("arrow") >= 3) {
+            this.use("wood", player);
+            this.use("arrow", player);
+            this.use("arrow", player);
+            this.use("arrow", player);
             this.add(new Bow(player.getDungeon()));
         } else {
             throw new InvalidActionException("Insufficient crafting material for Bow");
@@ -100,17 +100,17 @@ public class Inventory {
      * returns InvalidActionException if insufficient crafting material
      */
     public void craftShield(Player player) {
-        if (this.count("Wood") >= 2) {
+        if (this.count("wood") >= 2) {
             // assume we prioritise using treasure over keys for crafting
-            if (this.count("Treasure") >= 1) {
-                this.use("Wood", player);
-                this.use("Wood", player);
-                this.use("Treasure", player);
+            if (this.count("treasure") >= 1) {
+                this.use("wood", player);
+                this.use("wood", player);
+                this.use("treasure", player);
                 this.add(new Shield(player.getDungeon())); 
-            } else if (this.count("Key") >= 1) {
-                this.use("Wood", player);
-                this.use("Wood", player);
-                this.use("Key", player);
+            } else if (this.count("key") >= 1) {
+                this.use("wood", player);
+                this.use("wood", player);
+                this.use("key", player);
                 this.add(new Shield(player.getDungeon())); 
             }
         } else {
@@ -123,14 +123,14 @@ public class Inventory {
      */
     public List<String> getBuildables() {
         List<String> buildables = new ArrayList<>();
-        if (count("Wood") >= 1 && count("Arrow") >= 3) {
-            buildables.add("Bow");
+        if (count("wood") >= 1 && count("arrow") >= 3) {
+            buildables.add("bow");
         }
-        if (count("Wood") >= 2) {
-            if (count("Treasure") >= 1) {
-                buildables.add("Shield");
-            } else if (this.count("Key") >= 1) {
-                buildables.add("Shield");
+        if (count("wood") >= 2) {
+            if (count("treasure") >= 1) {
+                buildables.add("shield");
+            } else if (this.count("key") >= 1) {
+                buildables.add("shield");
             }
         }
         return buildables;

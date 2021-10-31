@@ -31,11 +31,11 @@ public class StandardState implements CharacterState {
             Inventory inventory = player.getInventory();
 
             // equip weapon to fight enemy
-            if (inventory.getItem("Sword") != null) {
-                inventory.use("Sword", player);
+            if (inventory.getItem("sword") != null) {
+                inventory.use("sword", player);
                 enemy.setHealth(0);
-            } else if (inventory.getItem("Bow") != null) {
-                inventory.use("Bow", player);
+            } else if (inventory.getItem("bow") != null) {
+                inventory.use("bow", player);
                 enemy.updateHealth(player);
                 enemy.updateHealth(player);
             } else {
@@ -54,10 +54,10 @@ public class StandardState implements CharacterState {
            
             // equip protection to receive attack
             if (player.getDungeon().getGamemode().isBattle()) {
-                if (inventory.getItem("Shield") != null) {
-                    inventory.use("Shield", player);
-                } else if (inventory.getItem("Armour") != null) {
-                    inventory.use("Armour", player);
+                if (inventory.getItem("shield") != null) {
+                    inventory.use("shield", player);
+                } else if (inventory.getItem("armour") != null) {
+                    inventory.use("armour", player);
                     int newHealth = player.getHealth() - ((enemyOriginalHealth * enemy.getAttackDamage()) / 20 );
                     player.setHealth(newHealth);
                 } else {

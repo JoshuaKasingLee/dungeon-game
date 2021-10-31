@@ -42,7 +42,7 @@ public class Mercenary extends Enemy {
 
         // create an array of 4 possible positions between character and mercenary (up, down, left, right)
         // go in the shortest direction between the two // if blocked, don't move
-        Entity player = getDungeon().getEntities().stream().filter(n -> n.getType().equals("Player")).findFirst().orElse(null);
+        Entity player = getDungeon().getEntities().stream().filter(n -> n.getType().equals("player")).findFirst().orElse(null);
 
         int direction;
 

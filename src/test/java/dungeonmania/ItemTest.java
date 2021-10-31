@@ -27,9 +27,9 @@ public class ItemTest {
         inv.add(i2);
         inv.add(i3);
         // check "use" works but does not do anything
-        assertDoesNotThrow(() -> inv.use("Treasure", character));
-        assertDoesNotThrow(() -> inv.use("Wood", character));
-        assertDoesNotThrow(() -> inv.use("Arrow", character));
+        assertDoesNotThrow(() -> inv.use("treasure", character));
+        assertDoesNotThrow(() -> inv.use("wood", character));
+        assertDoesNotThrow(() -> inv.use("arrow", character));
 
     }
 
@@ -41,7 +41,7 @@ public class ItemTest {
         Wood i2 = new Wood(new Position(0, 0), character.getDungeon());
         inv.add(i1);
         inv.add(i2);
-        assertThrows(InvalidActionException.class, () -> inv.use("Arrow", character));
+        assertThrows(InvalidActionException.class, () -> inv.use("arrow", character));
     }
     
     @Test
@@ -53,7 +53,7 @@ public class ItemTest {
         inv.add(potion);
         character.setHealth(2);
         assertEquals(2, character.getHealth());
-        inv.use("HealthPotion", character);
+        inv.use("health_potion", character);
         assertEquals(Player.ORIGINAL_HEALTH_STANDARD, character.getHealth());
     }
 
@@ -65,7 +65,7 @@ public class ItemTest {
         InvisibilityPotion i = new InvisibilityPotion(new Position(0, 0), character.getDungeon());
         inv.add(i);
         assertEquals("Standard", character.getCharacterState().getType());
-        inv.use("InvisibilityPotion", character);
+        inv.use("invisibility_potion", character);
         assertEquals("Invisible", character.getCharacterState().getType());
         // effect is tested in character.java
     }
@@ -78,7 +78,7 @@ public class ItemTest {
         InvincibilityPotion i = new InvincibilityPotion(new Position(0, 0), character.getDungeon());
         inv.add(i);
         assertEquals("Standard", character.getCharacterState().getType());
-        inv.use("InvincibilityPotion", character);
+        inv.use("invincibility_potion", character);
         assertEquals("Invincible", character.getCharacterState().getType());
         // effect is tested in character.java
     }
@@ -90,9 +90,9 @@ public class ItemTest {
         Inventory inv = character.getInventory();
         Armour a = new Armour(character.getDungeon(), Armour.DURABILITY);
         inv.add(a);
-        inv.use("Armour", character);
-        assertEquals(Arrays.asList("Armour"), inv.listInventory());
-        inv.use("Armour", character);
+        inv.use("armour", character);
+        assertEquals(Arrays.asList("armour"), inv.listInventory());
+        inv.use("armour", character);
         assertEquals(Arrays.asList(), inv.listInventory());
         // armour effect is tested in character.java
     }
@@ -103,11 +103,11 @@ public class ItemTest {
         Inventory inv = character.getInventory();
         Shield s = new Shield(character.getDungeon());
         inv.add(s);
-        inv.use("Shield", character);
-        assertEquals(Arrays.asList("Shield"), inv.listInventory());
-        inv.use("Shield", character);
-        assertEquals(Arrays.asList("Shield"), inv.listInventory());
-        inv.use("Shield", character);
+        inv.use("shield", character);
+        assertEquals(Arrays.asList("shield"), inv.listInventory());
+        inv.use("shield", character);
+        assertEquals(Arrays.asList("shield"), inv.listInventory());
+        inv.use("shield", character);
         assertEquals(Arrays.asList(), inv.listInventory());
         // shield effect is tested in character.java
     }
@@ -121,7 +121,7 @@ public class ItemTest {
         inv.add(ring);
         character.setHealth(-1);
         assertEquals(-1, character.getHealth());
-        inv.use("OneRing", character);
+        inv.use("one_ring", character);
         assertEquals(Player.ORIGINAL_HEALTH_STANDARD, character.getHealth());
         // more testing in character.java
     }
@@ -132,7 +132,7 @@ public class ItemTest {
         Inventory inv = character.getInventory();
         Sword s = new Sword(new Position(0, 0), character.getDungeon());
         inv.add(s);
-        inv.use("Sword", character);
+        inv.use("sword", character);
         // sword effect is tested in character.java
     }
 
@@ -142,7 +142,7 @@ public class ItemTest {
         Inventory inv = character.getInventory();
         Bow b = new Bow(character.getDungeon());
         inv.add(b);
-        inv.use("Bow", character);
+        inv.use("bow", character);
         // bow effect is tested in character.java
     }
 
@@ -174,7 +174,7 @@ public class ItemTest {
         Key k = new Key(new Position(0, 0), character.getDungeon(), 1);
         inv.add(k);
         inv.useKey(null, character);
-        assertEquals(Arrays.asList("Key"), inv.listInventory());
+        assertEquals(Arrays.asList("key"), inv.listInventory());
         Door d1 = new Door(new Position(0, 1), character.getDungeon(), 2);
         assertEquals(false, inv.useKey(d1, character));
 
