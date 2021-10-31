@@ -79,6 +79,8 @@ public class DungeonManiaController {
         } catch(IOException e) {
             System.out.println("File couldn't be loaded");
         }
+
+        
         String dungeonId = newDungeonId();
 
         // Make the Dungeon Class

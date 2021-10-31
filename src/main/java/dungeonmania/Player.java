@@ -7,7 +7,7 @@ import java.util.List;
 import dungeonmania.exceptions.InvalidActionException;
 
 public class Player extends MovingEntity {
-    private Inventory inventory = new Inventory();
+    private Inventory inventory;
     private CharacterState characterState;
     public static final int ORIGINAL_HEALTH_STANDARD = 10;
     public static final int ORIGINAL_HEALTH_HARD = 7;
@@ -16,12 +16,14 @@ public class Player extends MovingEntity {
     public Player(Position position, Dungeon dungeon) {
         super(position, dungeon);
         this.setHealth(dungeon.getGamemode().getStartingHealth());
+        this.inventory = dungeon.getInventory();
         this.setAttackDamage(CHARACTER_ATTACK_DAMAGE);
         this.characterState = new StandardState(this);
     }
 
     public Player(Position position, Dungeon dungeon, int currHealth) {
         this(position, dungeon);
+        this.inventory = dungeon.getInventory();
         setHealth(currHealth);
     }
 
