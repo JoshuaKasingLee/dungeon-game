@@ -594,10 +594,10 @@ public class DungeonManiaController {
             // Move character and update boulders accordingly.
             else if (movementDirection != null) {
                 if (entity instanceof Player) {
-                    ((Player)entity).move(movementDirection);
+                    ((Player) entity).move(movementDirection);
                     // move(movementDirection);
-                } else if (entity instanceof Boulder) {
-                    // ((Boulder) entity).update(movementDirection);
+                } else if (entity instanceof StaticEntity) {
+                    ((StaticEntity) entity).update(movementDirection);
                 }
             }
 

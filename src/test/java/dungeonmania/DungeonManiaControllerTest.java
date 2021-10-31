@@ -183,6 +183,8 @@ public class DungeonManiaControllerTest {
         assertEquals(new ArrayList<>(), dungeonInfo.getInventory());
 
         assertEquals("Player", dungeonInfo.getEntities().get(0).getType());
+        assertEquals("Boulder", dungeonInfo.getEntities().get(1).getType());
+        assertEquals(new Position(1, 0), dungeonInfo.getEntities().get(1).getPosition());
         assertEquals(new Position(1, 1), dungeonInfo.getEntities().get(0).getPosition());
         assertEquals("0", dungeonInfo.getEntities().get(0).getId());
         assertEquals(false, dungeonInfo.getEntities().get(0).isInteractable());
