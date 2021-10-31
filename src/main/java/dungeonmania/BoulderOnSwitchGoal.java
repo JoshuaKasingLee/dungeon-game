@@ -13,6 +13,7 @@ public class BoulderOnSwitchGoal implements GoalComponent, Observer  {
 
     
     /** 
+     * check if goal is complete if all switches are triggered
      * @return boolean
      */
     @Override
@@ -22,6 +23,7 @@ public class BoulderOnSwitchGoal implements GoalComponent, Observer  {
 
     
     /** 
+     * update the unpressed switches amount
      * @param entity
      */
     @Override
@@ -36,6 +38,7 @@ public class BoulderOnSwitchGoal implements GoalComponent, Observer  {
 
     
     /** 
+     * attempt to attach an entity to this goal
      * @param entity
      */
     @Override
@@ -49,6 +52,7 @@ public class BoulderOnSwitchGoal implements GoalComponent, Observer  {
 
     
     /** 
+     * convert goal to JSON
      * @return JSONObject
      */
     @Override
@@ -60,6 +64,7 @@ public class BoulderOnSwitchGoal implements GoalComponent, Observer  {
 
     
     /** 
+     * goal convert to string
      * @return String
      */
     @Override

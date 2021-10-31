@@ -14,6 +14,7 @@ public class CollectTreasureGoal implements GoalComponent, Observer {
 
     
     /** 
+     * check if goal is complete by checking uncollected treasure
      * @return boolean
      */
     @Override
@@ -23,6 +24,7 @@ public class CollectTreasureGoal implements GoalComponent, Observer {
 
     
     /** 
+     * try to attach entity to this goal
      * @param entity
      */
     @Override
@@ -35,6 +37,7 @@ public class CollectTreasureGoal implements GoalComponent, Observer {
 
     
     /** 
+     * subtract one treasure from uncollected
      * @param entity
      */
     @Override
@@ -44,6 +47,7 @@ public class CollectTreasureGoal implements GoalComponent, Observer {
 
     
     /** 
+     * convert goal to JSON
      * @return JSONObject
      */
     @Override
@@ -55,6 +59,7 @@ public class CollectTreasureGoal implements GoalComponent, Observer {
 
     
     /** 
+     * goal convert to string
      * @return String
      */
     @Override

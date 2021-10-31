@@ -122,29 +122,6 @@ public class DungeonManiaControllerTest {
 
     }
 
-    @Test
-    public void testAllGamesEmpty() {
-        DungeonManiaController controller = new DungeonManiaController();
-
-        assertEquals(new ArrayList<String>(), controller.allGames());
-    }
-
-    @Test
-    public void testAllGamesMultiple() {
-        
-        DungeonManiaController controller = new DungeonManiaController();
-        
-        assertDoesNotThrow(() -> controller.newGame("boulders", "Peaceful"));
-        assertDoesNotThrow(() -> controller.saveGame("boulders"));
-        assertDoesNotThrow(() -> controller.newGame("exit", "Standard"));
-        assertDoesNotThrow(() -> controller.saveGame("advanced"));
-
-
-        List<String> listOfGames = new ArrayList<String>();
-        listOfGames.add("advanced");
-        listOfGames.add("boulders");
-        assertEquals(controller.allGames(), listOfGames);
-    }
 
     @Test
     public void testTickInvalidItem() {

@@ -13,6 +13,7 @@ public class EnemiesAndSpawnerGoal implements GoalComponent, Observer  {
     }
     
     /** 
+     * check if goal is complete but counting number of enemies alive
      * @return boolean
      */
     @Override
@@ -23,6 +24,7 @@ public class EnemiesAndSpawnerGoal implements GoalComponent, Observer  {
 
     
     /** 
+     * try to attach entity to this goal
      * @param entity
      */
     @Override
@@ -35,6 +37,7 @@ public class EnemiesAndSpawnerGoal implements GoalComponent, Observer  {
 
     
     /** 
+     * decrease the counter for enemies living
      * @param entity
      */
     @Override
@@ -44,6 +47,7 @@ public class EnemiesAndSpawnerGoal implements GoalComponent, Observer  {
 
     
     /** 
+     * convert goal to JSON
      * @return JSONObject
      */
     @Override
@@ -55,6 +59,7 @@ public class EnemiesAndSpawnerGoal implements GoalComponent, Observer  {
 
     
     /** 
+     * convert goal to string
      * @return String
      */
     @Override
