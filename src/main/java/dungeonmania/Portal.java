@@ -73,41 +73,5 @@ public class Portal extends StaticEntity {
     public void setPlayerTeleported(boolean teleported) {
         getDungeon().getPlayer().setTeleported(teleported);
     }
-
-
-    public static void main(String[] args) {
-
-        // test whether a portal teleports a player to corresponding portal
-        // Create a controller
-        DungeonManiaController controller = new DungeonManiaController();
-
-        // Create a new game
-        DungeonResponse dungeonInfo = controller.newGame("portals-2", "Peaceful");
-
-        // Get player entity
-        EntityResponse player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("Player")).findFirst().orElse(null);
-        System.out.println("Expected: " + new Position(0, 1) + "Actual: " + player.getPosition());
-
-        // Get player entity
-        // EntityResponse portal = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("Portal")).findFirst().orElse(null);
-        // System.out.println("Portal - Expected: " + new Position(1, 1) + "Actual: " + portal.getPosition());
-
-        // dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("Portal")).forEach(s -> System.out.println(s.getPosition()));
-
-        // Move character into portal (portal is obstructed on the RHS)
-        dungeonInfo = controller.tick(null, Direction.RIGHT);
-        player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("Player")).findFirst().orElse(null);
-        System.out.println("Expected: " + new Position(4, 1) + "Actual: " + player.getPosition());
-
-        // Move player down
-        dungeonInfo = controller.tick(null, Direction.DOWN);
-        player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("Player")).findFirst().orElse(null);
-        System.out.println("Expected: " + new Position(4, 2) + "Actual: " + player.getPosition());
-
-        // Move player up into portal
-        dungeonInfo = controller.tick(null, Direction.UP);
-        player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("Player")).findFirst().orElse(null);
-        System.out.println("Expected: " + new Position(1, 0) + "Actual: " + player.getPosition());
-    }
     
 }
