@@ -271,7 +271,8 @@ public class DungeonManiaController {
                     entityData.put("counter", ((ZombieToastSpawner)currEntity).getCounter());
                     break;
                 case "spider":
-                    entityData.put("startingPosition", ((Spider)currEntity).getStartingPosition());
+                    entityData.put("startingPositionx", ((Spider)currEntity).getStartingPosition().getX());
+                    entityData.put("startingPositionxy", ((Spider)currEntity).getStartingPosition().getY());
                     entityData.put("positionNumber", ((Spider)currEntity).getPositionNumber());
                 
             }
@@ -435,7 +436,8 @@ public class DungeonManiaController {
                     currEntity = new OneRing(currPosition, activeGame);
                     break;
                 case "spider":
-                    currEntity = new Spider(currPosition, activeGame);
+                    currEntity = new Spider(currPosition, activeGame, new Position(entityList.getJSONObject(i).getInt("startingPositionx"), entityList.getJSONObject(i).getInt("startingPositiony")),
+                        entityList.getJSONObject(i).getInt("positionNumber"));
                     break;
                 case "zombie_toast":
                     currEntity = new ZombieToast(currPosition, activeGame, entityList.getJSONObject(i).getInt("totalArmour"));
@@ -481,7 +483,7 @@ public class DungeonManiaController {
                 //     currEntity = new Shield(activeGame);
                 //     break;
                 case "player":
-                    currEntity = new Player(currPosition, activeGame, entityList.getJSONObject(i).getInt("health"));
+                    currEntity = new Player(currPosition, activeGame, entityList.getJSONObject(i).getInt("health"),entityList.getJSONObject(i).getBoolean("teleported"));
                     break;
             }
             currEntity.setId(entityList.getJSONObject(i).getString("entityId"));
