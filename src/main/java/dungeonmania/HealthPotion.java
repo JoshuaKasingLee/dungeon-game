@@ -23,6 +23,6 @@ public class HealthPotion extends Item {
      */
     @Override
     public String setType() {
-        return "HealthPotion";
+        return "health_potion";
     }
 }

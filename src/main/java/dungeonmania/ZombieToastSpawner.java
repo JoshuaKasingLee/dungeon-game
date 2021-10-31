@@ -6,9 +6,6 @@ import java.util.ArrayList;
 import dungeonmania.util.Position;
 import dungeonmania.util.Direction;
 
-import dungeonmania.response.models.DungeonResponse;
-import dungeonmania.response.models.EntityResponse;
-
 public class ZombieToastSpawner extends StaticEntity {
     private int counter = 0;
 
@@ -26,7 +23,7 @@ public class ZombieToastSpawner extends StaticEntity {
 
     @Override
     public String setType() {
-        return "ZombieToastSpawner";
+        return "zombie_toast_spawner";
     }
 
     @Override

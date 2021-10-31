@@ -11,6 +11,6 @@ public class Shield extends Item {
      */
     @Override
     public String setType() {
-        return "Shield";
+        return "shield";
     }
 }

@@ -10,7 +10,7 @@ public class Boulder extends StaticEntity{
 
     @Override
     public String setType() {
-        return "Boulder";
+        return "boulder";
     }
 
     @Override

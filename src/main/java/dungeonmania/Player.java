@@ -259,7 +259,7 @@ public class Player extends MovingEntity {
      */
     @Override
     public String setType() {
-        return "Player";
+        return "player";
     }
     
 

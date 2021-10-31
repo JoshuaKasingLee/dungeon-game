@@ -14,6 +14,6 @@ public class Sword extends Item {
      */
     @Override
     public String setType() {
-        return "Sword";
+        return "sword";
     }
 }

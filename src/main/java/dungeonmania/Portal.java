@@ -3,8 +3,6 @@ package dungeonmania;
 import dungeonmania.util.Position;
 import dungeonmania.util.Direction;
 
-import dungeonmania.response.models.DungeonResponse;
-import dungeonmania.response.models.EntityResponse;
 
 public class Portal extends StaticEntity {
     private Portal pairedPortal = null;
@@ -18,7 +16,7 @@ public class Portal extends StaticEntity {
 
     @Override
     public String setType() {
-        return "Portal";
+        return "portal";
     }
 
     @Override

@@ -133,7 +133,7 @@ public class Spider extends Enemy {
 
     @Override
     public String setType() {
-        return "Spider";
+        return "spider";
     }
 
     /** 

@@ -10,7 +10,7 @@ public class Wall extends StaticEntity {
 
     @Override
     public String setType() {
-        return "Wall";
+        return "wall";
     }
 
     @Override

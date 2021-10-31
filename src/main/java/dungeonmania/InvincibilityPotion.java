@@ -25,6 +25,6 @@ public class InvincibilityPotion extends Item {
      */
     @Override
     public String setType() {
-        return "InvincibilityPotion";
+        return "invincibility_potion";
     }
 }

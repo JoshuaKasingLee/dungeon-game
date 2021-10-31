@@ -78,6 +78,6 @@ public class Bomb extends Item {
      */
     @Override
     public String setType() {
-        return "Bomb";
+        return "bomb";
     }
 }

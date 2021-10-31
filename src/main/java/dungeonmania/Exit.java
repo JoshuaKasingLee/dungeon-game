@@ -10,7 +10,7 @@ public class Exit extends StaticEntity {
 
     @Override
     public String setType() {
-        return "Exit";
+        return "exit";
     }
 
     @Override
