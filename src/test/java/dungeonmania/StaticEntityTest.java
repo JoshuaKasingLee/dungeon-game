@@ -23,38 +23,42 @@ public class StaticEntityTest {
         // Create a new game
         DungeonResponse dungeonInfo = controller.newGame("walls", "Standard");
 
-        // Get entities from dungeonInfo
-        List<EntityResponse> entities = dungeonInfo.getEntities();
-
         // Get player entity
-        EntityResponse player = entities.stream().filter(n -> n.getType().equals("player")).findFirst().orElse(null);
+        EntityResponse player = null;
+        player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("Player")).findFirst().orElse(null);
 
-        // Assert player location is 0,0
+        // Assert player location is 1,1
         assertEquals(new Position(1, 1), player.getPosition());
 
         // Move character into wall and position remains the same
-        controller.tick(null, Direction.UP);
-        // Assert player location is 0,0
+        dungeonInfo = controller.tick(null, Direction.UP);
+        // Assert player location is 1,1
+        player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("Player")).findFirst().orElse(null);
         assertEquals(new Position(1, 1), player.getPosition());
         // Move character into wall and position remains the same
-        controller.tick(null, Direction.LEFT);
-        // Assert player location is 0,0
+        dungeonInfo = controller.tick(null, Direction.LEFT);
+        // Assert player location is 1,1
+        player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("Player")).findFirst().orElse(null);
         assertEquals(new Position(1, 1), player.getPosition());
         // Move character into wall and position remains the same
-        controller.tick(null, Direction.DOWN);
+        dungeonInfo = controller.tick(null, Direction.DOWN);
         // Assert player location is 0,0
+        player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("Player")).findFirst().orElse(null);
         assertEquals(new Position(1, 2), player.getPosition());
         // Move character into wall and position remains the same
-        controller.tick(null, Direction.LEFT);
+        dungeonInfo = controller.tick(null, Direction.LEFT);
         // Assert player location is 0,0
+        player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("Player")).findFirst().orElse(null);
         assertEquals(new Position(1, 2), player.getPosition());
         // Move character into wall and position remains the same
-        controller.tick(null, Direction.RIGHT);
+        dungeonInfo = controller.tick(null, Direction.RIGHT);
         // Assert player location is 0,0
+        player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("Player")).findFirst().orElse(null);
         assertEquals(new Position(2, 2), player.getPosition());
         // Move character into wall and position remains the same
-        controller.tick(null, Direction.RIGHT);
+        dungeonInfo = controller.tick(null, Direction.RIGHT);
         // Assert player location is 0,0
+        player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("Player")).findFirst().orElse(null);
         assertEquals(new Position(2, 2), player.getPosition());
     }
 
@@ -67,17 +71,17 @@ public class StaticEntityTest {
         // Create a new game
         DungeonResponse dungeonInfo = controller.newGame("spawner", "Standard");
 
-        // Get entities from dungeonInfo
-        List<EntityResponse> entities = dungeonInfo.getEntities();
+        // // Get entities from dungeonInfo
+        // List<EntityResponse> entities = dungeonInfo.getEntities();
 
         // Game ticks
         for (int i = 0; i < 19; i++) {
-            controller.tick(null, Direction.NONE);
-            assertEquals(entities.stream().anyMatch(n -> n.getType().equals("zombie")), false);
+            dungeonInfo = controller.tick(null, Direction.NONE);
+            assertEquals(dungeonInfo.getEntities().stream().anyMatch(n -> n.getType().equals("ZombieToast")), false);
         }
         // On 20th tick, spawn a zombie on the location of the spawner
-        controller.tick(null, Direction.NONE);
-        assertTrue(entities.stream().anyMatch(n -> n.getType().equals("zombie")));
+        dungeonInfo = controller.tick(null, Direction.NONE);
+        assertTrue(dungeonInfo.getEntities().stream().anyMatch(n -> n.getType().equals("ZombieToast")));
     }
 
     @Test
@@ -89,13 +93,10 @@ public class StaticEntityTest {
         // Create a new game
         DungeonResponse dungeonInfo = controller.newGame("spawner", "Peaceful");
 
-        // Get entities from dungeonInfo
-        List<EntityResponse> entities = dungeonInfo.getEntities();
-
         // Game ticks
-        for (int i = 0; i < 50; i++) {
-            controller.tick(null, Direction.NONE);
-            assertEquals(entities.stream().anyMatch(n -> n.getType().equals("zombie")), false);
+        for (int i = 0; i < 199; i++) {
+            dungeonInfo = controller.tick(null, Direction.NONE);
+            assertEquals(dungeonInfo.getEntities().stream().anyMatch(n -> n.getType().equals("ZombieToast")), false);
         }
     }
 
@@ -108,17 +109,14 @@ public class StaticEntityTest {
         // Create a new game
         DungeonResponse dungeonInfo = controller.newGame("spawner", "Hard");
 
-        // Get entities from dungeonInfo
-        List<EntityResponse> entities = dungeonInfo.getEntities();
-
         // Game ticks
         for (int i = 0; i < 14; i++) {
-            controller.tick(null, Direction.NONE);
-            assertEquals(entities.stream().anyMatch(n -> n.getType().equals("zombie")), false);
+            dungeonInfo = controller.tick(null, Direction.NONE);
+            assertEquals(dungeonInfo.getEntities().stream().anyMatch(n -> n.getType().equals("ZombieToast")), false);
         }
         // On 20th tick, spawn a zombie on the location of the spawner
-        controller.tick(null, Direction.NONE);
-        assertTrue(entities.stream().anyMatch(n -> n.getType().equals("zombie")));
+        dungeonInfo = controller.tick(null, Direction.NONE);
+        assertTrue(dungeonInfo.getEntities().stream().anyMatch(n -> n.getType().equals("ZombieToast")));
     }
 
     @Test
@@ -130,27 +128,28 @@ public class StaticEntityTest {
         // Create a new game
         DungeonResponse dungeonInfo = controller.newGame("spawner", "Peaceful");
 
-        // Get entities from dungeonInfo
-        List<EntityResponse> entities = dungeonInfo.getEntities();
-
         // Assert spawner exists
-        assertTrue(entities.stream().anyMatch(n -> n.getType().equals("zombie_toast_spawner")));
+        assertTrue(dungeonInfo.getEntities().stream().anyMatch(n -> n.getType().equals("ZombieToastSpawner")));
 
         // Get player entity
-        EntityResponse player = entities.stream().filter(n -> n.getType().equals("player")).findFirst().orElse(null);
+        EntityResponse player = null;
+        player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("Player")).findFirst().orElse(null);
 
         // Move character down
-        controller.tick(null, Direction.DOWN);
+        dungeonInfo = controller.tick(null, Direction.DOWN);
+        player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("Player")).findFirst().orElse(null);
         assertEquals(new Position(1, 2), player.getPosition());
         // Move character down
-        controller.tick(null, Direction.DOWN);
+        dungeonInfo = controller.tick(null, Direction.DOWN);
+        player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("Player")).findFirst().orElse(null);
         assertEquals(new Position(1, 3), player.getPosition());
         // Move character right
-        controller.tick(null, Direction.RIGHT);
+        dungeonInfo = controller.tick(null, Direction.RIGHT);
+        player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("Player")).findFirst().orElse(null);
         assertEquals(new Position(1, 2), player.getPosition());
         
-        // Spawner has been destroyed
-        assertFalse(entities.stream().anyMatch(n -> n.getType().equals("zombie_toast_spawner")));
+        // // Spawner has been destroyed
+        assertFalse(dungeonInfo.getEntities().stream().anyMatch(n -> n.getType().equals("ZombieToastSpawner")));
     }
 
     @Test
@@ -162,27 +161,28 @@ public class StaticEntityTest {
         // Create a new game
         DungeonResponse dungeonInfo = controller.newGame("spawner", "Peaceful");
 
-        // Get entities from dungeonInfo
-        List<EntityResponse> entities = dungeonInfo.getEntities();
 
         // Assert spawner exists
-        assertTrue(entities.stream().anyMatch(n -> n.getType().equals("zombie_toast_spawner")));
+        assertTrue(dungeonInfo.getEntities().stream().anyMatch(n -> n.getType().equals("ZombieToastSpawner")));
 
         // Get player entity
-        EntityResponse player = entities.stream().filter(n -> n.getType().equals("player")).findFirst().orElse(null);
+        EntityResponse player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("Player")).findFirst().orElse(null);
 
         // Move character right
-        controller.tick(null, Direction.RIGHT);
+        dungeonInfo = controller.tick(null, Direction.RIGHT);
+        player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("Player")).findFirst().orElse(null);
         assertEquals(new Position(2, 1), player.getPosition());
         // Move character right
-        controller.tick(null, Direction.RIGHT);
+        dungeonInfo = controller.tick(null, Direction.RIGHT);
+        player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("Player")).findFirst().orElse(null);
         assertEquals(new Position(3, 1), player.getPosition());
         // Move character right
-        controller.tick(null, Direction.DOWN);
+        dungeonInfo = controller.tick(null, Direction.DOWN);
+        player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("Player")).findFirst().orElse(null);
         assertEquals(new Position(3, 2), player.getPosition());
         
         // Spawner has not been destroyed as player does not have a weapon
-        assertTrue(entities.stream().anyMatch(n -> n.getType().equals("zombie_toast_spawner")));
+        assertTrue(dungeonInfo.getEntities().stream().anyMatch(n -> n.getType().equals("ZombieToastSpawner")));
     }
 
     @Test
@@ -194,26 +194,28 @@ public class StaticEntityTest {
         // Create a new game
         DungeonResponse dungeonInfo = controller.newGame("doors", "Peaceful");
 
-        // Get entities from dungeonInfo
-        List<EntityResponse> entities = dungeonInfo.getEntities();
-
         // Get player entity
-        EntityResponse player = entities.stream().filter(n -> n.getType().equals("player")).findFirst().orElse(null);
+        EntityResponse player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("Player")).findFirst().orElse(null);
 
         // Move character right
-        controller.tick(null, Direction.RIGHT);
+        dungeonInfo = controller.tick(null, Direction.RIGHT);
+        player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("Player")).findFirst().orElse(null);
         assertEquals(new Position(2, 2), player.getPosition());
         // Move character right - door is locked
-        controller.tick(null, Direction.RIGHT);
+        dungeonInfo = controller.tick(null, Direction.RIGHT);
+        player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("Player")).findFirst().orElse(null);
         assertEquals(new Position(2, 2), player.getPosition());
         // Move character to get key1
-        controller.tick(null, Direction.UP);
+        dungeonInfo = controller.tick(null, Direction.UP);
+        player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("Player")).findFirst().orElse(null);
         assertEquals(new Position(2, 1), player.getPosition());
         // Move character to door again
-        controller.tick(null, Direction.DOWN);
+        dungeonInfo = controller.tick(null, Direction.DOWN);
+        player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("Player")).findFirst().orElse(null);
         assertEquals(new Position(2, 2), player.getPosition());
         // Move character into door
-        controller.tick(null, Direction.RIGHT);
+        dungeonInfo = controller.tick(null, Direction.RIGHT);
+        player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("Player")).findFirst().orElse(null);
         assertEquals(new Position(3, 2), player.getPosition());
     }
 
@@ -226,41 +228,48 @@ public class StaticEntityTest {
         // Create a new game
         DungeonResponse dungeonInfo = controller.newGame("doors", "Peaceful");
 
-        // Get entities from dungeonInfo
-        List<EntityResponse> entities = dungeonInfo.getEntities();
-
         // Get player entity
-        EntityResponse player = entities.stream().filter(n -> n.getType().equals("player")).findFirst().orElse(null);
+        EntityResponse player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("Player")).findFirst().orElse(null);
 
         // Move character right
-        controller.tick(null, Direction.RIGHT);
+        dungeonInfo = controller.tick(null, Direction.RIGHT);
+        player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("Player")).findFirst().orElse(null);
         assertEquals(new Position(2, 2) ,player.getPosition());
         // Move character right - door is locked
-        controller.tick(null, Direction.RIGHT);
+        dungeonInfo = controller.tick(null, Direction.RIGHT);
+        player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("Player")).findFirst().orElse(null);
         assertEquals(new Position(2, 2), player.getPosition());
         // Move character to get key1
-        controller.tick(null, Direction.UP);
+        dungeonInfo = controller.tick(null, Direction.UP);
+        player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("Player")).findFirst().orElse(null);
         assertEquals(new Position(2, 1), player.getPosition());
         // Move character to other door
-        controller.tick(null, Direction.DOWN);
+        dungeonInfo = controller.tick(null, Direction.DOWN);
+        player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("Player")).findFirst().orElse(null);
         assertEquals(new Position(2, 2), player.getPosition());
         // Move character to other door
-        controller.tick(null, Direction.DOWN);
+        dungeonInfo = controller.tick(null, Direction.DOWN);
+        player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("Player")).findFirst().orElse(null);
         assertEquals(new Position(2, 3), player.getPosition());
         // Move character to other door
-        controller.tick(null, Direction.DOWN);
+        dungeonInfo = controller.tick(null, Direction.DOWN);
+        player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("Player")).findFirst().orElse(null);
         assertEquals(new Position(2, 4), player.getPosition());
         // Move character into door - door is locked
-        controller.tick(null, Direction.RIGHT);
+        dungeonInfo = controller.tick(null, Direction.RIGHT);
+        player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("Player")).findFirst().orElse(null);
         assertEquals(new Position(2, 4), player.getPosition());
         // Move character to get key2
-        controller.tick(null, Direction.DOWN);
+        dungeonInfo = controller.tick(null, Direction.DOWN);
+        player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("Player")).findFirst().orElse(null);
         assertEquals(new Position(2, 5), player.getPosition());
         // Move character towards door2
-        controller.tick(null, Direction.UP);
+        dungeonInfo = controller.tick(null, Direction.UP);
+        player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("Player")).findFirst().orElse(null);
         assertEquals(new Position(2, 4), player.getPosition());
         // Move character into door
-        controller.tick(null, Direction.RIGHT);
+        dungeonInfo = controller.tick(null, Direction.RIGHT);
+        player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("Player")).findFirst().orElse(null);
         assertEquals(new Position(3, 4), player.getPosition());
     }
 
@@ -273,20 +282,25 @@ public class StaticEntityTest {
         // Create a new game
         DungeonResponse dungeonInfo = controller.newGame("portals-2", "Peaceful");
 
-        // Get entities from dungeonInfo
-        List<EntityResponse> entities = dungeonInfo.getEntities();
+        // Get player entity
+        EntityResponse player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("Player")).findFirst().orElse(null);
+        assertEquals(new Position(0, 1), player.getPosition());
 
         // Get player entity
-        EntityResponse player = entities.stream().filter(n -> n.getType().equals("player")).findFirst().orElse(null);
+        EntityResponse portal = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("Portal")).findFirst().orElse(null);
+        assertEquals(new Position(1, 1), portal.getPosition());
 
         // Move character into portal (portal is obstructed on the RHS)
-        controller.tick(null, Direction.RIGHT);
+        dungeonInfo = controller.tick(null, Direction.RIGHT);
+        player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("Player")).findFirst().orElse(null);
         assertEquals(new Position(4, 1), player.getPosition());
         // Move player down
-        controller.tick(null, Direction.DOWN);
+        dungeonInfo = controller.tick(null, Direction.DOWN);
+        player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("Player")).findFirst().orElse(null);
         assertEquals(new Position(4, 2), player.getPosition());
         // Move player up into portal
-        controller.tick(null, Direction.UP);
+        dungeonInfo = controller.tick(null, Direction.UP);
+        player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("Player")).findFirst().orElse(null);
         assertEquals(new Position(1, 0), player.getPosition());
     }
 
@@ -299,24 +313,23 @@ public class StaticEntityTest {
         // Create a new game
         DungeonResponse dungeonInfo = controller.newGame("boulderAndSwitch", "Peaceful");
 
-        // Get entities from dungeonInfo
-        List<EntityResponse> entities = dungeonInfo.getEntities();
-
         // Assert boulder exists
-        assertTrue(entities.stream().anyMatch(n -> n.getType().equals("boulder")));
+        assertTrue(dungeonInfo.getEntities().stream().anyMatch(n -> n.getType().equals("Boulder")));
 
         // Assert switch exists
-        assertTrue(entities.stream().anyMatch(n -> n.getType().equals("switch")));
+        assertTrue(dungeonInfo.getEntities().stream().anyMatch(n -> n.getType().equals("Switch")));
 
 
         // Get player entity
-        EntityResponse player = entities.stream().filter(n -> n.getType().equals("player")).findFirst().orElse(null);
+        EntityResponse player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("Player")).findFirst().orElse(null);
 
         // Move towards switch
-        controller.tick(null, Direction.RIGHT);
+        dungeonInfo = controller.tick(null, Direction.RIGHT);
+        player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("Player")).findFirst().orElse(null);
         assertEquals(new Position(2, 1), player.getPosition());
         // Move onto switch
-        controller.tick(null, Direction.RIGHT);
+        dungeonInfo = controller.tick(null, Direction.RIGHT);
+        player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("Player")).findFirst().orElse(null);
         assertEquals(new Position(3, 1), player.getPosition());
     }
 
@@ -329,42 +342,50 @@ public class StaticEntityTest {
         // Create a new game
         DungeonResponse dungeonInfo = controller.newGame("boulderAndSwitch", "Peaceful");
 
-        // Get entities from dungeonInfo
-        List<EntityResponse> entities = dungeonInfo.getEntities();
-
         // Assert boulder exists
-        assertTrue(entities.stream().anyMatch(n -> n.getType().equals("boulder")));
+        assertTrue(dungeonInfo.getEntities().stream().anyMatch(n -> n.getType().equals("Boulder")));
 
         // Assert switch exists
-        assertTrue(entities.stream().anyMatch(n -> n.getType().equals("switch")));
+        assertTrue(dungeonInfo.getEntities().stream().anyMatch(n -> n.getType().equals("Switch")));
 
         // Get player entity
-        EntityResponse player = entities.stream().filter(n -> n.getType().equals("player")).findFirst().orElse(null);
+        EntityResponse player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("Player")).findFirst().orElse(null);
 
         // Get boulder entity
-        EntityResponse boulder = entities.stream().filter(n -> n.getType().equals("boulder")).findFirst().orElse(null);
+        EntityResponse boulder = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("Boulder")).findFirst().orElse(null);
         // Check boulder position
         assertEquals(new Position(2, 2), boulder.getPosition());
 
         // Move behind boulder
-        controller.tick(null, Direction.DOWN);
+        dungeonInfo = controller.tick(null, Direction.DOWN);
+        player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("Player")).findFirst().orElse(null);
         assertEquals(new Position(1, 2), player.getPosition());
         // Move behind boulder
-        controller.tick(null, Direction.DOWN);
+        dungeonInfo = controller.tick(null, Direction.DOWN);
+        player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("Player")).findFirst().orElse(null);
         assertEquals(new Position(1, 3), player.getPosition());
         // Move behind boulder
-        controller.tick(null, Direction.RIGHT);
+        dungeonInfo = controller.tick(null, Direction.RIGHT);
+        player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("Player")).findFirst().orElse(null);
         assertEquals(new Position(2, 3), player.getPosition());
         // Push boulder
-        controller.tick(null, Direction.RIGHT);
+        dungeonInfo = controller.tick(null, Direction.UP);
+        player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("Player")).findFirst().orElse(null);
+        boulder = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("Boulder")).findFirst().orElse(null);
         assertEquals(new Position(2, 2), player.getPosition());
         assertEquals(new Position(2, 1), boulder.getPosition());
         // Push boulder onto switch
-        controller.tick(null, Direction.LEFT);
+        dungeonInfo = controller.tick(null, Direction.LEFT);
+        player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("Player")).findFirst().orElse(null);
+        boulder = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("Boulder")).findFirst().orElse(null);
         assertEquals(new Position(1, 2), player.getPosition());
-        controller.tick(null, Direction.UP);
+        dungeonInfo = controller.tick(null, Direction.UP);
+        player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("Player")).findFirst().orElse(null);
+        boulder = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("Boulder")).findFirst().orElse(null);
         assertEquals(new Position(1, 1), player.getPosition());
-        controller.tick(null, Direction.RIGHT);
+        dungeonInfo = controller.tick(null, Direction.RIGHT);
+        player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("Player")).findFirst().orElse(null);
+        boulder = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("Boulder")).findFirst().orElse(null);
         assertEquals(new Position(2, 1), player.getPosition());
         assertEquals(new Position(3, 1), boulder.getPosition());
     }
@@ -378,28 +399,27 @@ public class StaticEntityTest {
         // Create a new game
         DungeonResponse dungeonInfo = controller.newGame("boulderAndSwitch", "Peaceful");
 
-        // Get entities from dungeonInfo
-        List<EntityResponse> entities = dungeonInfo.getEntities();
-
         // Assert boulder exists
-        assertTrue(entities.stream().anyMatch(n -> n.getType().equals("boulder")));
+        assertTrue(dungeonInfo.getEntities().stream().anyMatch(n -> n.getType().equals("Boulder")));
 
         // Assert switch exists
-        assertTrue(entities.stream().anyMatch(n -> n.getType().equals("switch")));
+        assertTrue(dungeonInfo.getEntities().stream().anyMatch(n -> n.getType().equals("Switch")));
 
         // Get player entity
-        EntityResponse player = entities.stream().filter(n -> n.getType().equals("player")).findFirst().orElse(null);
+        EntityResponse player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("Player")).findFirst().orElse(null);
 
         // Move behind boulder
-        controller.tick(null, Direction.DOWN);
+        dungeonInfo = controller.tick(null, Direction.DOWN);
+        player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("Player")).findFirst().orElse(null);
         assertEquals(new Position(1, 2), player.getPosition());
         // Try push two boulders and stay in place
-        controller.tick(null, Direction.RIGHT);
+        dungeonInfo = controller.tick(null, Direction.RIGHT);
+        player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("Player")).findFirst().orElse(null);
         assertEquals(new Position(1, 2), player.getPosition());
     }
 
     @Test
-    public void testExitObstructs() {
+    public void testExitDoesNotObstructs() {
         // test whether the exit obstructs a player
         // Create a controller
         DungeonManiaController controller = new DungeonManiaController();
@@ -407,14 +427,12 @@ public class StaticEntityTest {
         // Create a new game
         DungeonResponse dungeonInfo = controller.newGame("exit", "Peaceful");
 
-        // Get entities from dungeonInfo
-        List<EntityResponse> entities = dungeonInfo.getEntities();
-
         // Get player entity
-        EntityResponse player = entities.stream().filter(n -> n.getType().equals("player")).findFirst().orElse(null);
+        EntityResponse player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("Player")).findFirst().orElse(null);
 
         // Move hop down onto exit
-        controller.tick(null, Direction.DOWN);
+        dungeonInfo = controller.tick(null, Direction.DOWN);
+        player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("Player")).findFirst().orElse(null);
         assertEquals(new Position(1, 2), player.getPosition());
     }
 }

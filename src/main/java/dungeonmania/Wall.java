@@ -17,4 +17,5 @@ public class Wall extends StaticEntity {
     public void update(Direction direction) {
         return;
     }
+
 }
