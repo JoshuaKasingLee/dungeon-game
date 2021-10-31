@@ -629,7 +629,7 @@ public class DungeonManiaController {
                     // move(movementDirection);
                 } 
             }
-            // Move all enemies
+            // Moves all enemies
             
             // Move character and update boulders accordingly.
 
