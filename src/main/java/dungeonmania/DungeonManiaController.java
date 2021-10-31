@@ -235,27 +235,27 @@ public class DungeonManiaController {
 
 
             switch (currType) {
-                case "Portal":
+                case "portal":
                     entityData.put("colour", ((Portal)currEntity).getPortalColour());
                     break;
-                case "Door": 
+                case "door": 
                     entityData.put("key", ((Door)currEntity).getKey());
                     break;
-                case "Key":
+                case "key":
                     entityData.put("key", ((Key)currEntity).getKey());
                     break;
                 // MAYBE REMOVE LATER!!! COULD BE UNNECESSARY
-                case "Switch":
+                case "switch":
                     entityData.put("hasBoulder", ((Switch)currEntity).hasBoulder());
                     break;
-                case "ZombieToast": 
+                case "zombie_toast": 
                     entityData.put("totalArmour", ((ZombieToast)currEntity).getArmour());
                     break;       
-                case "Mercenary":
+                case "mercenary":
                     entityData.put("totalArmour", ((Mercenary)currEntity).getArmour());
                     entityData.put("ally", ((Mercenary)currEntity).isAlly());
                     break; 
-                case "Player":
+                case "player":
                     CharacterState characterState = ((Player)currEntity).getCharacterState();
                     String stateType = characterState.getType();
                     entityData.put("health", ((Player)currEntity).getHealth());
@@ -266,7 +266,7 @@ public class DungeonManiaController {
                         entityData.put("timeLeft", ((InvisibleState)characterState).getTimeLeft());
                     }
                     break;
-                case "ZombieToastSpawner":
+                case "zombie_toast_spawner":
                     entityData.put("counter", ((ZombieToastSpawner)currEntity).getCounter());
                     break;
             }
@@ -297,19 +297,19 @@ public class DungeonManiaController {
 
 
             switch (currType) {
-                case "Key":
+                case "key":
                     itemData.put("key", ((Key)currItem).getKey());
                     break;
-                case "Sword":  
+                case "sword":  
                     itemData.put("usesLeft", ((Sword)currItem).getUsesLeft());
                     break;
-                case "Armour":   
+                case "armour":   
                     itemData.put("usesLeft", ((Armour)currItem).getUsesLeft());
                     break;
-                case "Bow":
+                case "bow":
                     itemData.put("usesLeft", ((Bow)currItem).getUsesLeft());
                     break;
-                case "Shield":
+                case "shield":
                     itemData.put("usesLeft", ((Shield)currItem).getUsesLeft());
                     break;
             }
@@ -403,69 +403,69 @@ public class DungeonManiaController {
             Position currPosition = new Position(entityList.getJSONObject(i).getInt("x"), entityList.getJSONObject(i).getInt("y"));
 
             switch (entityType) {
-                case "Wall":
+                case "wall":
                     currEntity = new Wall(currPosition, activeGame);  
                     break;
-                case "Exit":
+                case "exit":
                     currEntity = new Exit(currPosition, activeGame);
                     break;
-                case "Boulder":
+                case "boulder":
                     currEntity = new Boulder(currPosition, activeGame);
                     break;
-                case "Switch":
+                case "switch":
                     currEntity = new Switch(currPosition, activeGame);
                     break;
-                case "Door":
+                case "door":
                     key = entityList.getJSONObject(i).getInt("key");
                     currEntity = new Door(currPosition, activeGame, key);
                     break;
-                case "Portal":
+                case "portal":
                     colour = entityList.getJSONObject(i).getString("colour");
                     currEntity = new Portal(currPosition, activeGame, colour);
                     break;
-                case "Zombie_toast_spawner":
+                case "zombie_toast_spawner":
                     currEntity = new ZombieToastSpawner(currPosition, activeGame, entityList.getJSONObject(i).getInt("counter"));
                     break;
-                case "One_ring":
+                case "one_ring":
                     currEntity = new OneRing(currPosition, activeGame);
                     break;
-                case "Spider":
+                case "spider":
                     currEntity = new Spider(currPosition, activeGame);
                     break;
-                case "Zombie_toast":
+                case "zombie_toast":
                     currEntity = new ZombieToast(currPosition, activeGame, entityList.getJSONObject(i).getInt("totalArmour"));
                     break;
-                case "Mercenary":
+                case "mercenary":
                     durability = entityList.getJSONObject(i).getInt("totalArmour");
                     boolean isAlly = entityList.getJSONObject(i).getBoolean("ally");
                     currEntity = new Mercenary(currPosition, activeGame, durability, isAlly);
                     break;
-                case "Treasure":
+                case "treasure":
                     currEntity = new Treasure(currPosition, activeGame);
                     break;
-                case "Key":
+                case "key":
                     key = entityList.getJSONObject(i).getInt("key");
                     currEntity = new Key(currPosition, activeGame, key);
                     break;
-                case "Health_position":
+                case "health_potion":
                     currEntity = new HealthPotion(currPosition, activeGame);
                     break;
-                case "Invincibility_potion":
+                case "invincibility_potion":
                     currEntity = new InvincibilityPotion(currPosition, activeGame);
                     break;
-                case "Invisibility_potion":
+                case "invisibility_potion":
                     currEntity = new InvisibilityPotion(currPosition, activeGame);
                     break;
-                case "Wood":
+                case "wood":
                     currEntity = new Wood(currPosition, activeGame);
                     break;
-                case "Arrow":
+                case "arrow":
                     currEntity = new Arrow(currPosition, activeGame); 
                     break;
-                case "Bomb":
+                case "bomb":
                     currEntity = new Bomb(currPosition, activeGame);
                     break;
-                case "Sword":
+                case "sword":
                     currEntity = new Sword(currPosition, activeGame);
                     break;
 
@@ -475,7 +475,7 @@ public class DungeonManiaController {
                 // case "Shield":
                 //     currEntity = new Shield(activeGame);
                 //     break;
-                case "Player":
+                case "player":
                     currEntity = new Player(currPosition, activeGame, entityList.getJSONObject(i).getInt("health"));
                     break;
             }
@@ -498,46 +498,46 @@ public class DungeonManiaController {
             int key;
             Position posPlaceholder = new Position(-1, -1);
             switch (itemType) {
-                case "One_ring":
+                case "one_ring":
                     currItem = new OneRing(posPlaceholder, activeGame);
                     break;
-                case "Treasure":
+                case "treasure":
                     currItem = new Treasure(posPlaceholder, activeGame);
                     break;
-                case "Key":
+                case "key":
                     key = entityList.getJSONObject(i).getInt("key");
                     currItem = new Key(posPlaceholder, activeGame, key);
                     break;
-                case "Health_position":
+                case "health_potion":
                     currItem = new HealthPotion(posPlaceholder, activeGame);
                     break;
-                case "Invincibility_potion":
+                case "invincibility_potion":
                     currItem = new InvincibilityPotion(posPlaceholder, activeGame);
                     break;
-                case "Invisibility_potion":
+                case "invisibility_potion":
                     currItem = new InvisibilityPotion(posPlaceholder, activeGame);
                     break;
-                case "Wood":
+                case "wood":
                     currItem = new Wood(posPlaceholder, activeGame);
                     break;
-                case "Arrow":
+                case "arrow":
                     currItem = new Arrow(posPlaceholder, activeGame); 
                     break;
-                case "Bomb":
+                case "bomb":
                     currItem = new Bomb(posPlaceholder, activeGame);
                     break;
-                case "Sword":
+                case "sword":
                     currItem = new Sword(posPlaceholder, activeGame);
                     ((Item) currItem).setUsesLeft(itemList.getJSONObject(i).getInt("usesLeft"));
                     break;
-                case "Armour":
+                case "armour":
                     currItem = new Armour(activeGame, itemList.getJSONObject(i).getInt("usesLeft"));
                     break;
-                case "Bow":
+                case "bow":
                     currItem = new Bow(activeGame);
                     currItem.setUsesLeft(itemList.getJSONObject(i).getInt("usesLeft"));
                     break;
-                case "Shield":
+                case "shield":
                     currItem = new Shield(activeGame);
                     currItem.setUsesLeft(itemList.getJSONObject(i).getInt("usesLeft"));
                     break;

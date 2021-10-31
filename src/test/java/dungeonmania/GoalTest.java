@@ -26,7 +26,7 @@ public class GoalTest {
 
         DungeonResponse dungeonInfo = controller.newGame("exitGoalTester", "Peaceful");
 
-        controller.tick(null , Direction.UP);
+        controller.tick(null, Direction.DOWN);
         assertEquals(dungeonInfo.getGoals(), "");
     
     }
@@ -38,7 +38,7 @@ public class GoalTest {
 
         DungeonResponse dungeonInfo = controller.newGame("boulderGoalTester", "Peaceful");
 
-        controller.tick(null , Direction.DOWN);
+        controller.tick(null , Direction.UP);
         assertEquals(dungeonInfo.getGoals(), "");
         
     } 
