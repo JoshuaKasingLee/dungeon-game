@@ -617,15 +617,15 @@ public class DungeonManiaController {
                 } 
             }
             // Move all enemies
-            if (entity instanceof Enemy) {
-                ((Enemy) entity).updatePosition();
-            }
             
             // Move character and update boulders accordingly.
 
         }
 
         for (Entity entity: entitiesCopy) {
+            if (entity instanceof Enemy) {
+                ((Enemy) entity).updatePosition();
+            }
             if (movementDirection != null) {
                 if (entity instanceof StaticEntity) {
                     ((StaticEntity) entity).update(movementDirection);
