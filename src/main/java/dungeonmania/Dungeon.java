@@ -40,7 +40,7 @@ public class Dungeon {
     }
 
     public void conditionalAttach(Entity entity) {
-        for (GoalComponent goal : simpleGoals) {
+        for (GoalComponent goal : entity.getDungeon().getSimpleGoals()) {
             goal.tryToAttach(entity);
         }
     }
@@ -202,6 +202,5 @@ public class Dungeon {
     public void setOverallGoal(GoalComponent overallGoal) {
         this.overallGoal = overallGoal;
     }
-
 
 }

@@ -113,6 +113,7 @@ public class Player extends MovingEntity {
                             Armour a = new Armour(getDungeon(), e.getArmour());
                             inventory.add(a);
                         }
+                        e.notifyObservers();
                         getDungeon().removeEntity(e);
                     }
                 }
@@ -129,6 +130,9 @@ public class Player extends MovingEntity {
     public void pickItems(Position pos) {
         for (Entity e : getDungeon().getEntities(pos)) {
             if (e instanceof Item) {
+                if (e instanceof Treasure) {
+                    e.notifyObservers();
+                }
                 Item i = (Item) e;
                 getDungeon().removeEntity(i);
                 inventory.add(i);
@@ -183,10 +187,12 @@ public class Player extends MovingEntity {
             if (p.equals(getPosition())) {
                 if (inventory.getItem("sword") != null) {
                     inventory.use("sword", this);
+                    notifyObservers();
                     getDungeon().removeEntity(spawner);
                     break;
                 } else if (inventory.getItem("bow") != null) {
                     inventory.use("bow", this);
+                    notifyObservers();
                     getDungeon().removeEntity(spawner);
                     break;
                 } else {

@@ -8,11 +8,17 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.Test;
 
 import dungeonmania.response.models.DungeonResponse;
+import dungeonmania.response.models.EntityResponse;
 import dungeonmania.util.Direction;
 
 import java.lang.IllegalArgumentException;
 import java.util.List;
+
+import dungeonmania.util.Position;
+
+import java.util.List;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 
 
@@ -25,10 +31,17 @@ public class GoalTest {
         DungeonManiaController controller = new DungeonManiaController();
 
         DungeonResponse dungeonInfo = controller.newGame("exitGoalTester", "Peaceful");
-
-        controller.tick(null, Direction.DOWN);
-        assertEquals(dungeonInfo.getGoals(), "");
-    
+        
+        List<Entity> list = controller.getActiveGame().getEntities(new Position (1, 2));
+        assertEquals("exit", list.get(0).getType());
+        assertEquals(1, list.get(0).getGoalObservers().size());
+        dungeonInfo = controller.tick(null, Direction.DOWN);
+        // EntityResponse player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("player")).findFirst().orElse(null);
+        // EntityResponse exit = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("exit")).findFirst().orElse(null);
+        // assertEquals(new Position(1, 2), player.getPosition());
+        // assertEquals(new Position(1, 2), exit.getPosition());
+        
+        assertEquals("", dungeonInfo.getGoals());
     }
 
 
@@ -38,7 +51,7 @@ public class GoalTest {
 
         DungeonResponse dungeonInfo = controller.newGame("boulderGoalTester", "Peaceful");
 
-        controller.tick(null , Direction.UP);
+        dungeonInfo = controller.tick(null, Direction.UP);
         assertEquals(dungeonInfo.getGoals(), "");
         
     } 
@@ -48,7 +61,7 @@ public class GoalTest {
         DungeonManiaController controller = new DungeonManiaController();
 
         DungeonResponse dungeonInfo = controller.newGame("enemyGoalTester", "Peaceful");
-        controller.tick(null , Direction.DOWN);
+        dungeonInfo = controller.tick(null , Direction.UP);
         assertEquals(dungeonInfo.getGoals(), "");
         
     }     
@@ -58,7 +71,7 @@ public class GoalTest {
         DungeonManiaController controller = new DungeonManiaController();
 
         DungeonResponse dungeonInfo = controller.newGame("treasureGoalTester", "Peaceful");
-        controller.tick(null , Direction.DOWN);
+        dungeonInfo = controller.tick(null , Direction.UP);
         assertEquals(dungeonInfo.getGoals(), "");
         
     }     
@@ -68,11 +81,11 @@ public class GoalTest {
     public void testAndGoal() {
         DungeonManiaController controller = new DungeonManiaController();
 
-        DungeonResponse dungeonInfo = controller.newGame("AndGoalTester", "Peaceful");
-        assertTrue(dungeonInfo.getGoals().contains(":treasure") && dungeonInfo.getGoals().contains(":exit"));
-        controller.tick(null , Direction.DOWN);
-        assertTrue(!dungeonInfo.getGoals().contains(":treasure") && dungeonInfo.getGoals().contains(":exit"));
-        controller.tick(null , Direction.DOWN);
+        DungeonResponse dungeonInfo = controller.newGame("andGoalTester", "Peaceful");
+        // assertTrue(dungeonInfo.getGoals().contains(":treasure") && dungeonInfo.getGoals().contains(":exit"));
+        dungeonInfo = controller.tick(null , Direction.UP);
+        // assertTrue(!dungeonInfo.getGoals().contains(":treasure") && dungeonInfo.getGoals().contains(":exit"));
+        dungeonInfo = controller.tick(null , Direction.UP);
         assertEquals(dungeonInfo.getGoals(), "");
 
     } 
@@ -83,7 +96,7 @@ public class GoalTest {
 
         DungeonResponse dungeonInfo = controller.newGame("orGoalTester", "Peaceful");
         assertTrue(dungeonInfo.getGoals().contains(":treasure") && dungeonInfo.getGoals().contains(":exit"));
-        controller.tick(null , Direction.DOWN);
+        dungeonInfo = controller.tick(null , Direction.UP);
         assertEquals(dungeonInfo.getGoals(), "");
 
     } 

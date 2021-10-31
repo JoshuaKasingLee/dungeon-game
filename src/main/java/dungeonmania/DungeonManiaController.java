@@ -91,6 +91,19 @@ public class DungeonManiaController {
         JSONObject dungeonObj = new JSONObject(fileContents);
         // Extract data from Json Object
 
+        JSONObject goalCondition = dungeonObj.getJSONObject("goal-condition");
+
+        GoalComponent overallGoal = extractAllGoals(goalCondition, activeGame);
+        activeGame.setOverallGoal(overallGoal); 
+        
+        String goalString = "";
+        for (GoalComponent simpleGoal : activeGame.getSimpleGoals()) {
+            String simpleGoalString = simpleGoal.simpleGoalToString();
+            if (!goalString.contains(simpleGoalString)) {
+                goalString += simpleGoal.simpleGoalToString();
+            }
+        }
+
         JSONArray entityList = dungeonObj.getJSONArray("entities");
         
         // Create a list of EntityResponse
@@ -190,19 +203,8 @@ public class DungeonManiaController {
 
             // activeGame.addEntity(currEntity);
         }
-        
-        JSONObject goalCondition = dungeonObj.getJSONObject("goal-condition");
 
-        GoalComponent overallGoal = extractAllGoals(goalCondition, activeGame);
-        activeGame.setOverallGoal(overallGoal); 
         
-        String goalString = "";
-        for (GoalComponent simpleGoal : activeGame.getSimpleGoals()) {
-            String simpleGoalString = simpleGoal.simpleGoalToString();
-            if (!goalString.contains(simpleGoalString)) {
-                goalString += simpleGoal.simpleGoalToString();
-            }
-        }
         
         return new DungeonResponse(dungeonId, dungeonName, entityResponses, new ArrayList<ItemResponse>(), new ArrayList<String>(), goalString);
     }
@@ -383,7 +385,17 @@ public class DungeonManiaController {
         }
         JSONObject dungeonObj = new JSONObject(fileContents);
 
+        JSONObject goalCondition = dungeonObj.getJSONObject("goal-condition");
+        GoalComponent overallGoal = extractAllGoals(goalCondition, activeGame);
+        activeGame.setOverallGoal(overallGoal); 
 
+        String goalString = "";
+        for (GoalComponent simpleGoal : activeGame.getSimpleGoals()) {
+            String simpleGoalString = simpleGoal.simpleGoalToString();
+            if (!goalString.contains(simpleGoalString)) {
+                goalString += simpleGoal.simpleGoalToString();
+            }
+        }
 
 
         // WE NEED TO CONVERT TO STRING!!
@@ -555,17 +567,7 @@ public class DungeonManiaController {
             // activeGame.addEntity(currItem);
         }
 
-        JSONObject goalCondition = dungeonObj.getJSONObject("goal-condition");
-        GoalComponent overallGoal = extractAllGoals(goalCondition, activeGame);
-        activeGame.setOverallGoal(overallGoal); 
 
-        String goalString = "";
-        for (GoalComponent simpleGoal : activeGame.getSimpleGoals()) {
-            String simpleGoalString = simpleGoal.simpleGoalToString();
-            if (!goalString.contains(simpleGoalString)) {
-                goalString += simpleGoal.simpleGoalToString();
-            }
-        }
 
         List<String> buildables = activeGame.getInventory().getBuildables();
         
@@ -619,6 +621,9 @@ public class DungeonManiaController {
         }
     
         for (Entity entity : entities) {
+            if (entity instanceof Exit || entity instanceof Switch) {
+                entity.notifyObservers();
+            }
             entityResponses.add(new EntityResponse(entity.getId(), entity.getType(), entity.getPosition(), entity.isInteractable()));
         }
 
@@ -633,10 +638,16 @@ public class DungeonManiaController {
 
         for (GoalComponent simpleGoal : activeGame.getSimpleGoals()) {
             String simpleGoalString = simpleGoal.simpleGoalToString();
-            if (!goalString.contains(simpleGoalString)) {
+            if (!goalString.contains(simpleGoalString) && !simpleGoal.isComplete()) {
                 goalString += simpleGoal.simpleGoalToString();
             }
         }
+
+        if (activeGame.getOverallGoal().isComplete()) {
+            goalString = "";
+        }
+
+        
 
         List<String> buildables = activeGame.getInventory().getBuildables();
         return new DungeonResponse(activeGame.getDungeonId(), activeGame.getDungeonName(), entityResponses, itemResponses, buildables, goalString);

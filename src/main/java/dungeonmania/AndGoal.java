@@ -30,4 +30,5 @@ public class AndGoal extends CompositeGoal {
         return new JSONObject(goalData);
     }
 
+
 }
