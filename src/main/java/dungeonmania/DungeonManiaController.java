@@ -174,7 +174,7 @@ public class DungeonManiaController {
                     key = entityList.getJSONObject(i).getInt("key");
                     currEntity = new Key(currPosition, activeGame, key);
                     break;
-                case "health_position":
+                case "health_potion":
                     currEntity = new HealthPotion(currPosition, activeGame);
                     break;
                 case "invincibility_potion":
