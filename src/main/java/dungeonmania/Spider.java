@@ -179,4 +179,11 @@ public class Spider extends Enemy {
         // always rounds up
         return (double) (Math.sqrt(squaredDist));
     }
+
+    /** 
+     * @return startingPosition
+     */
+    public Position getStartingPosition() {
+        return startingPosition;
+    }
 }
