@@ -260,6 +260,7 @@ public class DungeonManiaController {
                     String stateType = characterState.getType();
                     entityData.put("health", ((Player)currEntity).getHealth());
                     entityData.put("characterState", stateType);
+                    entityData.put("teleported", ((Player)currEntity).getTeleported());
                     if (stateType.equals("Invincible")) {
                         entityData.put("timeLeft", ((InvincibleState)characterState).getTimeLeft());
                     } else if (stateType.equals("Invisibile")) {
@@ -269,6 +270,10 @@ public class DungeonManiaController {
                 case "zombie_toast_spawner":
                     entityData.put("counter", ((ZombieToastSpawner)currEntity).getCounter());
                     break;
+                case "spider":
+                    entityData.put("startingPosition", ((Spider)currEntity).getStartingPosition());
+                    entityData.put("positionNumber", ((Spider)currEntity).getPositionNumber());
+                
             }
 
             JSONObject entityJSON = new JSONObject(entityData);
