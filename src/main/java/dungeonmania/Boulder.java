@@ -8,13 +8,19 @@ public class Boulder extends StaticEntity{
         super(position, dungeon);
     }
 
+    /** 
+     * @return String
+     */
     @Override
     public String setType() {
         return "boulder";
     }
-
+    
+    /** 
+     * updates boulder position and status for one tick
+     * @param direction
+     */
     @Override
-    // Updates state
     public void update(Direction direction) {
         if (getPosition().equals(getPlayerPosition())) {
             move(direction);
@@ -26,7 +32,10 @@ public class Boulder extends StaticEntity{
         }
     }
 
-    // May have to override if use interface
+    /** 
+     * moves boulder in given direction
+     * @param direction
+     */
     public void move(Direction direction) {
         Position currPos = this.getPosition();
         Position dir = direction.getOffset();

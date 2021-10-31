@@ -14,11 +14,11 @@ public class StandardState implements CharacterState {
      * @param enemy
      */
     public void battleEnemy(Enemy enemy) {
-        // update mercenary position if they are within battle enemy
+        // update mercenary position if they are within battle radius
         for (Entity e : player.getDungeon().getEntities()) {
             if (e instanceof Mercenary) {
                 Mercenary m = (Mercenary) e;
-                if (!m.isAlly()) {
+                if (!m.isAlly() && m.withinPlayerRadius(player)) {
                     m.updatePosition();
                 }
             }

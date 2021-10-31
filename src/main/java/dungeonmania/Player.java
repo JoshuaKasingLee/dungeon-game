@@ -182,6 +182,7 @@ public class Player extends MovingEntity {
     public void destroySpawner(ZombieToastSpawner spawner) {
         Position spawnerPos = spawner.getPosition();
         List<Position> cardinalAdjMercPos = getCardinalAdjPositions1(spawnerPos);
+        int i = 0;
         for (Position p : cardinalAdjMercPos) {
             
             if (p.equals(getPosition())) {
@@ -199,8 +200,11 @@ public class Player extends MovingEntity {
                     throw new InvalidActionException("Cannot destory ZombieToastspawner without weapon");
                 }
             } else {
-                throw new InvalidActionException("ZombieToastSpawner is not cardinally adjacent");
+                i++;
             }
+        }
+        if (i == cardinalAdjMercPos.size()) {
+            throw new InvalidActionException("ZombieToastSpawner is not cardinally adjacent");
         }
     }
 

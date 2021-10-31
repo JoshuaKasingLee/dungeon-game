@@ -20,7 +20,6 @@ public class Mercenary extends Enemy {
 
     private Position playerPosition = getDungeon().getPlayer().getPosition();
 
-
     public Mercenary(Position position, Dungeon dungeon) {
         super(position, dungeon);
         this.setHealth(ORIGINAL_HEALTH);
@@ -35,6 +34,9 @@ public class Mercenary extends Enemy {
         setAlly(isAlly);
     }
 
+    /** 
+     * updates mercenary position for 1 tick
+     */
     @Override
     public void updatePosition() {
         this.possiblePositions = getPossiblePositions();
@@ -74,28 +76,25 @@ public class Mercenary extends Enemy {
         }
     }
 
-    
     /** 
+     * returns list of positions mercenary can move into
      * @return List<Position>
      */
     public List<Position> getPossiblePositions() {
         List<Position> possiblePositions = new ArrayList<Position>();
         // Up position
         possiblePositions.add(new Position(x, y-1));
-
         // Down position
         possiblePositions.add(new Position(x, y+1));
-
         // Left position
         possiblePositions.add(new Position(x-1, y));
-
         // Right position
         possiblePositions.add(new Position(x+1, y));
         return possiblePositions;
     }
     
-    
     /** 
+     * returns list of distance between player and possible mercenary positions
      * @return List<Double>
      */
     public List<Double> getDistanceOfPositions() {
@@ -107,17 +106,6 @@ public class Mercenary extends Enemy {
         return distanceOfPositions;
     }
 
-    
-    /** 
-     * @return String
-     */
-    @Override
-    public String setType() {
-        return "mercenary";
-    }
-
-
-    
     /** 
      * returns true if player is within mercenary's battle radius, false if else
      * @param player
@@ -130,6 +118,14 @@ public class Mercenary extends Enemy {
             }
         }
         return false;
+    }
+
+    /** 
+     * @return String
+     */
+    @Override
+    public String setType() {
+        return "mercenary";
     }
 
     // helper functions

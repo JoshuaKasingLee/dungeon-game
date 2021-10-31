@@ -48,14 +48,41 @@ public class Spider extends Enemy {
         this.positionNumber = positionNumber;
     }
 
-    public ArrayList<Position> setPositions(Position position) {
-        return new ArrayList<Position>(position.getAdjacentPositions());
+    // spider functions
+    
+    /** 
+     * returns list of positions spider can move into
+     * @return List<Position>
+     */
+    public List<Position> getPossiblePositions() {
+        List<Position> possiblePositions = new ArrayList<Position>();
+        // Up position
+        possiblePositions.add(new Position(x, y-1));
+        // Down position
+        possiblePositions.add(new Position(x, y+1));
+        // Left position
+        possiblePositions.add(new Position(x-1, y));
+        // Right position
+        possiblePositions.add(new Position(x+1, y));
+        return possiblePositions;
+    }
+    
+    /** 
+     * returns list of distance between player and possible spider positions
+     * @return List<Double>
+     */
+    public List<Double> getDistanceOfPositions() {
+        List<Double> distanceOfPositions = new ArrayList<Double>();
+        // Loop through and add the distance of between two positions
+        for (Position possiblePosition : possiblePositions) {
+            distanceOfPositions.add(calculateDistance(possiblePosition, getDungeon().getPlayer().getPosition()));
+        }
+        return distanceOfPositions;
     }
 
-    public List<Position> getAdjacentPositions() {
-        return adjacentPositions;
-    }
-
+    /** 
+     * update position of spider for one tick
+     */
     @Override
     public void updatePosition() {
         Entity player = getDungeon().getEntities().stream().filter(n -> n.getType().equals("player")).findFirst().orElse(null);
@@ -109,20 +136,10 @@ public class Spider extends Enemy {
         }
     }
 
-    // Set the spider's position number
-    public void setPositionNumber(int number) {
-        this.positionNumber = number;
-    }
-
-    // Get the spider's position number
-    public int getPositionNumber() {
-        if (this.positionNumber < 0) {
-            return (this.positionNumber % 8 + 8);
-        }
-        return (this.positionNumber % 8);
-    }
-
-    // Get the spider's next position number (depending on the direction)
+    /** 
+     * get the spider's next position number (depending on the direction)
+     * @return int
+     */
     public int getNextPositionNumber() {
         if ((this.positionNumber + direction) < 0) {
             return ((this.positionNumber + direction) % 8 + 8);
@@ -130,7 +147,11 @@ public class Spider extends Enemy {
         return ((this.positionNumber + direction) % 8);
     }
 
-    // Check if there are any boulders in a given position
+    /** 
+     * check if there are any boulders in a given position
+     * @param position
+     * @return boolean
+     */
     public boolean checkForBoulder(Position position) {
         for (Entity entity : getDungeon().getEntities(position)) {
             if (entity instanceof Boulder) {
@@ -140,40 +161,48 @@ public class Spider extends Enemy {
         return false;
     }
 
-    @Override
-    public String setType() {
-        return "spider";
-    }
+    // basic getters and getters
 
+    /** 
+     * @param position
+     * @return ArrayList<Position>
+     */
+    public ArrayList<Position> setPositions(Position position) {
+        return new ArrayList<Position>(position.getAdjacentPositions());
+    }
+    
     /** 
      * @return List<Position>
      */
-    public List<Position> getPossiblePositions() {
-        List<Position> possiblePositions = new ArrayList<Position>();
-        // Up position
-        possiblePositions.add(new Position(x, y-1));
-
-        // Down position
-        possiblePositions.add(new Position(x, y+1));
-
-        // Left position
-        possiblePositions.add(new Position(x-1, y));
-
-        // Right position
-        possiblePositions.add(new Position(x+1, y));
-        return possiblePositions;
+    public List<Position> getAdjacentPositions() {
+        return adjacentPositions;
     }
 
     /** 
-     * @return List<Double>
+     * @param number
      */
-    public List<Double> getDistanceOfPositions() {
-        List<Double> distanceOfPositions = new ArrayList<Double>();
-        // Loop through and add the distance of between two positions
-        for (Position possiblePosition : possiblePositions) {
-            distanceOfPositions.add(calculateDistance(possiblePosition, getDungeon().getPlayer().getPosition()));
+    // Set the spider's position number
+    public void setPositionNumber(int number) {
+        this.positionNumber = number;
+    }
+
+    /** 
+     * get the spider's position number
+     * @return int
+     */
+    public int getPositionNumber() {
+        if (this.positionNumber < 0) {
+            return (this.positionNumber % 8 + 8);
         }
-        return distanceOfPositions;
+        return (this.positionNumber % 8);
+    }
+    
+    /** 
+     * @return String
+     */
+    @Override
+    public String setType() {
+        return "spider";
     }
 
     /** 

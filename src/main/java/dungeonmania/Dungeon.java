@@ -22,6 +22,10 @@ public class Dungeon {
         this.dungeonId = dungeonId;
     }
 
+    
+    /** 
+     * @param gamemodeString
+     */
     public void initialiseGameMode(String gamemodeString) {
         if (gamemodeString.equals("Peaceful")) {
             gamemode = new Peaceful();
@@ -34,25 +38,47 @@ public class Dungeon {
         }
     }
 
+    
+    /** 
+     * @param entity
+     */
     public void addEntity(Entity entity) {
         entities.add(entity);
         conditionalAttach(entity);
     }
 
+    
+    /** 
+     * @param entity
+     */
     public void conditionalAttach(Entity entity) {
         for (GoalComponent goal : entity.getDungeon().getSimpleGoals()) {
             goal.tryToAttach(entity);
         }
     }
     
+    
+    /** 
+     * @param treasure
+     * @return boolean
+     */
     public boolean isEntityInDungeon(Treasure treasure) {
         return entities.stream().anyMatch(entity -> (entity instanceof Treasure));
     }
 
+    
+    /** 
+     * @param simpleGoal
+     */
     public void addSimpleGoals(GoalComponent simpleGoal) {
         simpleGoals.add(simpleGoal);
     }
     
+    
+    /** 
+     * @param position
+     * @return List<Entity>
+     */
     public List<Entity> getEntities(Position position) {
         List<Entity> entitiesAtPos = new ArrayList<Entity>();
         for (Entity entity : entities) {
@@ -63,6 +89,11 @@ public class Dungeon {
         return entitiesAtPos;
     }
 
+    
+    /** 
+     * @param position
+     * @return Door
+     */
     public Door getDoor(Position position) {
         List<Entity> entityList = getEntities(position);
         for (Entity entity : entityList) {
@@ -73,15 +104,28 @@ public class Dungeon {
          return null;
     }
 
+    
+    /** 
+     * @param entity
+     * @param position
+     */
     public void addTo(Entity entity, Position position) {
         entity.setPosition(position);
         addEntity(entity);
     }
 
+    
+    /** 
+     * @param entity
+     */
     public void removeEntity(Entity entity) {
         entities.remove(entity);
     }
 
+    
+    /** 
+     * @param position
+     */
     public void removeFrom(Position position) {
         List<Entity> entitiesCopy = new ArrayList<Entity>(entities);
         for (Entity entity : entitiesCopy) {
@@ -94,6 +138,10 @@ public class Dungeon {
 
     }
 
+    
+    /** 
+     * @return Player
+     */
     public Player getPlayer() {
         for (Entity entity : entities) {
             if (entity instanceof Player) {
@@ -103,6 +151,10 @@ public class Dungeon {
         return null;
     }
 
+    
+    /** 
+     * @param item
+     */
     public void moveToInventory(Item item) {
         inventory.add(item);
         entities.remove(item);

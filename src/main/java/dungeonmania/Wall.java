@@ -8,11 +8,18 @@ public class Wall extends StaticEntity {
         super(position, dungeon);
     }
 
+    /** 
+     * @return String
+     */
     @Override
     public String setType() {
         return "wall";
     }
-
+    
+    /** 
+     * update wall status for one tick - does nothing
+     * @param direction
+     */
     @Override
     public void update(Direction direction) {
         return;

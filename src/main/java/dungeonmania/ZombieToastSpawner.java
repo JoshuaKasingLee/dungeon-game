@@ -20,12 +20,10 @@ public class ZombieToastSpawner extends StaticEntity {
         setInteractable(true);
     }
 
-
-    @Override
-    public String setType() {
-        return "zombie_toast_spawner";
-    }
-
+    
+    /** 
+     * @param direction
+     */
     @Override
     public void update(Direction direction) {
         counter++;
@@ -55,15 +53,29 @@ public class ZombieToastSpawner extends StaticEntity {
         }
     }
 
+    /** 
+     * @param position
+     */
+    public void createZombieToast(Position position) {
+        getDungeon().addEntity(new ZombieToast(position, getDungeon()));
+    }
+
+    // basic getters and setters
+
+    /** 
+     * @return String
+     */
+    @Override
+    public String setType() {
+        return "zombie_toast_spawner";
+    }
+    
+    /** 
+     * @return int
+     */
     public int getSpawnTimer() {
         return getDungeon().getGamemode().getSpawnTimer();
     }
-
-    public void createZombieToast(Position position) {
-        getDungeon().addEntity(new ZombieToast(position, getDungeon()));
-        // new ZombieToast(position, getDungeon());
-    }
-
 
     /**
      * @return int return the counter

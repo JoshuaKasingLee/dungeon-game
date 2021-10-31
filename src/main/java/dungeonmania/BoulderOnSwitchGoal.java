@@ -11,11 +11,19 @@ public class BoulderOnSwitchGoal implements GoalComponent, Observer  {
         unpressedSwitches = 0;
     }
 
+    
+    /** 
+     * @return boolean
+     */
     @Override
     public boolean isComplete() {
         return (unpressedSwitches == 0);
     }
 
+    
+    /** 
+     * @param entity
+     */
     @Override
     public void update(Subject entity) {
         Switch currSwitch = (Switch) entity;
@@ -26,6 +34,10 @@ public class BoulderOnSwitchGoal implements GoalComponent, Observer  {
         }
     }
 
+    
+    /** 
+     * @param entity
+     */
     @Override
     public void tryToAttach(Subject entity) {
         if (entity instanceof Switch) {
@@ -35,6 +47,10 @@ public class BoulderOnSwitchGoal implements GoalComponent, Observer  {
 
     }
 
+    
+    /** 
+     * @return JSONObject
+     */
     @Override
     public JSONObject toJSON() {
         Map<String, Object> goalData = new HashMap<String, Object>();
@@ -42,6 +58,10 @@ public class BoulderOnSwitchGoal implements GoalComponent, Observer  {
         return new JSONObject(goalData);
     }
 
+    
+    /** 
+     * @return String
+     */
     @Override
     public String simpleGoalToString() {
         return ":boulders ";

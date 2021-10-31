@@ -13,6 +13,11 @@ public abstract class Gamemode {
         this.invincible = invicible;     
     }
 
+    
+    /** 
+     * @param isBattle(
+     * @return String
+     */
     public abstract String toString();
 
     /**

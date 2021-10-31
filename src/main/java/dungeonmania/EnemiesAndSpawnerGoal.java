@@ -11,12 +11,20 @@ public class EnemiesAndSpawnerGoal implements GoalComponent, Observer  {
     public EnemiesAndSpawnerGoal() {
         numLiving = 0;
     }
+    
+    /** 
+     * @return boolean
+     */
     @Override
     public boolean isComplete() {
         return (numLiving == 0);
     }
 
 
+    
+    /** 
+     * @param entity
+     */
     @Override
     public void tryToAttach(Subject entity) {
         if (entity instanceof Enemy && !((Enemy) entity).isAlly()) {
@@ -25,11 +33,19 @@ public class EnemiesAndSpawnerGoal implements GoalComponent, Observer  {
         }
     }
 
+    
+    /** 
+     * @param entity
+     */
     @Override
     public void update(Subject entity) {
         numLiving--;
     } 
 
+    
+    /** 
+     * @return JSONObject
+     */
     @Override
     public JSONObject toJSON() {
         Map<String, Object> goalData = new HashMap<String, Object>();
@@ -37,6 +53,10 @@ public class EnemiesAndSpawnerGoal implements GoalComponent, Observer  {
         return new JSONObject(goalData);
     }
 
+    
+    /** 
+     * @return String
+     */
     @Override
     public String simpleGoalToString() {
         return ":enemies ";

@@ -11,12 +11,11 @@ public class Door extends StaticEntity {
         super(position, dungeon);
         this.key = key;
     }
-
-    @Override
-    public String setType() {
-        return "door";
-    }
-
+    
+    /** 
+     * update door status for one tick
+     * @param direction
+     */
     @Override
     public void update(Direction direction) {
         if (this.getPosition().equals(this.getPlayerPosition())) {
@@ -24,10 +23,26 @@ public class Door extends StaticEntity {
         }
     }
 
+    // basic getters and setters
+
+    /** 
+     * @return String
+     */
+    @Override
+    public String setType() {
+        return "door";
+    }
+    
+    /** 
+     * @return boolean
+     */
     public boolean isLocked() {
         return locked;
     }
-
+    
+    /** 
+     * @return int
+     */
     public int getKey() {
         return this.key;
     }

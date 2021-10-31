@@ -291,7 +291,14 @@ public class DungeonManiaControllerTest {
         EntityResponse player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("player")).findFirst().orElse(null);
         assertEquals(new Position(1,2), player.getPosition());
         assertDoesNotThrow(() -> controller.tick("invincibility_potion", null));
+    }
 
+    @Test
+    public void createVarietyDungeon() {
+        DungeonManiaController controller = new DungeonManiaController();
+        assertDoesNotThrow(() -> controller.newGame("items", "Standard"));
+        assertDoesNotThrow(() -> controller.saveGame("items2"));
+        // assertDoesNotThrow(() -> controller.loadGame("items2"));
     }
 
 
