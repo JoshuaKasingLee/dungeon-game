@@ -28,7 +28,6 @@ public class ZombieToast extends Enemy {
     public ZombieToast(Position position, Dungeon dungeon, int durability) {
         this(position, dungeon);
         giveArmour(durability);
-        
     }
 
     /** 
@@ -82,25 +81,24 @@ public class ZombieToast extends Enemy {
     }
 
     /** 
+     * returns list of positions zombie toast can move into
      * @return List<Position>
      */
     public List<Position> getPossiblePositions() {
         List<Position> possiblePositions = new ArrayList<Position>();
         // Up position
         possiblePositions.add(new Position(x, y-1));
-
         // Down position
         possiblePositions.add(new Position(x, y+1));
-
         // Left position
         possiblePositions.add(new Position(x-1, y));
-
         // Right position
         possiblePositions.add(new Position(x+1, y));
         return possiblePositions;
     }
 
     /** 
+     * returns list of distance between player and possible zombie toast positions
      * @return List<Double>
      */
     public List<Double> getDistanceOfPositions() {

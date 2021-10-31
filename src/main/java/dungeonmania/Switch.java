@@ -7,17 +7,19 @@ public class Switch extends StaticEntity {
     public Switch(Position position, Dungeon dungeon) {
         super(position, dungeon);
     }
-
-    @Override
-    public String setType() {
-        return "switch";
-    }
-
+    
+    /** 
+     * update switch status for one tick - does nothing
+     * @param direction
+     */
     @Override
     public void update(Direction direction) {
         return;
     }
-
+    
+    /** 
+     * @return boolean
+     */
     // Refactor into lambda function
     public boolean hasBoulder() {
         for (Entity entity : this.getEntities()) {
@@ -28,5 +30,13 @@ public class Switch extends StaticEntity {
             }
         }
         return false;
+    }
+
+    /** 
+     * @return String
+     */
+    @Override
+    public String setType() {
+        return "switch";
     }
 }

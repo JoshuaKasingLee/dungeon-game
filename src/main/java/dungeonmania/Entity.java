@@ -13,12 +13,7 @@ public abstract class Entity implements Subject {
     private List<Observer> goalObservers = new ArrayList<Observer>();
     private String type;
     private Dungeon dungeon;
-
     private static int entityIdCounter = 0; 
-    public static synchronized String newEntityId() {
-        return String.valueOf(entityIdCounter++);
-    }
-
     
     public Entity(Position position, Dungeon dungeon) {
         this.position = position;
@@ -26,23 +21,37 @@ public abstract class Entity implements Subject {
         this.type = setType();
     }
 
-    public int getXPosition() {
-        return position.getX();
+    
+    /** 
+     * generate unique id string
+     * @return String
+     */
+    public static synchronized String newEntityId() {
+        return String.valueOf(entityIdCounter++);
     }
 
-    public int getYPosition() {
-        return position.getY();
+    /** 
+     * removes itself from the dungeon
+     */
+    public void removeEntity() {
+        dungeon.removeEntity(this);
     }
 
-    public abstract String setType();
+    // observer pattern functions
 
+    /** 
+     * @param o
+     */
     @Override
     public void attach(Observer o) {
         if (!goalObservers.contains(o)) {
             goalObservers.add(o);
         }
     }
-
+    
+    /** 
+     * @param o
+     */
     @Override
     public void detach(Observer o) {
             goalObservers.remove(o);
@@ -55,16 +64,28 @@ public abstract class Entity implements Subject {
         } 
     }
 
-    public void removeEntity() {
-        dungeon.removeEntity(this);
+    // basic getters and setters
+    
+    /** 
+     * @return int
+     */
+    public int getXPosition() {
+        return position.getX();
     }
-
+    
+    /** 
+     * @return int
+     */
+    public int getYPosition() {
+        return position.getY();
+    }
+    
+    /** 
+     * @return List<Entity>
+     */
     public List<Entity> getEntities() {
         return dungeon.getEntities();
     }
-
-
-
 
     /**
      * @return Position return the position
@@ -156,6 +177,9 @@ public abstract class Entity implements Subject {
     public void setDungeon(Dungeon dungeon) {
         this.dungeon = dungeon;
     }
+
+    // abstract functions
+    public abstract String setType();
 
 }
 
