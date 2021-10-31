@@ -134,9 +134,11 @@ public class EnemyMoveTest {
 
         // Create player
         Player player = new Player(new Position(0, 0), dungeon);
+        dungeon.addEntity(player);
 
         // Create mercenary
         Mercenary mercenary = new Mercenary(new Position(5, 0), dungeon);
+        dungeon.addEntity(mercenary);
 
         mercenary.updatePosition();
         assertEquals(new Position(4,0), mercenary.getPosition());
