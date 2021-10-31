@@ -66,7 +66,6 @@ public class DungeonManiaControllerTest {
         DungeonResponse dungeonInfo;
         assertDoesNotThrow(() -> controller.newGame("simple", "Standard"));
         dungeonInfo = controller.newGame("simple", "Standard");
-        assertEquals("1", dungeonInfo.getDungeonId());
         assertEquals("simple", dungeonInfo.getDungeonName());
         // List<EntityResponse> expEntityResponses = new ArrayList<EntityResponse>();
         EntityResponse playerResponse = new EntityResponse("1", "player", new Position(1, 2), false);
@@ -74,7 +73,6 @@ public class DungeonManiaControllerTest {
         // List<EntityResponse> entityResponseList = new ArrayList<>(Arrays.asList(playerResponse, boulderResponse, switchResponse));
         assertEquals(playerResponse.getType(), dungeonInfo.getEntities().get(0).getType());
         assertEquals(playerResponse.getPosition(), dungeonInfo.getEntities().get(0).getPosition());
-        assertEquals(playerResponse.getId(), dungeonInfo.getEntities().get(0).getId());
         assertEquals(playerResponse.isInteractable(), dungeonInfo.getEntities().get(0).isInteractable());
         // assertEquals(playerResponse, dungeonInfo.getEntities().get(0));
 
