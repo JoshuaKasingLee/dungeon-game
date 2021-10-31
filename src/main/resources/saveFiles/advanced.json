@@ -1,1 +1,1 @@
-{"goal-condition":{"goal":"exit"},"dungeonName":"exit","entities":[{"x":1,"y":1,"health":10,"entityId":"1020","type":"Player","characterState":"Standard"},{"x":1,"y":2,"entityId":"1021","type":"Exit"}],"items":[],"gamemode":"Standard","dungeonId":"29"}
+{"goal-condition":{"goal":"exit"},"dungeonName":"exit","entities":[{"x":1,"y":1,"health":10,"entityId":"896","type":"Player","characterState":"Standard"},{"x":1,"y":2,"entityId":"897","type":"Exit"}],"items":[],"gamemode":"Standard","dungeonId":"29"}

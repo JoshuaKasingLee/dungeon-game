@@ -7,16 +7,16 @@
       },
       {
         "x": 1,
-        "y": 2,
-        "type": "sword"
+        "y": 10,
+        "type": "exit"
       },
       {
         "x": 1,
-        "y": 5,
-        "type": "zombie_toast_spawner"
+        "y": 2,
+        "type": "invincibility_potion"
       }
     ],
     "goal-condition": {
-      "goal": "enemies"
+      "goal": "exit"
     }
   }
