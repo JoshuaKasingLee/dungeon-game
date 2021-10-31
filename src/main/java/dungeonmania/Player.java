@@ -9,6 +9,7 @@ import dungeonmania.exceptions.InvalidActionException;
 public class Player extends MovingEntity {
     private Inventory inventory = new Inventory();
     private CharacterState characterState;
+    private boolean teleported;
     public static final int ORIGINAL_HEALTH_STANDARD = 10;
     public static final int ORIGINAL_HEALTH_HARD = 7;
     public static final int CHARACTER_ATTACK_DAMAGE = 3;
@@ -33,6 +34,7 @@ public class Player extends MovingEntity {
      */
     @Override
     public void move(Direction direction) {
+        teleported = false;
         super.move(direction);
         fightEnemies(getPosition());
         pickItems(getPosition());
@@ -260,7 +262,19 @@ public class Player extends MovingEntity {
         return "Player";
     }
     
-    public static void main(String[] args) {
+
+    /** 
+     * @return Boolean
+     */
+    public boolean getTeleported() {
+        return teleported;
+    }
+
+    /** 
+     * @param Set whether the player has been teleported yet or not 
+     */
+    public void setTeleported(boolean teleported) {
+        this.teleported = teleported;
     }
 }
 
