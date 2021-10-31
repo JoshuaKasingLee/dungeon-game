@@ -610,18 +610,19 @@ public class DungeonManiaController {
         List<Entity> entities = activeGame.getEntities();
         List<Entity> entitiesCopy = new ArrayList<>(entities);
         for (Entity entity: entitiesCopy) {
+            if (movementDirection != null) {
+                if (entity instanceof Player) {
+                    ((Player) entity).move(movementDirection);
+                    // move(movementDirection);
+                } 
+            }
             // Move all enemies
             if (entity instanceof Enemy) {
                 ((Enemy) entity).updatePosition();
             }
             
             // Move character and update boulders accordingly.
-            else if (movementDirection != null) {
-                if (entity instanceof Player) {
-                    ((Player) entity).move(movementDirection);
-                    // move(movementDirection);
-                } 
-            }
+
         }
 
         for (Entity entity: entitiesCopy) {
