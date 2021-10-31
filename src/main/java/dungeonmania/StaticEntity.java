@@ -9,13 +9,18 @@ public abstract class StaticEntity extends Entity {
         dungeon.addEntity(this);
     }
 
+    
     /**
      * UPDATES to be overidden by some classes
      * @param direction
      */
     public abstract void update(Direction direction);
 
-    // Change this to lambda function?
+    
+    /** 
+     * gets player position
+     * @return Position
+     */
     public Position getPlayerPosition() {
         for (Entity entity : this.getEntities()) {
             if (entity instanceof Player) {

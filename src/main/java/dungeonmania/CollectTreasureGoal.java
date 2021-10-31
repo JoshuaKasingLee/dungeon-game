@@ -12,11 +12,19 @@ public class CollectTreasureGoal implements GoalComponent, Observer {
         numUncollected = 0;
     }
 
+    
+    /** 
+     * @return boolean
+     */
     @Override
     public boolean isComplete() {
         return (numUncollected == 0);
     }
 
+    
+    /** 
+     * @param entity
+     */
     @Override
     public void tryToAttach(Subject entity) {
         if (entity instanceof Treasure) {
@@ -25,11 +33,19 @@ public class CollectTreasureGoal implements GoalComponent, Observer {
         }
     }
 
+    
+    /** 
+     * @param entity
+     */
     @Override
     public void update(Subject entity) {
         numUncollected--;
     }
 
+    
+    /** 
+     * @return JSONObject
+     */
     @Override
     public JSONObject toJSON() {
         Map<String, Object> goalData = new HashMap<String, Object>();
@@ -37,6 +53,10 @@ public class CollectTreasureGoal implements GoalComponent, Observer {
         return new JSONObject(goalData);
     }
 
+    
+    /** 
+     * @return String
+     */
     @Override
     public String simpleGoalToString() {
         return ":treasure ";

@@ -29,6 +29,10 @@ import dungeonmania.util.Position;
 
 public class DungeonManiaController {
     private static int dungeonIdCounter = 0; 
+    
+    /** 
+     * @return String
+     */
     public static synchronized String newDungeonId() {
         return String.valueOf(dungeonIdCounter++);
     }
@@ -38,14 +42,26 @@ public class DungeonManiaController {
     public DungeonManiaController() {
     }
 
+    
+    /** 
+     * @return String
+     */
     public String getSkin() {
         return "default";
     }
 
+    
+    /** 
+     * @return String
+     */
     public String getLocalisation() {
         return "en_US";
     }
 
+    
+    /** 
+     * @return List<String>
+     */
     public List<String> getGameModes() {
         return Arrays.asList("Standard", "Peaceful", "Hard");
     }
@@ -64,6 +80,13 @@ public class DungeonManiaController {
     }
 
 
+    
+    /** 
+     * @param dungeonName
+     * @param gameMode
+     * @return DungeonResponse
+     * @throws IllegalArgumentException
+     */
     public DungeonResponse newGame(String dungeonName, String gameMode) throws IllegalArgumentException {
     
         if (!dungeons().contains(dungeonName)) {
@@ -207,6 +230,11 @@ public class DungeonManiaController {
         return new DungeonResponse(dungeonId, dungeonName, entityResponses, new ArrayList<ItemResponse>(), new ArrayList<String>(), goalString);
     }
     
+    
+    /** 
+     * @param name
+     * @return DungeonResponse
+     */
     public DungeonResponse saveGame(String name) {
 
         
@@ -366,6 +394,12 @@ public class DungeonManiaController {
         return new DungeonResponse(dungeonId, dungeonName, entityResponses, itemResponses, buildables, goalString);
     }
 
+    
+    /** 
+     * @param name
+     * @return DungeonResponse
+     * @throws IllegalArgumentException
+     */
     public DungeonResponse loadGame(String name) throws IllegalArgumentException {
         if (!allGames().contains(name)) {
             throw new IllegalArgumentException("Invalid saveName");
@@ -573,6 +607,10 @@ public class DungeonManiaController {
         return new DungeonResponse(dungeonId, dungeonName, entityResponses, itemResponses, buildables, goalString);
     }
 
+    
+    /** 
+     * @return List<String>
+     */
     public List<String> allGames() {
         try {
             return FileLoader.listFileNamesInResourceDirectory("/saveFiles");
@@ -581,6 +619,14 @@ public class DungeonManiaController {
         }
     }
 
+    
+    /** 
+     * @param itemUsed
+     * @param movementDirection
+     * @return DungeonResponse
+     * @throws IllegalArgumentException
+     * @throws InvalidActionException
+     */
     public DungeonResponse tick(String itemUsed, Direction movementDirection) throws IllegalArgumentException, InvalidActionException {
         //  Move character and all moving entities.
         
@@ -706,6 +752,13 @@ public class DungeonManiaController {
         // return null;
     }
 
+    
+    /** 
+     * @param entityId
+     * @return DungeonResponse
+     * @throws IllegalArgumentException
+     * @throws InvalidActionException
+     */
     public DungeonResponse interact(String entityId) throws IllegalArgumentException, InvalidActionException {
 
         List<Entity> entities = activeGame.getEntities();
@@ -744,6 +797,13 @@ public class DungeonManiaController {
         // return null;
     }
 
+    
+    /** 
+     * @param buildable
+     * @return DungeonResponse
+     * @throws IllegalArgumentException
+     * @throws InvalidActionException
+     */
     public DungeonResponse build(String buildable) throws IllegalArgumentException, InvalidActionException {
         if (!buildable.equals("bow") && !buildable.equals("shield")) {
             throw new IllegalArgumentException("Can only build bow or shield!");
@@ -769,11 +829,22 @@ public class DungeonManiaController {
     }
 
 
+    
+    /** 
+     * @param goal
+     * @return boolean
+     */
     public boolean isCompositeGoal(String goal) {
         return (goal == "AND" || goal == "OR");
     }
 
 
+    
+    /** 
+     * @param goalCondition
+     * @param activeGame
+     * @return GoalComponent
+     */
     public GoalComponent extractAllGoals(JSONObject goalCondition, Dungeon activeGame) {
         GoalComponent overallGoal = null;
         switch (goalCondition.getString("goal")) {                
@@ -833,6 +904,10 @@ public class DungeonManiaController {
         return overallGoal;
     }
 
+    
+    /** 
+     * @return List<EntityResponse>
+     */
     // public String goalsToJSON(GoalComponent goal) {
     //     String goalJSONString = "";
     //     if (goal instanceof AndGoal) {
@@ -849,6 +924,10 @@ public class DungeonManiaController {
         return entityResponses;
     }
 
+    
+    /** 
+     * @return List<ItemResponse>
+     */
     public List<ItemResponse> createItemResponseList() {
         List<Item> items = activeGame.getInventory().getInventoryList();
         List<ItemResponse> itemResponses = new ArrayList<ItemResponse>();
@@ -858,6 +937,10 @@ public class DungeonManiaController {
         return itemResponses;
     }
 
+    
+    /** 
+     * @return String
+     */
     public String createGoalString() {
         String goalString = "";
         for (GoalComponent simpleGoal : activeGame.getSimpleGoals()) {
@@ -869,6 +952,10 @@ public class DungeonManiaController {
         return goalString;
     }
 
+    
+    /** 
+     * @return List<String>
+     */
     public List<String> createBuildableList() {
         return activeGame.getInventory().getBuildables();
     }

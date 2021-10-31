@@ -8,12 +8,20 @@ import org.json.JSONObject;
 
 public class AndGoal extends CompositeGoal {
 
+    
+    /** 
+     * @return boolean
+     */
     @Override
     public boolean isComplete() {
     
         return getSubgoals().stream().allMatch(goal -> (goal.isComplete()));
     }
 
+    
+    /** 
+     * @return JSONObject
+     */
     @Override
     public JSONObject toJSON() {
         Map<String, Object> goalData = new HashMap<String, Object>();
