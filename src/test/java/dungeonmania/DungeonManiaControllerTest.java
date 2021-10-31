@@ -186,7 +186,6 @@ public class DungeonManiaControllerTest {
         assertEquals("boulder", dungeonInfo.getEntities().get(1).getType());
         assertEquals(new Position(1, 0), dungeonInfo.getEntities().get(1).getPosition());
         assertEquals(new Position(1, 1), dungeonInfo.getEntities().get(0).getPosition());
-        assertEquals("0", dungeonInfo.getEntities().get(0).getId());
         assertEquals(false, dungeonInfo.getEntities().get(0).isInteractable());
 
         assertEquals("player", dungeonInfo.getEntities().get(0).getType());
@@ -241,7 +240,7 @@ public class DungeonManiaControllerTest {
             }
         }
 
-        // assertEquals(true, isAlly);
+        assertEquals(true, isAlly);
     }
 
     @Test
@@ -298,7 +297,7 @@ public class DungeonManiaControllerTest {
         DungeonManiaController controller = new DungeonManiaController();
         assertDoesNotThrow(() -> controller.newGame("items", "Standard"));
         assertDoesNotThrow(() -> controller.saveGame("items2"));
-        // assertDoesNotThrow(() -> controller.loadGame("items2"));
+        assertDoesNotThrow(() -> controller.loadGame("items2"));
     }
 
 

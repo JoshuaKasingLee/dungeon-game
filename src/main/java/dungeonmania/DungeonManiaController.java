@@ -302,7 +302,7 @@ public class DungeonManiaController {
                     break;
                 case "spider":
                     entityData.put("startingPositionx", ((Spider)currEntity).getStartingPosition().getX());
-                    entityData.put("startingPositionxy", ((Spider)currEntity).getStartingPosition().getY());
+                    entityData.put("startingPositiony", ((Spider)currEntity).getStartingPosition().getY());
                     entityData.put("positionNumber", ((Spider)currEntity).getPositionNumber());
                 
             }
@@ -418,6 +418,11 @@ public class DungeonManiaController {
             return null;
         }
         JSONObject dungeonObj = new JSONObject(fileContents);
+        String dungeonName = dungeonObj.getString("dungeonName");
+        String dungeonId = dungeonObj.getString("dungeonId");
+        String dungeonMode = dungeonObj.getString("gamemode");
+
+        activeGame = new Dungeon(dungeonName, dungeonMode, dungeonId);
 
         JSONObject goalCondition = dungeonObj.getJSONObject("goal-condition");
         GoalComponent overallGoal = extractAllGoals(goalCondition, activeGame);
@@ -433,11 +438,7 @@ public class DungeonManiaController {
 
 
         // WE NEED TO CONVERT TO STRING!!
-        String dungeonName = dungeonObj.getString("dungeonName");
-        String dungeonId = dungeonObj.getString("dungeonId");
-        String dungeonMode = dungeonObj.getString("gamemode");
 
-        activeGame = new Dungeon(dungeonName, dungeonMode, dungeonId);
         JSONArray entityList = dungeonObj.getJSONArray("entities");
         List<EntityResponse> entityResponses = new ArrayList<EntityResponse>();
 
