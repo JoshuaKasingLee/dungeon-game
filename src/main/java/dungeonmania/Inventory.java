@@ -50,7 +50,7 @@ public class Inventory {
                 inventory.remove(item);
             }
         } else {
-            throw new InvalidActionException(type + "does not exist in inventory");
+            throw new InvalidActionException(type + " does not exist in inventory");
         }
     }
 

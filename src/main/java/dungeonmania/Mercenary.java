@@ -113,7 +113,7 @@ public class Mercenary extends Enemy {
      */
     @Override
     public String setType() {
-        return "Mercenary";
+        return "mercenary";
     }
 
 

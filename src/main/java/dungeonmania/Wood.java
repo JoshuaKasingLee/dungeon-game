@@ -13,6 +13,6 @@ public class Wood extends Item {
      */
     @Override
     public String setType() {
-        return "Wood";
+        return "wood";
     }
 }

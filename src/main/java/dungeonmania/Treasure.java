@@ -13,6 +13,6 @@ public class Treasure extends Item {
      */
     @Override
     public String setType() {
-        return "Treasure";
+        return "treasure";
     }
 }

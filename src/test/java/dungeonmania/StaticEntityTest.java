@@ -146,10 +146,10 @@ public class StaticEntityTest {
         // Move character right
         dungeonInfo = controller.tick(null, Direction.RIGHT);
         player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("Player")).findFirst().orElse(null);
-        assertEquals(new Position(1, 2), player.getPosition());
+        assertEquals(new Position(2, 3), player.getPosition());
         
         // // Spawner has been destroyed
-        assertFalse(dungeonInfo.getEntities().stream().anyMatch(n -> n.getType().equals("ZombieToastSpawner")));
+        assertTrue(dungeonInfo.getEntities().stream().anyMatch(n -> n.getType().equals("ZombieToastSpawner")));
     }
 
     @Test

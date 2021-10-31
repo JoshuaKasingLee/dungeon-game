@@ -14,7 +14,7 @@ public class Door extends StaticEntity {
 
     @Override
     public String setType() {
-        return "Door";
+        return "door";
     }
 
     @Override

@@ -20,5 +20,8 @@
             "y": 1,
             "type": "switch"
         }
-    ]
+    ],
+    "goal-condition": {
+      "goal": "None"
+    }
 }

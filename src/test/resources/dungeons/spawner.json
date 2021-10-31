@@ -96,5 +96,8 @@
         "y": 3,
         "type": "zombie_toast_spawner"
       }
-    ]
+    ],
+    "goal-condition": {
+      "goal": "None"
+    }
   }

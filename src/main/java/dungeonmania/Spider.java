@@ -133,7 +133,7 @@ public class Spider extends Enemy {
 
     @Override
     public String setType() {
-        return "Spider";
+        return "spider";
     }
 
     /** 
@@ -178,5 +178,12 @@ public class Spider extends Enemy {
         double squaredDist = (dirVector.getX() * dirVector.getX()) + (dirVector.getY() * dirVector.getY());
         // always rounds up
         return (double) (Math.sqrt(squaredDist));
+    }
+
+    /** 
+     * @return startingPosition
+     */
+    public Position getStartingPosition() {
+        return startingPosition;
     }
 }

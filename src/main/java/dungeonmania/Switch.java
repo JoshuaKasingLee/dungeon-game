@@ -10,7 +10,7 @@ public class Switch extends StaticEntity {
 
     @Override
     public String setType() {
-        return "Switch";
+        return "switch";
     }
 
     @Override

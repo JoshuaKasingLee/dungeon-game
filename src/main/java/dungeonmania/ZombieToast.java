@@ -78,7 +78,7 @@ public class ZombieToast extends Enemy {
      */
     @Override
     public String setType() {
-        return "ZombieToast";
+        return "zombie_toast";
     }
 
     /** 

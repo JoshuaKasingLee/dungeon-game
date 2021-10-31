@@ -13,6 +13,6 @@ public class Arrow extends Item {
      */
     @Override
     public String setType() {
-        return "Arrow";
+        return "arrow";
     }
 }

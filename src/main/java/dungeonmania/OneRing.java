@@ -23,6 +23,6 @@ public class OneRing extends Item {
      */
     @Override
     public String setType() {
-        return "OneRing";
+        return "one_ring";
     }
 }
