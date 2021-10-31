@@ -229,20 +229,19 @@ public class DungeonManiaControllerTest {
     //     // Treasure treasure = new Treasure(new Position(3, 3), activeGame);
     //     // activeGame.moveToInventory(treasure);
     //     // assertEquals("Treasure", activeGame.getInventory().getInventoryList().get(1).getType());
-
     //     controller.interact("1");
 
-    //     Dungeon dungeon = controller.getActiveGame();
-    //     List<Entity> entities = dungeon.getEntities();
-    //     boolean isAlly = false;
+    //     // Dungeon dungeon = controller.getActiveGame();
+    //     // List<Entity> entities = dungeon.getEntities();
+    //     // boolean isAlly = false;
 
-    //     for (Entity entity: entities) {
-    //         if (entity instanceof Mercenary) {
-    //             isAlly = ((Mercenary)entity).isAlly();
-    //         }
-    //     }
+    //     // for (Entity entity: entities) {
+    //     //     if (entity instanceof Mercenary) {
+    //     //         isAlly = ((Mercenary)entity).isAlly();
+    //     //     }
+    //     // }
 
-    //     assertEquals(true, isAlly);
+    //     // assertEquals(true, isAlly);
     // }
 
     @Test
@@ -252,14 +251,54 @@ public class DungeonManiaControllerTest {
 
     }
 
+    @Test
+    public void testNotEnoughResources() {
+        DungeonManiaController controller = new DungeonManiaController();
+        assertDoesNotThrow(() -> controller.newGame("interactInvalidTester", "Standard"));
+        assertThrows(InvalidActionException.class, () -> controller.build("bow"));
+    }
 
 
+    @Test
+    public void testInteractOutofRange() {
+        DungeonManiaController controller = new DungeonManiaController();
+        DungeonResponse dungeonInfo = controller.newGame("outofrangeinteract", "Standard");
 
-    //TODO: Test exception thrown when merc and zombie spawner too far
-    //TODO: Test zombie toast spawner is killed
-    // TODO: Test potion usage.
-    // TODO: Test interactable (above testinteractablebribingsuccessful may be wrong, try another test)
-    // TODO: Test buildable not enough materials
+        EntityResponse spawner = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("ZombieToastSpawner")).findFirst().orElse(null);
+        String spawnerId = spawner.getId();
+        assertThrows(InvalidActionException.class, () -> controller.interact(spawnerId));
+    }
+
+    @Test 
+    public void testInteractSpawner() {
+        DungeonManiaController controller = new DungeonManiaController();
+        DungeonResponse dungeonInfo = controller.newGame("spawnerinteract", "Standard");
+        EntityResponse spawner = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("ZombieToastSpawner")).findFirst().orElse(null);
+        String spawnerId = spawner.getId();
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        assertDoesNotThrow(() -> controller.interact(spawnerId));
+
+        dungeonInfo =  controller.tick(null, Direction.LEFT);
+        EntityResponse spawnerIfPresent = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("ZombieToastSpawner")).findFirst().orElse(null);
+        assertEquals(null, spawnerIfPresent);
+    }
+
+    @Test
+    public void testPotion() {
+        DungeonManiaController controller = new DungeonManiaController();
+        assertDoesNotThrow(() -> controller.newGame("potionUsed", "Standard"));
+        DungeonResponse dungeonInfo = controller.tick(null, Direction.DOWN);
+        EntityResponse player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("Player")).findFirst().orElse(null);
+        assertEquals(new Position(1,2), player.getPosition());
+        assertDoesNotThrow(() -> controller.tick("InvincibilityPotion", null));
+
+    }
+
+    @Test
+    public void testBribe() {
+
+        // TODO: Test interactable (above testinteractablebribingsuccessful may be wrong, try another test)
+    }
 
 
 }

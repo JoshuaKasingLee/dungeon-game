@@ -585,7 +585,8 @@ public class DungeonManiaController {
         
         List<EntityResponse> entityResponses = new ArrayList<EntityResponse>();
         List<Entity> entities = activeGame.getEntities();
-        for (Entity entity: entities) {
+        List<Entity> entitiesCopy = new ArrayList<>(entities);
+        for (Entity entity: entitiesCopy) {
             // Move all enemies
             if (entity instanceof Enemy) {
                 ((Enemy) entity).updatePosition();
@@ -600,10 +601,11 @@ public class DungeonManiaController {
                     ((StaticEntity) entity).update(movementDirection);
                 }
             }
-
-            entityResponses.add(new EntityResponse(entity.getId(), entity.getType(), entity.getPosition(), entity.isInteractable()));
         }
     
+        for (Entity entity : entities) {
+            entityResponses.add(new EntityResponse(entity.getId(), entity.getType(), entity.getPosition(), entity.isInteractable()));
+        }
 
         List<Item> items = activeGame.getInventory().getInventoryList();        
         List<ItemResponse> itemResponses = new ArrayList<ItemResponse>();
@@ -696,7 +698,8 @@ public class DungeonManiaController {
 
 
         boolean found = false;
-        for (Entity entity : entities) {
+        List<Entity> entitiesCopy = new ArrayList<>(entities);
+        for (Entity entity : entitiesCopy) {
             String Id = entity.getId();
             // Find the relevant entity.
             if (Id.equals(entityId)) {
