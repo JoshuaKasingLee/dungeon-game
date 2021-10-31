@@ -39,6 +39,15 @@ public class Spider extends Enemy {
         this.positionNumber = 0;
     }
 
+    public Spider(Position position, Dungeon dungeon, Position startingPosition, int positionNumber) {
+        super(position, dungeon);
+        this.setHealth(ORIGINAL_HEALTH);
+        this.setAttackDamage(SPIDER_ATTACK_DAMAGE);
+        this.startingPosition = startingPosition;
+        this.adjacentPositions = setPositions(position);
+        this.positionNumber = positionNumber;
+    }
+
     public ArrayList<Position> setPositions(Position position) {
         return new ArrayList<Position>(position.getAdjacentPositions());
     }
