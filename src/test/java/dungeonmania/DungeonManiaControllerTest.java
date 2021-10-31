@@ -294,11 +294,5 @@ public class DungeonManiaControllerTest {
 
     }
 
-    @Test
-    public void testBribe() {
-
-        // TODO: Test interactable (above testinteractablebribingsuccessful may be wrong, try another test)
-    }
-
 
 }

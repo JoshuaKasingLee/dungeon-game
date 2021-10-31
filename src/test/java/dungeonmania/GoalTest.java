@@ -81,7 +81,7 @@ public class GoalTest {
     public void testOrGoal() {
         DungeonManiaController controller = new DungeonManiaController();
 
-        DungeonResponse dungeonInfo = controller.newGame("OrGoalTester", "Peaceful");
+        DungeonResponse dungeonInfo = controller.newGame("orGoalTester", "Peaceful");
         assertTrue(dungeonInfo.getGoals().contains(":treasure") && dungeonInfo.getGoals().contains(":exit"));
         controller.tick(null , Direction.DOWN);
         assertEquals(dungeonInfo.getGoals(), "");
