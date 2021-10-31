@@ -2,6 +2,7 @@ package dungeonmania;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import dungeonmania.util.Position;
 
@@ -10,6 +11,9 @@ public class Spider extends Enemy {
     public static final int SPIDER_ATTACK_DAMAGE = 2;
     private static final int CLOCKWISE = 1;
 
+    private int x = getXPosition();
+    private int y = getYPosition();
+
     // The position number of a spider (0-7)
     // 0 1 2
     // 7 p 3
@@ -17,6 +21,10 @@ public class Spider extends Enemy {
     private int positionNumber;
     // 1 is clockwise, -1 is anticlockwise
     private int direction = CLOCKWISE;
+
+    // All possible positions and their distances from player
+    private List<Position> possiblePositions;
+    private List<Double> distanceOfPositions;
 
     // Positions
     private Position startingPosition;
@@ -41,6 +49,32 @@ public class Spider extends Enemy {
 
     @Override
     public void updatePosition() {
+        Entity player = getDungeon().getEntities().stream().filter(n -> n.getType().equals("Player")).findFirst().orElse(null);
+
+        if (((Player)player).getCharacterState().getType().equals("Invincible")) {
+            this.possiblePositions = getPossiblePositions();
+            this.distanceOfPositions = getDistanceOfPositions();
+            int direction = distanceOfPositions.indexOf(Collections.max(distanceOfPositions));
+            switch(direction) {
+                case 0:
+                    moveUp();
+                    break;
+                case 1:
+                    moveDown();
+                    break;
+                case 2:
+                    moveLeft();
+                    break;
+                case 3:
+                    moveRight();
+                    break;
+            }
+            this.startingPosition = getPosition();
+            this.adjacentPositions = setPositions(getPosition());
+            this.positionNumber = 0;
+            return;
+        }
+
         // Check if spider is in its starting position
         if (getPosition().equals(startingPosition)) {
             if (checkForBoulder(adjacentPositions.get(1))) {
@@ -100,5 +134,49 @@ public class Spider extends Enemy {
     @Override
     public String setType() {
         return "Spider";
+    }
+
+    /** 
+     * @return List<Position>
+     */
+    public List<Position> getPossiblePositions() {
+        List<Position> possiblePositions = new ArrayList<Position>();
+        // Up position
+        possiblePositions.add(new Position(x, y-1));
+
+        // Down position
+        possiblePositions.add(new Position(x, y+1));
+
+        // Left position
+        possiblePositions.add(new Position(x-1, y));
+
+        // Right position
+        possiblePositions.add(new Position(x+1, y));
+        return possiblePositions;
+    }
+
+    /** 
+     * @return List<Double>
+     */
+    public List<Double> getDistanceOfPositions() {
+        List<Double> distanceOfPositions = new ArrayList<Double>();
+        // Loop through and add the distance of between two positions
+        for (Position possiblePosition : possiblePositions) {
+            distanceOfPositions.add(calculateDistance(possiblePosition, getDungeon().getPlayer().getPosition()));
+        }
+        return distanceOfPositions;
+    }
+
+    /** 
+     * returns distance between two positions, rounded to nearest whole number
+     * @param pos1
+     * @param pos2
+     * @return double
+     */
+    private static double calculateDistance(Position pos1, Position pos2) {
+        Position dirVector = Position.calculatePositionBetween(pos1, pos2);
+        double squaredDist = (dirVector.getX() * dirVector.getX()) + (dirVector.getY() * dirVector.getY());
+        // always rounds up
+        return (double) (Math.sqrt(squaredDist));
     }
 }

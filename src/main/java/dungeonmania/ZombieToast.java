@@ -1,12 +1,22 @@
 package dungeonmania;
 
 import java.util.Random;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Collections;
 
 import dungeonmania.util.Position;
 
 public class ZombieToast extends Enemy {
     public static final int ORIGINAL_HEALTH = 7;
     public static final int ZOMBIE_TOAST_ATTACK_DAMAGE = 3;
+
+    private int x = getXPosition();
+    private int y = getYPosition();
+
+    // All possible positions and their distances from player
+    private List<Position> possiblePositions;
+    private List<Double> distanceOfPositions;
 
     public ZombieToast(Position position, Dungeon dungeon) {
         super(position, dungeon);
@@ -27,6 +37,29 @@ public class ZombieToast extends Enemy {
      */
     @Override
     public void updatePosition() {
+        Entity player = getDungeon().getEntities().stream().filter(n -> n.getType().equals("Player")).findFirst().orElse(null);
+
+        if (((Player)player).getCharacterState().getType().equals("Invincible")) {
+            this.possiblePositions = getPossiblePositions();
+            this.distanceOfPositions = getDistanceOfPositions();
+            int direction = distanceOfPositions.indexOf(Collections.max(distanceOfPositions));
+            switch(direction) {
+                case 0:
+                    moveUp();
+                    break;
+                case 1:
+                    moveDown();
+                    break;
+                case 2:
+                    moveLeft();
+                    break;
+                case 3:
+                    moveRight();
+                    break;
+            }
+            return;
+        }
+        
         Random rand = new Random();
         int randN = rand.nextInt();
         if (randN % 4 == 0) {
@@ -46,5 +79,49 @@ public class ZombieToast extends Enemy {
     @Override
     public String setType() {
         return "ZombieToast";
+    }
+
+    /** 
+     * @return List<Position>
+     */
+    public List<Position> getPossiblePositions() {
+        List<Position> possiblePositions = new ArrayList<Position>();
+        // Up position
+        possiblePositions.add(new Position(x, y-1));
+
+        // Down position
+        possiblePositions.add(new Position(x, y+1));
+
+        // Left position
+        possiblePositions.add(new Position(x-1, y));
+
+        // Right position
+        possiblePositions.add(new Position(x+1, y));
+        return possiblePositions;
+    }
+
+    /** 
+     * @return List<Double>
+     */
+    public List<Double> getDistanceOfPositions() {
+        List<Double> distanceOfPositions = new ArrayList<Double>();
+        // Loop through and add the distance of between two positions
+        for (Position possiblePosition : possiblePositions) {
+            distanceOfPositions.add(calculateDistance(possiblePosition, getDungeon().getPlayer().getPosition()));
+        }
+        return distanceOfPositions;
+    }
+
+    /** 
+     * returns distance between two positions, rounded to nearest whole number
+     * @param pos1
+     * @param pos2
+     * @return double
+     */
+    private static double calculateDistance(Position pos1, Position pos2) {
+        Position dirVector = Position.calculatePositionBetween(pos1, pos2);
+        double squaredDist = (dirVector.getX() * dirVector.getX()) + (dirVector.getY() * dirVector.getY());
+        // always rounds up
+        return (double) (Math.sqrt(squaredDist));
     }
 }

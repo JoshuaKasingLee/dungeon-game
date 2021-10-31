@@ -13,8 +13,8 @@ public class Mercenary extends Enemy {
 
     private int x = getXPosition();
     private int y = getYPosition();
-    // distance list
-    // position list
+
+    // All possible positions and their distances from player
     private List<Position> possiblePositions;
     private List<Double> distanceOfPositions;
 
@@ -27,8 +27,6 @@ public class Mercenary extends Enemy {
         this.setAttackDamage(MERCENARY_ATTACK_DAMAGE);
         this.setArmour(50); // assume zombie has 50% chance spawning with armour
         setInteractable(true);
-        this.possiblePositions = getPossiblePositions();
-        this.distanceOfPositions = getDistanceOfPositions();
     }
 
     public Mercenary(Position position, Dungeon dungeon, int durability, boolean isAlly) {
@@ -39,11 +37,23 @@ public class Mercenary extends Enemy {
 
     @Override
     public void updatePosition() {
+        this.possiblePositions = getPossiblePositions();
+        this.distanceOfPositions = getDistanceOfPositions();
+
         // create an array of 4 possible positions between character and mercenary (up, down, left, right)
         // go in the shortest direction between the two // if blocked, don't move
-        int direction = distanceOfPositions.indexOf(Collections.min(distanceOfPositions));
-
         Entity player = getDungeon().getEntities().stream().filter(n -> n.getType().equals("Player")).findFirst().orElse(null);
+
+        int direction;
+
+        if (((Player)player).getCharacterState().getType().equals("Invincible")) {
+            direction = distanceOfPositions.indexOf(Collections.max(distanceOfPositions));
+        } else if (((Player)player).getCharacterState().getType().equals("Invisible")) {
+            return;
+        } else {
+            direction = distanceOfPositions.indexOf(Collections.min(distanceOfPositions));
+        }
+        
         if (getPosition().equals(player.getPosition())) {
             return;
         }
@@ -90,6 +100,7 @@ public class Mercenary extends Enemy {
      */
     public List<Double> getDistanceOfPositions() {
         List<Double> distanceOfPositions = new ArrayList<Double>();
+        // Loop through and add the distance of between two positions
         for (Position possiblePosition : possiblePositions) {
             distanceOfPositions.add(calculateDistance(possiblePosition, playerPosition));
         }
