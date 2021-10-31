@@ -31,6 +31,7 @@ public class DungeonManiaController {
     private static int dungeonIdCounter = 0; 
     
     /** 
+     * makes a unique id
      * @return String
      */
     public static synchronized String newDungeonId() {
@@ -60,6 +61,7 @@ public class DungeonManiaController {
 
     
     /** 
+     * return a list of gamemodes
      * @return List<String>
      */
     public List<String> getGameModes() {
@@ -82,6 +84,7 @@ public class DungeonManiaController {
 
     
     /** 
+     * makes a new game with dungeonName and gameMode
      * @param dungeonName
      * @param gameMode
      * @return DungeonResponse
@@ -208,15 +211,6 @@ public class DungeonManiaController {
                 case "sword":
                     currEntity = new Sword(currPosition, activeGame);
                     break;
-                // case "armour":
-                //     currEntity = new Armour(activeGame);
-                //     break;
-                // case "bow":
-                //     currEntity = new Bow(activeGame);
-                //     break;
-                // case "shield":
-                //     currEntity = new Shield(activeGame);
-                //     break;
                 case "player":
                     currEntity = new Player(currPosition, activeGame);
                     break;
@@ -224,7 +218,6 @@ public class DungeonManiaController {
 
             entityResponses.add(new EntityResponse(currEntity.getId(), currEntity.getType(), currEntity.getPosition(), currEntity.isInteractable()));
 
-            // activeGame.addEntity(currEntity);
         }
 
         
@@ -234,6 +227,7 @@ public class DungeonManiaController {
     
     
     /** 
+     * saves a game to a filename
      * @param name
      * @return DungeonResponse
      */
@@ -243,11 +237,6 @@ public class DungeonManiaController {
         List<Entity> entities = activeGame.getEntities();
 
         JSONArray entitiesJSON = new JSONArray();
-        // Map<String, Object> entityJSON = new Hashmap<String, Object>();
-        // entityJSON.put("x", currEntity.getXPosition);
-        // entityJSON.put("y", currEntity.getYPosition);
-        // entityJSON.put("type", currEntity.findType());
-        // entitiesJSON.put(entityJSON);
         List<EntityResponse> entityResponses = new ArrayList<EntityResponse>();
         
         for (int i = 0; i < entities.size(); i++) {
@@ -274,7 +263,6 @@ public class DungeonManiaController {
                 case "key":
                     entityData.put("key", ((Key)currEntity).getKey());
                     break;
-                // MAYBE REMOVE LATER!!! COULD BE UNNECESSARY
                 case "switch":
                     entityData.put("hasBoulder", ((Switch)currEntity).hasBoulder());
                     break;
@@ -312,9 +300,6 @@ public class DungeonManiaController {
             entitiesJSON.put(entityJSON);
         }
 
-
-        
-        // TODO: REFACTORY LAW OF DEMETER
         List<Item> items = activeGame.getInventory().getInventoryList();
         JSONArray itemsJSON = new JSONArray();
 
@@ -398,6 +383,7 @@ public class DungeonManiaController {
 
     
     /** 
+     * loads a game from filename
      * @param name
      * @return DungeonResponse
      * @throws IllegalArgumentException
@@ -406,8 +392,6 @@ public class DungeonManiaController {
         if (!allGames().contains(name)) {
             throw new IllegalArgumentException("Invalid saveName");
         }
-
-        //TODO: Load Mercenary List in player
 
         String fileContents;
         try {
@@ -436,17 +420,11 @@ public class DungeonManiaController {
             }
         }
 
-
-        // WE NEED TO CONVERT TO STRING!!
-
         JSONArray entityList = dungeonObj.getJSONArray("entities");
         List<EntityResponse> entityResponses = new ArrayList<EntityResponse>();
 
         for (int i = 0; i < entityList.length(); i++) {
             String entityType = entityList.getJSONObject(i).getString("type");
-
-            // TODO: Create entities based on type in JSON File using a bunch of if statements
-            //create entity object and add it into activegame
             Entity currEntity = null;
             int key;
             String colour;
@@ -522,13 +500,6 @@ public class DungeonManiaController {
                 case "sword":
                     currEntity = new Sword(currPosition, activeGame);
                     break;
-
-                // case "Bow":
-                //     currEntity = new Bow(activeGame);
-                //     break;
-                // case "Shield":
-                //     currEntity = new Shield(activeGame);
-                //     break;
                 case "player":
                     currEntity = new Player(currPosition, activeGame, entityList.getJSONObject(i).getInt("health"),entityList.getJSONObject(i).getBoolean("teleported"));
                     break;
@@ -536,8 +507,6 @@ public class DungeonManiaController {
             currEntity.setId(entityList.getJSONObject(i).getString("entityId"));
 
             entityResponses.add(new EntityResponse(currEntity.getId(), currEntity.getType(), currEntity.getPosition(), currEntity.isInteractable()));
-
-            // activeGame.addEntity(currEntity);
         }
 
         List<ItemResponse> itemResponses = new ArrayList<ItemResponse>();
@@ -545,9 +514,6 @@ public class DungeonManiaController {
         
         for (int i = 0; i < itemList.length(); i++) {
             String itemType = itemList.getJSONObject(i).getString("type");
-            
-            // TODO: Create entities based on type in JSON File using a bunch of if statements
-            //create entity object and add it into activegame
             Item currItem = null;
             int key;
             Position posPlaceholder = new Position(-1, -1);
@@ -599,19 +565,17 @@ public class DungeonManiaController {
             currItem.setId(entityList.getJSONObject(i).getString("entityId"));
             itemResponses.add(new ItemResponse(currItem.getId(), currItem.getType()));
             activeGame.moveToInventory(currItem);
-            // activeGame.addEntity(currItem);
         }
 
 
 
         List<String> buildables = activeGame.getInventory().getBuildables();
-        
-        // TODO: update ActiveGame
         return new DungeonResponse(dungeonId, dungeonName, entityResponses, itemResponses, buildables, goalString);
     }
 
     
     /** 
+     * returns a list of all the saves
      * @return List<String>
      */
     public List<String> allGames() {
@@ -624,6 +588,7 @@ public class DungeonManiaController {
 
     
     /** 
+     * tick the gamestate
      * @param itemUsed
      * @param movementDirection
      * @return DungeonResponse
@@ -698,74 +663,11 @@ public class DungeonManiaController {
 
         List<String> buildables = activeGame.getInventory().getBuildables();
         return new DungeonResponse(activeGame.getDungeonId(), activeGame.getDungeonName(), entityResponses, itemResponses, buildables, goalString);
-
-        
-        // // Move character and update boulders accordingly.
-        // if (movementDirection != null) {
-            //     player.move(movementDirection);
-            //     for (Entity entity: entities) {
-                //         if (entity instanceof Boulder) {
-        //             ((Boulder) entity).update(movementDirection);
-        //         }
-        //     }
-        // }
-
-
-
-
-        
-        // // potion statechange??
-        // switch (itemUsed) {
-        //     case "invincibility_potion":
-        //         InvincibleState invincibleState = new InvincibleState(player);
-        //         activeGame.getPlayer().setCharacterState(invincibleState);
-        //         break;
-        //     case "invisibility_potion":
-        //         InvisibleState invisibleState = new InvisibleState(player);
-        //         activeGame.getPlayer().setCharacterState(invisibleState);
-        //         break;
-        //     case "health_potion":
-        //         for (Item item : items) {
-        //             if (item instanceof HealthPotion) {
-        //                 ((HealthPotion) item).activate(player);
-        //             }
-        //         }
-        //         break;
-        //     case "bomb":
-        //         for (Item item : items) {
-        //             if (item instanceof Bomb) {
-        //                 ((Bomb) item).explode();
-        //             }
-        //         }
-        //         break;
-        //     case null:
-        //         break;
-        //     default:
-        //         throw new IllegalArgumentException("Invalid item used");
-        // }
-        
-
-
-        // List<Entity> entities = activeGame.getEntities();
-        // List<EntityResponse> entityResponses = new ArrayList<EntityResponse>();
-        // for (Entity entity : entities) {
-        //     if (entity instanceof Player) {
-        //         ((Player) entity).move(movementDirection); 
-        //     } else if (entity instanceof Enemy) {
-        //         ((Enemy) entity).updatePosition(); 
-        //     } else if (entity instanceof StaticEntity){
-        //         // CHECK THIS: e.g. when boulder is blocked
-        //         ((StaticEntity) entity).update(movementDirection);
-        //     }
-        //     entityResponses.add(new EntityResponse(entity.getId(), entity.getType(), entity.getPosition(), entity.isInteractable()));
-        // }
-
-
-        // return null;
     }
 
     
     /** 
+     * interact with spawner or mercenary if in range
      * @param entityId
      * @return DungeonResponse
      * @throws IllegalArgumentException
@@ -796,8 +698,6 @@ public class DungeonManiaController {
             throw new IllegalArgumentException("Entity Id is not valid.");
         }
 
-        // TODO: Use helper functions to more easily create the dungeon response for the rest
-        // for the above functions.
         String dungeonId = activeGame.getDungeonId();
         String dungeonName = activeGame.getDungeonName();
         List<EntityResponse> entityResponses = createEntityResponseList();
@@ -806,11 +706,11 @@ public class DungeonManiaController {
         String goalString = createGoalString();
 
         return new DungeonResponse(dungeonId, dungeonName, entityResponses, itemResponses, buildables, goalString);
-        // return null;
     }
 
     
     /** 
+     * player will build items 
      * @param buildable
      * @return DungeonResponse
      * @throws IllegalArgumentException
@@ -843,6 +743,7 @@ public class DungeonManiaController {
 
     
     /** 
+     * check if it is a composite goal
      * @param goal
      * @return boolean
      */
@@ -853,6 +754,7 @@ public class DungeonManiaController {
 
     
     /** 
+     * from JSON, extract a composite goal
      * @param goalCondition
      * @param activeGame
      * @return GoalComponent
@@ -887,30 +789,18 @@ public class DungeonManiaController {
             case "enemies":
                 overallGoal = new EnemiesAndSpawnerGoal();
                 activeGame.addSimpleGoals(overallGoal);
-                // if (!goalString.contains("enemies")) {
-                //     goalString += ":enemies ";
-                // }
                 break;
             case "treasure":
                 overallGoal = new CollectTreasureGoal();
                 activeGame.addSimpleGoals(overallGoal);
-                // if (!goalString.contains("treasure")) {
-                //     goalString += ":treasure ";
-                // }
                 break;
             case "boulders":
                 overallGoal = new BoulderOnSwitchGoal();
                 activeGame.addSimpleGoals(overallGoal);
-                // if (!goalString.contains("boulder")) {
-                //     goalString += ":boulder ";
-                // }
                 break;
             case "exit":
                 overallGoal = new ExitGoal();
                 activeGame.addSimpleGoals(overallGoal);
-                // if (!goalString.contains("exit")) {
-                //     goalString += ":exit ";
-                // }
                 break;  
         }
         return overallGoal;
@@ -918,15 +808,9 @@ public class DungeonManiaController {
 
     
     /** 
+     * create a list of entity responses
      * @return List<EntityResponse>
      */
-    // public String goalsToJSON(GoalComponent goal) {
-    //     String goalJSONString = "";
-    //     if (goal instanceof AndGoal) {
-
-    //     }
-    // }
-
     public List<EntityResponse> createEntityResponseList() {
         List<Entity> entities = activeGame.getEntities();
         List<EntityResponse> entityResponses = new ArrayList<EntityResponse>();
@@ -938,6 +822,7 @@ public class DungeonManiaController {
 
     
     /** 
+     * create a list of itemresponses
      * @return List<ItemResponse>
      */
     public List<ItemResponse> createItemResponseList() {
@@ -951,6 +836,7 @@ public class DungeonManiaController {
 
     
     /** 
+     * create a string of goals
      * @return String
      */
     public String createGoalString() {
@@ -966,6 +852,7 @@ public class DungeonManiaController {
 
     
     /** 
+     * create a list of buildables
      * @return List<String>
      */
     public List<String> createBuildableList() {
@@ -974,6 +861,7 @@ public class DungeonManiaController {
 
 
     /**
+     * return the current game
      * @return Dungeon return the activeGame
      */
     public Dungeon getActiveGame() {
@@ -981,6 +869,7 @@ public class DungeonManiaController {
     }
 
     /**
+     * set the current game
      * @param activeGame the activeGame to set
      */
     public void setActiveGame(Dungeon activeGame) {

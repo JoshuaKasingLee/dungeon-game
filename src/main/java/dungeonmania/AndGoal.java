@@ -10,6 +10,7 @@ public class AndGoal extends CompositeGoal {
 
     
     /** 
+     * check if goal is complete by looking at AND condition for subgoals
      * @return boolean
      */
     @Override
@@ -20,6 +21,7 @@ public class AndGoal extends CompositeGoal {
 
     
     /** 
+     * convert goal to JSON
      * @return JSONObject
      */
     @Override
