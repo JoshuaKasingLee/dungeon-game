@@ -689,11 +689,12 @@ public class DungeonManiaController {
             String Id = entity.getId();
             // Find the relevant entity.
             if (Id.equals(entityId)) {
-                found = true;
                 if (entity instanceof Mercenary) {
                     player.bribe((Mercenary)entity);
+                    found = true;
                 } else if (entity instanceof ZombieToastSpawner) {
                     player.destroySpawner((ZombieToastSpawner)entity);
+                    found = true;
                 }
             }
         }
@@ -746,14 +747,14 @@ public class DungeonManiaController {
 
 
     
-    /** 
-     * check if it is a composite goal
-     * @param goal
-     * @return boolean
-     */
-    public boolean isCompositeGoal(String goal) {
-        return (goal == "AND" || goal == "OR");
-    }
+    // /** 
+    //  * check if it is a composite goal
+    //  * @param goal
+    //  * @return boolean
+    //  */
+    // public boolean isCompositeGoal(String goal) {
+    //     return (goal == "AND" || goal == "OR");
+    // }
 
 
     
