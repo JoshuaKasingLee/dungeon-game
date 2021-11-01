@@ -288,13 +288,14 @@ public class DungeonManiaControllerTest {
     public void testLoadDifferentEntities() {
         DungeonManiaController controller = new DungeonManiaController();
         assertDoesNotThrow(() -> controller.newGame("manyEntitiesTester", "Standard"));
+        assertDoesNotThrow(() -> controller.saveGame("differentEntitiesSaveTester"));
+        assertDoesNotThrow(() -> controller.loadGame("differentEntitiesSaveTester"));
         assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
         assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
         assertDoesNotThrow(() -> controller.saveGame("differentEntitiesSaveTester"));
         assertDoesNotThrow(() -> controller.tick("invincibility_potion", null));
         assertDoesNotThrow(() -> controller.loadGame("differentEntitiesSaveTester"));
-        assertDoesNotThrow(() -> controller.saveGame("differentEntitiesSaveTester"));
-        assertDoesNotThrow(() -> controller.loadGame("differentEntitiesSaveTester"));
+
     }
 
     @Test
@@ -319,8 +320,13 @@ public class DungeonManiaControllerTest {
     public void testInvalidMovementBlockedBoulder() {
         DungeonManiaController controller = new DungeonManiaController();
         assertDoesNotThrow(() -> controller.newGame("blockedBoulder", "Standard"));
-        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
-        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        DungeonResponse dungeonInfo = controller.tick(null, Direction.DOWN);
+        assertEquals(new ArrayList<>(), dungeonInfo.getInventory());
+
+        assertEquals("player", dungeonInfo.getEntities().get(0).getType());
+        assertEquals("boulder", dungeonInfo.getEntities().get(1).getType());
+        assertEquals(new Position(0, 0), dungeonInfo.getEntities().get(0).getPosition());
+        assertEquals(new Position(0, 1), dungeonInfo.getEntities().get(1).getPosition());
 
     }
 
@@ -340,5 +346,68 @@ public class DungeonManiaControllerTest {
         assertDoesNotThrow(() -> controller.build("bow"));
         assertDoesNotThrow(() -> controller.build("shield"));
     }
+
+    
+    
+    @Test
+    public void testZombieSpawnerBlocked() {
+        DungeonManiaController controller = new DungeonManiaController();
+        assertDoesNotThrow(() -> controller.newGame("blockedSpawner", "Standard"));
+        assertDoesNotThrow(() -> controller.saveGame("blockedSpawner"));
+        assertDoesNotThrow(() -> controller.loadGame("blockedSpawner"));
+        
+
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        DungeonResponse dungeonInfo =  controller.tick(null, Direction.DOWN);
+        List<EntityResponse> entityResponses = dungeonInfo.getEntities();
+        
+        // check that no entities are spawned
+        for (EntityResponse entityResponse : entityResponses) {
+            assertTrue(!("Zombie").equals(entityResponse.getType()));
+            assertTrue(!("zombie").equals(entityResponse.getType()));
+        }
+    }
+    
+    // @Test
+    // public void testPickupManyItems() {
+    //     DungeonManiaController controller = new DungeonManiaController();
+    //     assertDoesNotThrow(() -> controller.newGame("manyItems", "Standard")); 
+    //     // DungeonResponse dungeonInfo = controller.newGame("manyItems", "Standard");
+
+    //     assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+    //     assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+    //     assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+    //     assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+    //     assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+    //     assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+    //     assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+    //     assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+    //     assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+    //     assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+    //     assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+    //     assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+    //     assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+    //     assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+    //     assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+    //     assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+    //     assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+
+    //     // assertTrue(dungeonInfo.getInventory().stream().anyMatch(x -> x.getType().equals("wood"))); 
+    //     assertDoesNotThrow(() -> controller.saveGame("manyItems"));
+    //     assertDoesNotThrow(() -> controller.loadGame("manyItems"));
+    // }
+    
+    
 
 }

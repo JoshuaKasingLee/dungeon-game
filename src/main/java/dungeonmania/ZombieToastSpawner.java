@@ -84,11 +84,6 @@ public class ZombieToastSpawner extends StaticEntity {
         return counter;
     }
 
-    /**
-     * @param counter the counter to set
-     */
-    public void setCounter(int counter) {
-        this.counter = counter;
-    }
+
 
 }

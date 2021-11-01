@@ -292,7 +292,7 @@ public class DungeonManiaController {
                     entityData.put("startingPositionx", ((Spider)currEntity).getStartingPosition().getX());
                     entityData.put("startingPositiony", ((Spider)currEntity).getStartingPosition().getY());
                     entityData.put("positionNumber", ((Spider)currEntity).getPositionNumber());
-                
+                    break;
             }
 
             JSONObject entityJSON = new JSONObject(entityData);
