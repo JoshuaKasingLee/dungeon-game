@@ -258,6 +258,15 @@ public class DungeonManiaControllerTest {
     }
 
     @Test
+    public void testInteractInvalidEntity() {
+        DungeonManiaController controller = new DungeonManiaController();
+        DungeonResponse dungeonInfo = controller.newGame("spawnerinteract", "Standard");
+        EntityResponse sword = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("sword")).findFirst().orElse(null);
+        String swordId = sword.getId();
+        assertThrows(IllegalArgumentException.class, () -> controller.interact(swordId));
+    }
+
+    @Test
     public void testPotion() {
         DungeonManiaController controller = new DungeonManiaController();
         assertDoesNotThrow(() -> controller.newGame("potionUsed", "Standard"));
@@ -273,6 +282,28 @@ public class DungeonManiaControllerTest {
         assertDoesNotThrow(() -> controller.newGame("items", "Standard"));
         assertDoesNotThrow(() -> controller.saveGame("items2"));
         assertDoesNotThrow(() -> controller.loadGame("items2"));
+    }
+
+    @Test
+    public void testLoadDifferentEntities() {
+        DungeonManiaController controller = new DungeonManiaController();
+        assertDoesNotThrow(() -> controller.newGame("manyEntitiesTester", "Standard"));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        assertDoesNotThrow(() -> controller.saveGame("differentEntitiesSaveTester"));
+        assertDoesNotThrow(() -> controller.tick("invincibility_potion", null));
+        assertDoesNotThrow(() -> controller.loadGame("differentEntitiesSaveTester"));
+        assertDoesNotThrow(() -> controller.saveGame("differentEntitiesSaveTester"));
+        assertDoesNotThrow(() -> controller.loadGame("differentEntitiesSaveTester"));
+    }
+
+    @Test
+    public void testInvalidMovement() {
+        DungeonManiaController controller = new DungeonManiaController();
+        assertDoesNotThrow(() -> controller.newGame("stuckEntity", "Standard"));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
     }
 
 
