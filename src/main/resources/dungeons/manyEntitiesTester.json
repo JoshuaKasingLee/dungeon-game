@@ -1,0 +1,50 @@
+{
+    "entities": [
+      {
+        "x": 0,
+        "y": 0,
+        "type": "player"
+      },
+      {
+        "x": 15,
+        "y": 9,
+        "type": "door",
+        "key": 1
+      },
+      {
+        "x": 1,
+        "y": 0,
+        "type": "portal",
+        "colour": "BLUE"
+    },
+    {
+        "x": 7,
+        "y": 10,
+        "type": "treasure"
+    },
+    {
+        "x": 11,
+        "y": 10,
+        "type": "key",
+        "key": 1
+    },
+    {
+        "x": 0,
+        "y": 1,
+        "type": "invincibility_potion"
+    },
+    {
+        "x": 13,
+        "y": 4,
+        "type": "bomb"
+    },
+    {
+        "x": 6,
+        "y": 1,
+        "type": "sword"
+    }
+    ],
+    "goal-condition": {
+      "goal": "enemies"
+    }
+  }
