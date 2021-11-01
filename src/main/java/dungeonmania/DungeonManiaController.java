@@ -611,16 +611,7 @@ public class DungeonManiaController {
         List<Entity> entitiesCopy = new ArrayList<>(entities);
         
 
-        for (Entity entity: entitiesCopy) {
-            if (entity instanceof Enemy) {
-                ((Enemy) entity).updatePosition();
-            }
-            if (movementDirection != null) {
-                if (entity instanceof StaticEntity) {
-                    ((StaticEntity) entity).update(movementDirection);
-                }
-            }
-        }
+
 
         for (Entity entity: entitiesCopy) {
             if (movementDirection != null) {
@@ -632,9 +623,19 @@ public class DungeonManiaController {
             // Move all enemies
             
             // Move character and update boulders accordingly.
-
         }
     
+        for (Entity entity: entitiesCopy) {
+            if (entity instanceof Enemy) {
+                ((Enemy) entity).updatePosition();
+            }
+            if (movementDirection != null) {
+                if (entity instanceof StaticEntity) {
+                    ((StaticEntity) entity).update(movementDirection);
+                }
+            }
+        }
+        
         for (Entity entity : entities) {
             if (entity instanceof Exit || entity instanceof Switch) {
                 entity.notifyObservers();
