@@ -1,0 +1,68 @@
+  
+{
+    "entities": [
+        {
+            "x": 0,
+            "y": 0,
+            "type": "player"
+        },  
+        {
+        "x": 2,
+        "y": 7,
+        "type": "zombie_toast"
+        },
+        {
+        "x": 1,
+        "y": 6,
+        "type": "door",
+        "key": 1
+
+        },
+        {
+        "x": 2,
+        "y": 6,
+        "type": "door",
+        "key": 1
+        },
+        {
+        "x": 3,
+        "y": 6,
+        "type": "door",
+        "key": 1
+        },
+        {
+        "x": 3,
+        "y": 7,
+        "type": "door",
+        "key": 1
+        },
+        {
+        "x": 3,
+        "y": 8,
+        "type": "door",
+        "key": 1
+        },
+        {
+        "x": 2,
+        "y": 8,
+        "type": "door",
+        "key": 1
+        },
+        {
+        "x": 1,
+        "y": 8,
+        "type": "door",
+        "key": 1
+        },
+        {
+        "x": 1,
+        "y": 7,
+        "type": "door",
+        "key": 1
+        }
+        
+    ],
+    "goal-condition": {
+      "goal": "enemies"
+    }
+  }
