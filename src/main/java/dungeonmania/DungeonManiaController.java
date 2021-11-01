@@ -731,7 +731,7 @@ public class DungeonManiaController {
         
         if (buildable.equals("bow")) {
             inventory.craftBow(player);
-        } else if (buildable.equals("shield")) {
+        } else {
             inventory.craftShield(player);
         }
 
@@ -873,12 +873,12 @@ public class DungeonManiaController {
         return activeGame;
     }
 
-    /**
-     * set the current game
-     * @param activeGame the activeGame to set
-     */
-    public void setActiveGame(Dungeon activeGame) {
-        this.activeGame = activeGame;
-    }
+    // /**
+    //  * set the current game
+    //  * @param activeGame the activeGame to set
+    //  */
+    // public void setActiveGame(Dungeon activeGame) {
+    //     this.activeGame = activeGame;
+    // }
 
 }
