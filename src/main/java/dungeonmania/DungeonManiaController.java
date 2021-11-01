@@ -292,7 +292,7 @@ public class DungeonManiaController {
                     entityData.put("startingPositionx", ((Spider)currEntity).getStartingPosition().getX());
                     entityData.put("startingPositiony", ((Spider)currEntity).getStartingPosition().getY());
                     entityData.put("positionNumber", ((Spider)currEntity).getPositionNumber());
-                
+                    break;
             }
 
             JSONObject entityJSON = new JSONObject(entityData);
@@ -611,16 +611,7 @@ public class DungeonManiaController {
         List<Entity> entitiesCopy = new ArrayList<>(entities);
         
 
-        for (Entity entity: entitiesCopy) {
-            if (entity instanceof Enemy) {
-                ((Enemy) entity).updatePosition();
-            }
-            if (movementDirection != null) {
-                if (entity instanceof StaticEntity) {
-                    ((StaticEntity) entity).update(movementDirection);
-                }
-            }
-        }
+
 
         for (Entity entity: entitiesCopy) {
             if (movementDirection != null) {
@@ -632,9 +623,19 @@ public class DungeonManiaController {
             // Move all enemies
             
             // Move character and update boulders accordingly.
-
         }
     
+        for (Entity entity: entitiesCopy) {
+            if (entity instanceof Enemy) {
+                ((Enemy) entity).updatePosition();
+            }
+            if (movementDirection != null) {
+                if (entity instanceof StaticEntity) {
+                    ((StaticEntity) entity).update(movementDirection);
+                }
+            }
+        }
+        
         for (Entity entity : entities) {
             if (entity instanceof Exit || entity instanceof Switch) {
                 entity.notifyObservers();
@@ -688,11 +689,12 @@ public class DungeonManiaController {
             String Id = entity.getId();
             // Find the relevant entity.
             if (Id.equals(entityId)) {
-                found = true;
                 if (entity instanceof Mercenary) {
                     player.bribe((Mercenary)entity);
+                    found = true;
                 } else if (entity instanceof ZombieToastSpawner) {
                     player.destroySpawner((ZombieToastSpawner)entity);
+                    found = true;
                 }
             }
         }
@@ -729,7 +731,7 @@ public class DungeonManiaController {
         
         if (buildable.equals("bow")) {
             inventory.craftBow(player);
-        } else if (buildable.equals("shield")) {
+        } else {
             inventory.craftShield(player);
         }
 
@@ -745,14 +747,14 @@ public class DungeonManiaController {
 
 
     
-    /** 
-     * check if it is a composite goal
-     * @param goal
-     * @return boolean
-     */
-    public boolean isCompositeGoal(String goal) {
-        return (goal == "AND" || goal == "OR");
-    }
+    // /** 
+    //  * check if it is a composite goal
+    //  * @param goal
+    //  * @return boolean
+    //  */
+    // public boolean isCompositeGoal(String goal) {
+    //     return (goal == "AND" || goal == "OR");
+    // }
 
 
     
@@ -871,12 +873,12 @@ public class DungeonManiaController {
         return activeGame;
     }
 
-    /**
-     * set the current game
-     * @param activeGame the activeGame to set
-     */
-    public void setActiveGame(Dungeon activeGame) {
-        this.activeGame = activeGame;
-    }
+    // /**
+    //  * set the current game
+    //  * @param activeGame the activeGame to set
+    //  */
+    // public void setActiveGame(Dungeon activeGame) {
+    //     this.activeGame = activeGame;
+    // }
 
 }
