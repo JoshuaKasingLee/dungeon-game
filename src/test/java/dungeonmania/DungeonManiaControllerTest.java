@@ -379,35 +379,6 @@ public class DungeonManiaControllerTest {
         }
     }
     
-    // @Test
-    // public void testPickupManyItems() {
-    //     DungeonManiaController controller = new DungeonManiaController();
-    //     assertDoesNotThrow(() -> controller.newGame("manyItems", "Standard")); 
-    //     // DungeonResponse dungeonInfo = controller.newGame("manyItems", "Standard");
 
-    //     assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
-    //     assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
-    //     assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
-    //     assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
-    //     assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
-    //     assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
-    //     assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
-    //     assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
-    //     assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
-    //     assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
-    //     assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
-    //     assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
-    //     assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
-    //     assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
-    //     assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
-    //     assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
-    //     assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
-
-    //     // assertTrue(dungeonInfo.getInventory().stream().anyMatch(x -> x.getType().equals("wood"))); 
-    //     assertDoesNotThrow(() -> controller.saveGame("manyItems"));
-    //     assertDoesNotThrow(() -> controller.loadGame("manyItems"));
-    // }
-    
-    
 
 }
