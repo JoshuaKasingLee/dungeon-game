@@ -306,5 +306,39 @@ public class DungeonManiaControllerTest {
         assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
     }
 
+    @Test
+    public void testInvalidMovement2() {
+        DungeonManiaController controller = new DungeonManiaController();
+        assertDoesNotThrow(() -> controller.newGame("stuckEntity2", "Standard"));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+    }
+
+    @Test
+    public void testInvalidMovementBlockedBoulder() {
+        DungeonManiaController controller = new DungeonManiaController();
+        assertDoesNotThrow(() -> controller.newGame("blockedBoulder", "Standard"));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+
+    }
+
+    @Test
+    public void testCraftBowAndShield() {
+        DungeonManiaController controller = new DungeonManiaController();
+        assertDoesNotThrow(() -> controller.newGame("craftingTest", "Standard"));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        assertDoesNotThrow(() -> controller.build("bow"));
+        assertDoesNotThrow(() -> controller.build("shield"));
+    }
 
 }
