@@ -12,6 +12,12 @@ public class Assassin extends Mercenary {
         this.setAttackDamage(ASSASSIN_ATTACK_DAMAGE);
     }
 
+    public Assassin(Position position, Dungeon dungeon, int durability, boolean isAlly) {
+        this(position, dungeon);
+        giveArmour(durability);
+        setAlly(isAlly);
+    }
+
     /** 
      * @return String
      */
