@@ -166,6 +166,16 @@ public class Player extends MovingEntity {
         List<Position> cardinalAdjMercPos = getCardinalAdjPositions2(mercPos);
         for (Position p : cardinalAdjMercPos) {
             if (p.equals(getPosition())) {
+                if (mercenary instanceof Assassin) {
+                    if (inventory.getItem("one_ring") != null && inventory.getItem("treasure") != null) {
+                        inventory.use("treasure", this);
+                        inventory.use("one_ring", this);
+                        mercenary.setAlly(true);
+                        return;
+                    } else {
+                        throw new InvalidActionException("Insufficient bribery material in inventory");
+                    }
+                }
                 inventory.use("treasure", this); // will throw exception in use if no treasure
                 mercenary.setAlly(true);
                 return;
