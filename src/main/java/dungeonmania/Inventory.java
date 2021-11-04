@@ -124,6 +124,30 @@ public class Inventory {
     }
 
     /** 
+     * creates midnight armour and adds to inventory, adjusts stock of crafting materials
+     * returns InvalidActionException if insufficient crafting material
+     * returns InvalidActionException if zombie is in dungeon
+     */
+    public void craftMidnightArmour(Player player) {
+        Dungeon d = player.getDungeon();
+        // first check for zombies
+        for (Entity e : d.getEntities()) {
+            if (e instanceof ZombieToast) {
+                throw new InvalidActionException("Insufficient crafting material for Shield");
+            }
+        }
+        // then check sufficient crafting materials
+        if (this.count("armour") >= 1 && this.count("sun_stone") >= 1) {
+            Item armour = getItem("armour");
+            inventory.remove(armour);
+            this.use("sun_stone", player);
+            this.add(new MidnightArmour(player.getDungeon()));
+        } else {
+            throw new InvalidActionException("Insufficient crafting material for Shield");
+        }
+    }
+
+    /** 
      * @return List<String>
      */
     public List<String> getBuildables() {

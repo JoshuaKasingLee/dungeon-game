@@ -38,6 +38,11 @@ public class StandardState implements CharacterState {
                 inventory.use("bow", player);
                 enemy.updateHealth(player);
                 enemy.updateHealth(player);
+            } else if (inventory.getItem("midnight_armour") != null) {
+                inventory.use("midnight_armour", player);
+                player.setAttackDamage(Player.CHARACTER_ATTACK_DAMAGE + 2);
+                enemy.updateHealth(player);
+                player.setAttackDamage(Player.CHARACTER_ATTACK_DAMAGE + 2);
             } else {
                 enemy.updateHealth(player);
             }
@@ -60,7 +65,11 @@ public class StandardState implements CharacterState {
                     inventory.use("armour", player);
                     int newHealth = player.getHealth() - ((enemyOriginalHealth * enemy.getAttackDamage()) / 20 );
                     player.setHealth(newHealth);
-                } else {
+                } else if (inventory.getItem("midnight_armour") != null) {
+                    inventory.use("midnight_armour", player);
+                    int newHealth = player.getHealth() - ((enemyOriginalHealth * enemy.getAttackDamage()) / 20 );
+                    player.setHealth(newHealth);
+                }else {
                     int newHealth = player.getHealth() - ((enemyOriginalHealth * enemy.getAttackDamage()) / 10 );
                     player.setHealth(newHealth);
                 }

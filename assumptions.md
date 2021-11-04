@@ -69,3 +69,12 @@ Team Avocado
 //////// MILESTONE 3 ASSUMPTIONS /////////
 - Assume if sunstone can be used in place of a key/bribe, it will get used first (i.e. key or treasure will remain in inventory if exists)
 - Where there is an option, sunstone is used last in crafting - we want to "save" it since it is the most valuable
+- Sceptre only has 1 use
+- Assume you need to decide to "use" the sceptre (like a potion)
+<!-- - Assume sceptre effect only works on entities that are within 2 cardinally adjacent tiles (i.e. same distance as a bribe) -->
+- Assume buildables can only be built (i.e. can't be picked up from the ground)
+- Midnight Armour has same durability as armour (2 uses)
+- Midnight Armour adds 2 attack damage points points to player if used as a weapon
+- Midnight Armour has same functionaltiy as Armour if used as protection
+- Use midnight shield last when player has multiple weapons/protection choices
+- If we try to create midnight armour while there is a zombie in the dungeon, returns InvalidActionException
