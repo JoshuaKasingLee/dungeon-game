@@ -11,5 +11,13 @@ public class Assassin extends Mercenary {
         this.setHealth(ORIGINAL_HEALTH);
         this.setAttackDamage(ASSASSIN_ATTACK_DAMAGE);
     }
+
+    /** 
+     * @return String
+     */
+    @Override
+    public String setType() {
+        return "assassin";
+    }
     
 }
