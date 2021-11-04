@@ -119,5 +119,89 @@ public class NewItemsTest {
         // sun-stone should be prioritised last in crafting
         assertEquals(Arrays.asList("sun_stone", "shield"), inv.listInventory());
     }
+
+    @Test
+    public void craftMidnightArmour() {
+        Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
+        Inventory inv = character.getInventory();
+        Armour a = new Armour(character.getDungeon(), Armour.DURABILITY);
+        SunStone s = new SunStone(new Position(0, 1), character.getDungeon());
+        Wood w = new Wood(new Position(0, 0), character.getDungeon());
+        inv.add(a);
+        inv.add(s);
+        inv.add(w);
+        inv.craftMidnightArmour(character);
+        assertEquals(Arrays.asList("wood", "midnight_armour"), inv.listInventory());
+    }
+
+    @Test
+    public void craftMidnightArmourZombieFail() {
+        Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
+        Inventory inv = character.getInventory();
+        Armour a = new Armour(character.getDungeon(), Armour.DURABILITY);
+        SunStone s = new SunStone(new Position(0, 1), character.getDungeon());
+        inv.add(a);
+        inv.add(s);
+        // build fails due to presence of zombie
+        ZombieToast z = new ZombieToast(new Position(0, 0), character.getDungeon());
+        assertThrows(InvalidActionException.class, () -> inv.craftMidnightArmour(character));
+        assertEquals(Arrays.asList("armour", "sun_stone"), inv.listInventory());
+        // once zombie is removed, build works
+        character.getDungeon().removeEntity(z);
+        inv.craftMidnightArmour(character);
+        assertEquals(Arrays.asList("midnight_armour"), inv.listInventory());
+    }
+
+    @Test
+    public void craftMidnightArmourMaterialFail() {
+        Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
+        Inventory inv = character.getInventory();
+        Armour a = new Armour(character.getDungeon(), Armour.DURABILITY);
+        Wood w = new Wood(new Position(0, 0), character.getDungeon());
+        inv.add(a);
+        inv.add(w);
+        assertThrows(InvalidActionException.class, () -> inv.craftMidnightArmour(character));
+        assertEquals(Arrays.asList("armour", "wood"), inv.listInventory());
+    }
+
+    @Test
+    public void testStandardBattleMidnightArmour() {
+        Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
+        CharacterState state = character.getCharacterState();
+        assertEquals(state.getType(), "Standard");
+        Inventory inv = character.getInventory();
+        MidnightArmour m = new MidnightArmour(character.getDungeon());
+        inv.add(m);
+
+        // spider battle - test using midnight armour as weapon and protection
+        Spider spider = new Spider(new Position(0, 0), character.getDungeon());
+        int expectedCharHealth = character.getHealth() - ((spider.getHealth() * spider.getAttackDamage()) / 20);
+        int expectedEnemyHealth = spider.getHealth() - ((character.getHealth() * (character.getAttackDamage() + MidnightArmour.ADDED_ATTACK_DAMAGE)) / 5);
+        state.battleEnemy(spider);
+        assertEquals(character.getHealth(), expectedCharHealth);
+        assertEquals(spider.getHealth(), expectedEnemyHealth);
+        assertEquals(Arrays.asList(), inv.listInventory()); // used up
+    }
+
+    @Test
+    public void testStandardBattleArmourPriority() {
+        Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
+        CharacterState state = character.getCharacterState();
+        assertEquals(state.getType(), "Standard");
+        Inventory inv = character.getInventory();
+        MidnightArmour m = new MidnightArmour(character.getDungeon());
+        Armour a = new Armour(character.getDungeon(), Armour.DURABILITY);
+        inv.add(m);
+        inv.add(a);
+
+        // spider battle - test using midnight armour as weapon and protection
+        Spider spider = new Spider(new Position(0, 0), character.getDungeon());
+        int expectedCharHealth = character.getHealth() - ((spider.getHealth() * spider.getAttackDamage()) / 20); // armour used
+        int expectedEnemyHealth = spider.getHealth() - ((character.getHealth() * (character.getAttackDamage() + MidnightArmour.ADDED_ATTACK_DAMAGE)) / 5); // midnight armour used
+        state.battleEnemy(spider);
+        assertEquals(character.getHealth(), expectedCharHealth);
+        assertEquals(spider.getHealth(), expectedEnemyHealth);
+        assertEquals(Arrays.asList("midnight_armour", "armour"), inv.listInventory()); // both should have been used once, 1 use left each
+    }
     
 }
