@@ -106,5 +106,52 @@ public class BossTest {
         assertEquals(Arrays.asList(character, ass1), character.getDungeon().getEntities());
         assertEquals(expectedCharHealth, character.getHealth());
     }
+
+    @Test
+    public void hydraMovementRange() {
+        Player player = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
+        Hydra h = new Hydra(new Position(0, 0), player.getDungeon());
+        Door d = new Door(new Position(1, 0), h.getDungeon(), 1);
+        Wall w = new Wall(new Position(-1, 0), h.getDungeon());
+        ZombieToastSpawner z = new ZombieToastSpawner(new Position(0, 1), h.getDungeon());
+        Boulder b1 = new Boulder(new Position(0, -1), h.getDungeon());
+        Boulder b2 = new Boulder(new Position(0, -2), h.getDungeon());
+        // test hydra should not be able to move past static entities like player
+        h.updatePosition();
+        assertEquals(new Position(0, 0), h.getPosition());
+        h.updatePosition();
+        assertEquals(new Position(0, 0), h.getPosition());
+        h.updatePosition();
+        assertEquals(new Position(0, 0), h.getPosition());
+        h.updatePosition();
+        assertEquals(new Position(0, 0), h.getPosition());
+        h.updatePosition();
+        assertEquals(new Position(0, 0), h.getPosition());
+        h.updatePosition();
+        assertEquals(new Position(0, 0), h.getPosition());
+    }
+
+    @Test
+    public void testRandomHeadGeneration() {
+        int attackFail = 0;
+        int attackSuccess = 0;
+        Player player = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
+        Hydra h = new Hydra(new Position(0, 0), player.getDungeon());
+
+        // use law of large numbers to test whether the health increase/decrease is 50%
+        for (int i = 0; i < 1000; i++) {
+            h.updateHealth(player);
+            if (h.getHealth() > Hydra.ORIGINAL_HEALTH) {
+                attackFail++;
+            } else {
+                attackSuccess++;
+            }
+            player.setHealth(Player.ORIGINAL_HEALTH_STANDARD);
+            h.setHealth(Hydra.ORIGINAL_HEALTH);
+        }
+
+        assertTrue(attackFail >= 400 && attackFail <= 600);
+        assertTrue(attackSuccess >= 400 && attackSuccess <= 600);
+    }
     
 }
