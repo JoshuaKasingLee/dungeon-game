@@ -45,8 +45,8 @@ public class ZombieToastSpawner extends StaticEntity {
                         !(e instanceof Boulder) ||
                         !(e instanceof Door) ||
                         !(e instanceof ZombieToastSpawner)) {
-                        createZombieToast(position);
-                        break;
+                        new ZombieToast(position, getDungeon());
+                        return;
                     }
                 }
             }
@@ -84,11 +84,6 @@ public class ZombieToastSpawner extends StaticEntity {
         return counter;
     }
 
-    /**
-     * @param counter the counter to set
-     */
-    public void setCounter(int counter) {
-        this.counter = counter;
-    }
+
 
 }

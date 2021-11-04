@@ -10,6 +10,7 @@ public class OrGoal extends CompositeGoal{
 
     
     /** 
+     * check if goal is complete by looking at OR condition for subgoals
      * @return boolean
      */
     @Override
@@ -19,6 +20,7 @@ public class OrGoal extends CompositeGoal{
 
     
     /** 
+     * convert goal to JSON
      * @return JSONObject
      */
     @Override

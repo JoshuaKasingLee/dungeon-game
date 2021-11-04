@@ -12,6 +12,7 @@ public abstract class CompositeGoal implements GoalComponent {
 
     
     /** 
+     * add a subgoal to the composite
      * @param subgoal
      */
     public void addSubgoal(GoalComponent subgoal) {
@@ -20,6 +21,7 @@ public abstract class CompositeGoal implements GoalComponent {
 
     
     /** 
+     * remove a subgoal from the composite
      * @param subgoal
      */
     public void removeSubGoal(GoalComponent subgoal) {
@@ -28,6 +30,7 @@ public abstract class CompositeGoal implements GoalComponent {
 
     
     /** 
+     * convert goal to string
      * @return String
      */
     @Override
@@ -37,6 +40,7 @@ public abstract class CompositeGoal implements GoalComponent {
 
     
     /** 
+     * try to attach entity to goal
      * @param entity
      */
     @Override
@@ -46,6 +50,7 @@ public abstract class CompositeGoal implements GoalComponent {
 
 
     /**
+     * get the list of subgoals
      * @return List<GoalComponent> return the subgoals
      */
     public List<GoalComponent> getSubgoals() {

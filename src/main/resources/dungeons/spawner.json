@@ -98,6 +98,6 @@
       }
     ],
     "goal-condition": {
-      "goal": "None"
+      "goal": "enemies"
     }
   }

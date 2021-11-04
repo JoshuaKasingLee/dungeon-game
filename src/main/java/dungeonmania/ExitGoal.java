@@ -13,6 +13,7 @@ public class ExitGoal implements GoalComponent, Observer  {
     }
     
     /** 
+     * check if goal is complete
      * @return boolean
      */
     @Override
@@ -22,6 +23,7 @@ public class ExitGoal implements GoalComponent, Observer  {
 
     
     /** 
+     * try to attach entity to goal
      * @param entity
      */
     @Override
@@ -35,6 +37,7 @@ public class ExitGoal implements GoalComponent, Observer  {
  
     
     /** 
+     * update whether player is on exit
      * @param entity
      */
     @Override
@@ -49,6 +52,7 @@ public class ExitGoal implements GoalComponent, Observer  {
 
     
     /** 
+     * convert goal to JSON
      * @return JSONObject
      */
     @Override
@@ -60,6 +64,7 @@ public class ExitGoal implements GoalComponent, Observer  {
 
     
     /** 
+     * convert goal to string
      * @return String
      */
     @Override

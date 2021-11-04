@@ -1,0 +1,52 @@
+
+{
+    "entities": [
+          {
+            "x": 0,
+            "y": 0,
+            "type": "player"
+          },
+          {
+            "x": 0,
+            "y": 1,
+            "type": "one_ring"
+          },
+          {
+            "x": 0,
+            "y": 3,
+            "type": "health_potion"
+          },
+          {
+            "x": 0,
+            "y": 4,
+            "type": "invisibility_potion"
+          },
+          {
+            "x": 0,
+            "y": 5,
+            "type": "wood"
+          },
+          {
+            "x": 0,
+            "y": 6,
+            "type": "arrow"
+          },
+          {
+            "x": 0,
+            "y": 7,
+            "type": "bomb"
+          },
+          {
+            "x": 0,
+            "y": 8,
+            "type": "sword"
+          }
+          
+          
+     
+
+    ],
+    "goal-condition": {
+      "goal": "exit"
+    }
+  }

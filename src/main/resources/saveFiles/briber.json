@@ -1,6 +1,6 @@
 {
     "goal-condition": {
-        "goal": "boulders"
+        "goal": "exit"
     },
     "dungeonName": "bribingTester",
     "entities": [
@@ -19,7 +19,8 @@
             "type": "mercenary",
             "ally": false,
             "y": 2
-        }
+        },
+        {"x":2,"y":20,"entityId":"229","type":"exit"}
     ],
     "items": [
         {
