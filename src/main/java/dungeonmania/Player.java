@@ -75,6 +75,11 @@ public class Player extends MovingEntity {
      * @return boolean
      */
     public boolean checkUnlockedDoor(Position pos) {
+        // use sunstone if player has one
+        if (inventory.getItem("sun_stone") != null) {
+            return true;
+        }
+        // else look for key
         for (Entity e : getDungeon().getEntities(pos)) {
             if (e instanceof Door) {
                 Door door = (Door) e;
@@ -167,7 +172,11 @@ public class Player extends MovingEntity {
         for (Position p : cardinalAdjMercPos) {
             if (p.equals(getPosition())) {
                 if (mercenary instanceof Assassin) {
-                    if (inventory.getItem("one_ring") != null && inventory.getItem("treasure") != null) {
+                    if (inventory.getItem("sun_stone") != null && inventory.getItem("one_ring") != null) {
+                        inventory.use("one_ring", this);
+                        mercenary.setAlly(true);
+                        return;
+                    } else if (inventory.getItem("one_ring") != null && inventory.getItem("treasure") != null) {
                         inventory.use("treasure", this);
                         inventory.use("one_ring", this);
                         mercenary.setAlly(true);
@@ -175,6 +184,10 @@ public class Player extends MovingEntity {
                     } else {
                         throw new InvalidActionException("Insufficient bribery material in inventory");
                     }
+                }
+                if (inventory.getItem("sun_stone") != null) {
+                    mercenary.setAlly(true);
+                    return;
                 }
                 inventory.use("treasure", this); // will throw exception in use if no treasure
                 mercenary.setAlly(true);

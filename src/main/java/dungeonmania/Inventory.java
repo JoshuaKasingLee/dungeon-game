@@ -112,6 +112,11 @@ public class Inventory {
                 this.use("wood", player);
                 this.use("key", player);
                 this.add(new Shield(player.getDungeon())); 
+            } else if (this.count("sun_stone") >= 1) {
+                this.use("wood", player);
+                this.use("wood", player);
+                this.use("sun_stone", player);
+                this.add(new Shield(player.getDungeon())); 
             }
         } else {
             throw new InvalidActionException("Insufficient crafting material for Shield");

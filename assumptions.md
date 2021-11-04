@@ -65,3 +65,7 @@ Team Avocado
 - Key must be an integer 
 - There is only 1 exit
 
+
+//////// MILESTONE 3 ASSUMPTIONS /////////
+- Assume if sunstone can be used in place of a key/bribe, it will get used first (i.e. key or treasure will remain in inventory if exists)
+- Where there is an option, sunstone is used last in crafting - we want to "save" it since it is the most valuable
