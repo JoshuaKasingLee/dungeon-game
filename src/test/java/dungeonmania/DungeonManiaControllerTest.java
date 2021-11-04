@@ -298,7 +298,7 @@ public class DungeonManiaControllerTest {
         DungeonManiaController controller = new DungeonManiaController();
         assertDoesNotThrow(() -> controller.newGame("items", "Standard"));
         assertDoesNotThrow(() -> controller.saveGame("items2"));
-        // assertDoesNotThrow(() -> controller.loadGame("items2"));
+        assertDoesNotThrow(() -> controller.loadGame("items2"));
     }
 
 
