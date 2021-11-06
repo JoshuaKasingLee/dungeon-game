@@ -78,3 +78,4 @@ Team Avocado
 - Midnight Armour has same functionaltiy as Armour if used as protection
 - Use midnight shield last when player has multiple weapons/protection choices
 - If we try to create midnight armour while there is a zombie in the dungeon, returns InvalidActionException
+- Sword changed to take off 10 damage points

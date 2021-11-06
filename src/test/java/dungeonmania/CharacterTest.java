@@ -217,7 +217,7 @@ public class CharacterTest {
         int expectedCharHealth = character.getHealth() - ((merc.getHealth() * merc.getAttackDamage()) / 10);
         state.battleEnemy(merc);
         assertEquals(character.getHealth(), expectedCharHealth);
-        assertEquals(merc.getHealth(), 0);
+        assertEquals(merc.getHealth(), Mercenary.ORIGINAL_HEALTH - 10);
     }
 
     @Test
@@ -295,7 +295,7 @@ public class CharacterTest {
         Spider spider = new Spider(new Position(0, 0), character.getDungeon());
         state.battleEnemy(spider);
         assertEquals(character.getHealth(), Player.ORIGINAL_HEALTH_STANDARD);
-        assertEquals(spider.getHealth(), 0);
+        assertEquals(spider.getHealth(), Spider.ORIGINAL_HEALTH - 10);
     }
 
     @Test
@@ -370,7 +370,7 @@ public class CharacterTest {
         int expectedCharHealth4 = expectedCharHealth3 - ((merc.getHealth() * merc.getAttackDamage()) / 10);
         state.battleEnemy(merc);
         assertEquals(character.getHealth(), expectedCharHealth4);
-        assertEquals(merc.getHealth(), 0);
+        assertEquals(merc.getHealth(), Mercenary.ORIGINAL_HEALTH - 10);
     }
 
     @Test

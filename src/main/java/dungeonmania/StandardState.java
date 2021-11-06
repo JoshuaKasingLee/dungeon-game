@@ -33,7 +33,7 @@ public class StandardState implements CharacterState {
             // equip weapon to fight enemy
             if (inventory.getItem("sword") != null) {
                 inventory.use("sword", player);
-                enemy.setHealth(0);
+                enemy.setHealth(enemy.getHealth() - 10);
             } else if (inventory.getItem("bow") != null) {
                 inventory.use("bow", player);
                 enemy.updateHealth(player);
