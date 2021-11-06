@@ -203,5 +203,95 @@ public class NewItemsTest {
         assertEquals(spider.getHealth(), expectedEnemyHealth);
         assertEquals(Arrays.asList("midnight_armour", "armour"), inv.listInventory()); // both should have been used once, 1 use left each
     }
+
+    @Test
+    public void testAndurilTripleDamage() {
+        Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
+        Inventory inv = character.getInventory();
+        Anduril a = new Anduril(new Position(-1, 0), character.getDungeon());
+        Shield s = new Shield(character.getDungeon());
+        character.move(Direction.LEFT);
+        inv.add(s);
+        assertEquals(Arrays.asList("anduril", "shield"), inv.listInventory());
+
+        // compare spider and boss battle damage
+        Spider spider = new Spider(new Position(0, 0), character.getDungeon());
+        character.move(Direction.RIGHT);
+        assertEquals(Arrays.asList(character), character.getDungeon().getEntities());
+
+        Assassin ass = new Assassin(new Position(0, 1), character.getDungeon());
+        ass.giveArmour(0);
+        character.move(Direction.DOWN);
+        assertEquals(Arrays.asList(character), character.getDungeon().getEntities());
+
+        assertEquals((Spider.ORIGINAL_HEALTH - spider.getHealth())*3, Assassin.ORIGINAL_HEALTH - ass.getHealth());
+    }
+
+    @Test
+    public void testAndurilDestroySpawner() {
+        Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
+        Inventory inv = character.getInventory();
+        Anduril a = new Anduril(new Position(-1, 0), character.getDungeon());
+        character.move(Direction.LEFT);
+        assertEquals(Arrays.asList("anduril"), inv.listInventory());
+
+        // check anduril can destory spawner like regular sword
+        ZombieToastSpawner z = new ZombieToastSpawner(new Position(-1, -1), character.getDungeon());
+        character.destroySpawner(z);
+        assertEquals(Arrays.asList(character), character.getDungeon().getEntities());
+    }
+
+    @Test
+    public void testAndurilHydraSuccess() {
+        Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
+        Inventory inv = character.getInventory();
+        Anduril a = new Anduril(new Position(0, -1), character.getDungeon());
+        a.setUsesLeft(10);
+        character.move(Direction.UP);
+        assertEquals(Arrays.asList("anduril"), inv.listInventory());
+
+        // anduril is powerful enough to destroy hydra in one kill
+        // hydra should always be killed
+        new Hydra(new Position(0, 0), character.getDungeon());
+        character.move(Direction.DOWN);
+        assertEquals(Arrays.asList(character), character.getDungeon().getEntities());
+
+        new Hydra(new Position(0, -1), character.getDungeon());
+        character.setHealth(Player.ORIGINAL_HEALTH_STANDARD);
+        character.move(Direction.UP);
+        assertEquals(Arrays.asList(character), character.getDungeon().getEntities());
+
+        new Hydra(new Position(-1, -1), character.getDungeon());
+        character.setHealth(Player.ORIGINAL_HEALTH_STANDARD);
+        character.move(Direction.LEFT);
+        assertEquals(Arrays.asList(character), character.getDungeon().getEntities());
+
+        new Hydra(new Position(0, -1), character.getDungeon());
+        character.setHealth(Player.ORIGINAL_HEALTH_STANDARD);
+        character.move(Direction.RIGHT);
+        assertEquals(Arrays.asList(character), character.getDungeon().getEntities());
+
+        new Hydra(new Position(0, 0), character.getDungeon());
+        character.setHealth(Player.ORIGINAL_HEALTH_STANDARD);
+        character.move(Direction.DOWN);
+        assertEquals(Arrays.asList(character), character.getDungeon().getEntities());
+
+        new Hydra(new Position(0, -1), character.getDungeon());
+        character.setHealth(Player.ORIGINAL_HEALTH_STANDARD);
+        character.move(Direction.UP);
+        assertEquals(Arrays.asList(character), character.getDungeon().getEntities());
+
+        new Hydra(new Position(-1, -1), character.getDungeon());
+        character.setHealth(Player.ORIGINAL_HEALTH_STANDARD);
+        character.move(Direction.LEFT);
+        assertEquals(Arrays.asList(character), character.getDungeon().getEntities());
+
+        new Hydra(new Position(0, -1), character.getDungeon());
+        character.setHealth(Player.ORIGINAL_HEALTH_STANDARD);
+        character.move(Direction.RIGHT);
+        assertEquals(Arrays.asList(character), character.getDungeon().getEntities());
+
+
+    }
     
 }
