@@ -20,11 +20,14 @@ public class Mercenary extends Enemy {
 
     private Position playerPosition = getDungeon().getPlayer().getPosition();
 
+    private MercenaryState mercenaryState;
+
     public Mercenary(Position position, Dungeon dungeon) {
         super(position, dungeon);
         this.setHealth(ORIGINAL_HEALTH);
         this.setAttackDamage(MERCENARY_ATTACK_DAMAGE);
         this.setArmour(50); // assume zombie has 50% chance spawning with armour
+        this.mercenaryState = new MercStandardState(this);
         setInteractable(true);
     }
 
@@ -162,4 +165,20 @@ public class Mercenary extends Enemy {
         // always rounds up
         return (double) (Math.sqrt(squaredDist));
     }
+
+    
+    /**
+     * @return MercenaryState return the mercenaryState
+     */
+    public MercenaryState getMercenaryState() {
+        return mercenaryState;
+    }
+
+    /**
+     * @param mercenaryState the mercenaryState to set
+     */
+    public void setMercenaryState(MercenaryState mercenaryState) {
+        this.mercenaryState = mercenaryState;
+    }
+
 }

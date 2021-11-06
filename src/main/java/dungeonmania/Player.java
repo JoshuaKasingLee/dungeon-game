@@ -151,11 +151,11 @@ public class Player extends MovingEntity {
      * @param type
      */
     public void useItem(String type) {
-        if (type.equals("health_potion") || type.equals("invincibility_potion") || type.equals("invisibility_potion") || type.equals("bomb")) {
+        if (type.equals("health_potion") || type.equals("invincibility_potion") || type.equals("invisibility_potion") || type.equals("bomb") || type.equals("sceptre")) {
             inventory.use(type, this);
         } else if (type.equals(null) || type.equals("")) {
         } else {
-            throw new IllegalArgumentException("Cannot use" + type);
+            throw new IllegalArgumentException("Cannot use " + type);
         }
     }
 

@@ -10,7 +10,12 @@ public class Sceptre extends Item {
     @Override
     public void activate(Player player) {
         super.activate(player);
-        
+        for (Entity e : player.getDungeon().getEntities()) {
+            if (e instanceof Mercenary) {
+                Mercenary m = (Mercenary) e;
+                m.setMercenaryState(new MercControlledState(m));
+            }
+        }
     }
 
     /** 

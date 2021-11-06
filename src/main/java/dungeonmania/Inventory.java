@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import dungeonmania.exceptions.InvalidActionException;
+import dungeonmania.util.Position;
 
 public class Inventory {
     private List<Item> inventory = new ArrayList<Item>();
@@ -143,7 +144,43 @@ public class Inventory {
             this.use("sun_stone", player);
             this.add(new MidnightArmour(player.getDungeon()));
         } else {
-            throw new InvalidActionException("Insufficient crafting material for Shield");
+            throw new InvalidActionException("Insufficient crafting material for Midnight Armour");
+        }
+    }
+
+    /** 
+     * creates sceptre and adds to inventory, adjusts stock of crafting materials
+     * returns InvalidActionException if insufficient crafting material
+     * returns InvalidActionException if zombie is in dungeon
+     */
+    public void craftSceptre(Player player) {
+        //  check sufficient crafting materials
+        if (this.count("sun_stone") >= 1) {
+            Boolean bool1 = this.count("wood") >= 1 || this.count("arrow") >= 2;
+            Boolean bool2 = this.count("treasure") >= 1 || this.count("key") >= 1 || this.count("sun_stone") >= 2;
+            if (bool1 && bool2) {
+                this.use("sun_stone", player);
+                System.out.print("hello");
+                // use bool1 items
+                if (this.count("wood") >= 1) {
+                    this.use("wood", player);
+                } else {
+                    this.use("arrow", player);
+                    this.use("arrow", player);
+                }
+                // use bool2 items
+                if (this.count("treasure") >= 1) {
+                    this.use("treasure", player);
+                } else if (this.count("key") >= 1) {
+                    this.use("key", player);
+                } else {
+                    this.use("sun_stone", player);
+                    System.out.print("hel");
+                }
+                this.add(new Sceptre(player.getDungeon()));
+            }
+        } else {
+            throw new InvalidActionException("Insufficient crafting material for Sceptre");
         }
     }
 
@@ -204,5 +241,22 @@ public class Inventory {
             invList.add(i.getType());
         }
         return invList;
+    }
+
+    public static void main(String[] args) {
+        Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
+        Inventory inv = character.getInventory();
+
+        // test crafting with different materials
+        Wood w = new Wood(new Position(0, 0), character.getDungeon());
+        // Treasure t = new Treasure(new Position(0, 0), character.getDungeon());
+        SunStone s1 = new SunStone(new Position(0, 1), character.getDungeon());
+        SunStone s2 = new SunStone(new Position(0, 1), character.getDungeon());
+        // inv.add(w);
+        // inv.add(t);
+        // inv.add(s);
+        // inv.craftSceptre(character);
+        // assertEquals(Arrays.asList("sceptre"), inv.listInventory());
+
     }
 }
