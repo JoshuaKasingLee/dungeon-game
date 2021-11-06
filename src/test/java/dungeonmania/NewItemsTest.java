@@ -520,7 +520,7 @@ public class NewItemsTest {
         SunStone s = new SunStone(new Position(0, 1), character.getDungeon());
         inv.add(t);
         inv.add(s);
-        assertThrows(InvalidActionException.class, () -> inv.craftMidnightArmour(character));
+        assertThrows(InvalidActionException.class, () -> inv.craftSceptre(character));
     }
     
 }

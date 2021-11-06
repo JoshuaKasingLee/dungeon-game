@@ -243,20 +243,4 @@ public class Inventory {
         return invList;
     }
 
-    public static void main(String[] args) {
-        Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
-        Inventory inv = character.getInventory();
-
-        // test crafting with different materials
-        Wood w = new Wood(new Position(0, 0), character.getDungeon());
-        // Treasure t = new Treasure(new Position(0, 0), character.getDungeon());
-        SunStone s1 = new SunStone(new Position(0, 1), character.getDungeon());
-        SunStone s2 = new SunStone(new Position(0, 1), character.getDungeon());
-        // inv.add(w);
-        // inv.add(t);
-        // inv.add(s);
-        // inv.craftSceptre(character);
-        // assertEquals(Arrays.asList("sceptre"), inv.listInventory());
-
-    }
 }
