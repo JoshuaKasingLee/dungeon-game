@@ -71,8 +71,9 @@ Team Avocado
 - Where there is an option, sunstone is used last in crafting - we want to "save" it since it is the most valuable
 - Sceptre only has 1 use
 - Assume you need to decide to "use" the sceptre (like a potion)
-<!-- - Assume sceptre effect only works on entities that are within 2 cardinally adjacent tiles (i.e. same distance as a bribe) -->
+<!-- - NOT ANYMORE Assume sceptre effect only works on entities that are within 2 cardinally adjacent tiles (i.e. same distance as a bribe) -->
 - Assume buildables can only be built (i.e. can't be picked up from the ground)
+- Crafting midnight armour: returns InvalidActionException if zombie is in dungeon
 - Midnight Armour has same durability as armour (2 uses)
 - Midnight Armour adds 2 attack damage points points to player if used as a weapon
 - Midnight Armour has same functionaltiy as Armour if used as protection
@@ -81,3 +82,6 @@ Team Avocado
 - Sword changed to take off 10 damage points
 - Anduril has same number of uses as sword (since it is a subclass)
 - Anduril gets used last if used for destroying zombie toast spawner, because it is the most valuable
+- Crafting sceptre: list of priorities:
+    - Wood > Arrow
+    - Treasure > Key > Sunstone
