@@ -178,6 +178,8 @@ public class Inventory {
                     System.out.print("hel");
                 }
                 this.add(new Sceptre(player.getDungeon()));
+            } else {
+                throw new InvalidActionException("Insufficient crafting material for Sceptre");
             }
         } else {
             throw new InvalidActionException("Insufficient crafting material for Sceptre");
