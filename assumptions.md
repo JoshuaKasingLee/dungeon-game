@@ -79,3 +79,5 @@ Team Avocado
 - Use midnight shield last when player has multiple weapons/protection choices
 - If we try to create midnight armour while there is a zombie in the dungeon, returns InvalidActionException
 - Sword changed to take off 10 damage points
+- Anduril has same number of uses as sword (since it is a subclass)
+- Anduril gets used last if used for destroying zombie toast spawner, because it is the most valuable

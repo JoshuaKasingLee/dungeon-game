@@ -219,6 +219,11 @@ public class Player extends MovingEntity {
                     notifyObservers();
                     getDungeon().removeEntity(spawner);
                     break;
+                } else if (inventory.getItem("anduril") != null) {
+                    inventory.use("anduril", this);
+                    notifyObservers();
+                    getDungeon().removeEntity(spawner);
+                    break;
                 } else {
                     throw new InvalidActionException("Cannot destory ZombieToastspawner without weapon");
                 }

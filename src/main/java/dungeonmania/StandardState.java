@@ -31,9 +31,25 @@ public class StandardState implements CharacterState {
             Inventory inventory = player.getInventory();
 
             // equip weapon to fight enemy
-            if (inventory.getItem("sword") != null) {
+            if (inventory.getItem("anduril") != null) {
+                inventory.use("anduril", player);
+                if (enemy instanceof Assassin || enemy instanceof Hydra) {
+                    enemy.setHealth(enemy.getHealth() - 30);
+                } else {
+                    enemy.setHealth(enemy.getHealth() - 10);
+                }
+            } else if (inventory.getItem("sword") != null) {
                 inventory.use("sword", player);
-                enemy.setHealth(enemy.getHealth() - 10);
+                if (enemy instanceof Hydra) {
+                    Hydra h = (Hydra) enemy;
+                    if (h.attackSuccess()) {
+                        enemy.setHealth(enemy.getHealth() - 10);
+                    } else {
+                        enemy.setHealth(enemy.getHealth() + 10);
+                    }
+                } else {
+                    enemy.setHealth(enemy.getHealth() - 10);
+                }
             } else if (inventory.getItem("bow") != null) {
                 inventory.use("bow", player);
                 enemy.updateHealth(player);
