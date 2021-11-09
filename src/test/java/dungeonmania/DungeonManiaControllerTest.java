@@ -112,7 +112,6 @@ public class DungeonManiaControllerTest {
 
         assertDoesNotThrow(() -> controller.newGame("boulders", "Peaceful"));
         assertDoesNotThrow(() -> controller.saveGame("boulders2"));
-        assertDoesNotThrow(() -> controller.loadGame("boulders2"));
         DungeonResponse dungeonInfo = controller.loadGame("boulders2");
         assertEquals("boulders", dungeonInfo.getDungeonName());
         assertEquals(new ArrayList<ItemResponse>(), dungeonInfo.getInventory());
@@ -378,7 +377,40 @@ public class DungeonManiaControllerTest {
             assertTrue(!("zombie").equals(entityResponse.getType()));
         }
     }
-    
 
+
+    // bug fixing after milestone 2 below
+    
+    @Test
+    public void testSpiderSpawn() {
+        DungeonManiaController controller = new DungeonManiaController();
+        assertDoesNotThrow(() -> controller.newGame("boulders", "Hard"));
+        assertDoesNotThrow(() -> controller.saveGame("testingSpiders"));
+        assertDoesNotThrow(() -> controller.loadGame("testingSpiders"));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        DungeonResponse dungeonInfo =  controller.tick(null, Direction.DOWN);
+        List<EntityResponse> entities = dungeonInfo.getEntities();
+        assertEquals(true, entities.stream().anyMatch(x -> x.getType().equals("spider")));
+        
+        
+
+
+    }
 
 }
