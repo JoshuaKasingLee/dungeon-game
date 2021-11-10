@@ -14,7 +14,11 @@ public class Inventory {
     }
 
     // general inventory functions
-    
+
+    public boolean containsKey() {
+        return inventory.stream().anyMatch(x -> x.getType().equals("key"));
+    }
+        
     /** 
      * adds given item to end of inventory list
      * @param item
@@ -23,14 +27,14 @@ public class Inventory {
         inventory.add(item);
     }
 
-    public String getItemTypeFromId(String id) {
-        for (Item i : inventory) {
-            if (i.getId().equals(id)) {
-                return i.getType();
-            }
-        }
-        return null;
-    }
+    // public String getItemTypeFromId(String id) {
+    //     for (Item i : inventory) {
+    //         if (i.getId().equals(id)) {
+    //             return i.getType();
+    //         }
+    //     }
+    //     throw new IllegalArgumentException("Not a valid id!");
+    // }
 
     /** 
      * returns how many of the input item type is in the inventory
