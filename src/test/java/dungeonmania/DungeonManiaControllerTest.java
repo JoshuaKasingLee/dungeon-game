@@ -513,13 +513,12 @@ public class DungeonManiaControllerTest {
 
          controller.getActiveGame().getEntities();
 
-        assertEquals(true, controller.getActiveGame().getEntities());
         assertEquals(false, dungeonInfo.getInventory().stream().anyMatch(x -> x.getType().equals("bomb")));
 
         assertDoesNotThrow(() -> controller.tick(null, Direction.RIGHT)); 
         dungeonInfo = controller.tick(null, Direction.LEFT); 
         assertEquals(true, dungeonInfo.getInventory().stream().anyMatch(x -> x.getType().equals("bomb")));
-        assertDoesNotThrow(() -> controller.tick(bombId, null));
+        dungeonInfo = controller.tick(bombId, null);
         assertEquals(false, dungeonInfo.getInventory().stream().anyMatch(x -> x.getType().equals("bomb")));
 
 
