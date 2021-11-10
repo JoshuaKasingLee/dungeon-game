@@ -211,17 +211,17 @@ public class Player extends MovingEntity {
             if (p.equals(getPosition())) {
                 if (inventory.getItem("sword") != null) {
                     inventory.use("sword", this);
-                    notifyObservers();
+                    spawner.notifyObservers();
                     getDungeon().removeEntity(spawner);
                     break;
                 } else if (inventory.getItem("bow") != null) {
                     inventory.use("bow", this);
-                    notifyObservers();
+                    spawner.notifyObservers();
                     getDungeon().removeEntity(spawner);
                     break;
                 } else if (inventory.getItem("anduril") != null) {
                     inventory.use("anduril", this);
-                    notifyObservers();
+                    spawner.notifyObservers();
                     getDungeon().removeEntity(spawner);
                     break;
                 } else {
