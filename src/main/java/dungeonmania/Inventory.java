@@ -61,6 +61,7 @@ public class Inventory {
         if (item != null) {
             item.activate(player);
             if (item.getUsesLeft() == 0) {
+                item.setUsesLeft(1);
                 inventory.remove(item);
             }
         } else {
