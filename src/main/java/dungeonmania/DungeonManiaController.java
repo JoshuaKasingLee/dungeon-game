@@ -875,7 +875,11 @@ public class DungeonManiaController {
                 goalString += simpleGoal.simpleGoalToString();
             }
         }
+        if (activeGame.getOverallGoal().isComplete()) {
+            goalString = "";
+        }
         return goalString;
+
     }
 
     
