@@ -65,7 +65,7 @@ public class DungeonManiaController {
      * @return List<String>
      */
     public List<String> getGameModes() {
-        return Arrays.asList("Standard", "Peaceful", "Hard");
+        return Arrays.asList("Standard", "Peaceful", "Hard", "standard","peaceful","hard");
     }
 
     /**

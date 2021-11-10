@@ -27,13 +27,13 @@ public class Dungeon {
      * @param gamemodeString
      */
     public void initialiseGameMode(String gamemodeString) {
-        if (gamemodeString.equals("Peaceful")) {
+        if (gamemodeString.equals("Peaceful") || gamemodeString.equals("peaceful")) {
             gamemode = new Peaceful();
         }
-        else if (gamemodeString.equals("Standard")) {
+        else if (gamemodeString.equals("Standard") || gamemodeString.equals("standard")) {
             gamemode = new Standard();
         }
-        else if (gamemodeString.equals("Hard")) {
+        else if (gamemodeString.equals("Hard") || gamemodeString.equals("hard")) {
             gamemode = new Hard();
         }
     }
