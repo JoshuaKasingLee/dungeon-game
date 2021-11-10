@@ -26,6 +26,22 @@ public class Dungeon {
         this.counter = 0;
     }
 
+    public String getEntityTypeFromId(String id) {
+        for (Entity entity : entities) {
+            if (entity.getId().equals(id)) {
+                return entity.getType();
+            }
+        }
+        List<Item> items = inventory.getInventoryList();
+        for (Item item : items) {
+            if (item.getId().equals(id)) {
+                return item.getType();
+            }
+        }
+
+        throw new IllegalArgumentException("Not a valid id!");
+    }
+
     
 
     public void tickCounter() {
