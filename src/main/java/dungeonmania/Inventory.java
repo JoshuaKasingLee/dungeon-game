@@ -23,6 +23,15 @@ public class Inventory {
         inventory.add(item);
     }
 
+    public String getItemTypeFromId(String id) {
+        for (Item i : inventory) {
+            if (i.getId().equals(id)) {
+                return i.getType();
+            }
+        }
+        return null;
+    }
+
     /** 
      * returns how many of the input item type is in the inventory
      * @param type
