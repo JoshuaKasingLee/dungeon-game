@@ -42,4 +42,13 @@ public class Boulder extends StaticEntity{
         Position newPos = new Position((currPos.getX() + dir.getX()), (currPos.getY() + dir.getY()));
         this.setPosition(newPos);
     }
+
+    /** 
+     * Sets the movement factor of the entity
+     * @return double
+     */
+    @Override
+    public double setMovementFactor() {
+        return -1;
+    }
 }

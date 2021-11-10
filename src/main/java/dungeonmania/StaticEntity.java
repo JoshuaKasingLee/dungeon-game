@@ -4,12 +4,14 @@ import dungeonmania.util.Position;
 import dungeonmania.util.Direction;
 
 public abstract class StaticEntity extends Entity {
+    private double movementFactor;
+    
     public StaticEntity(Position position, Dungeon dungeon) {
         super(position, dungeon);
+        this.movementFactor = setMovementFactor();
         dungeon.addEntity(this);
     }
 
-    
     /**
      * UPDATES to be overidden by some classes
      * @param direction
@@ -29,5 +31,21 @@ public abstract class StaticEntity extends Entity {
         }
         // player does not exist
         return null;
+    }
+    
+    /** 
+     * Returns the movement factor of the tile
+     * @return double
+     */
+    public double setMovementFactor() {
+        return 1;
+    }
+
+    /** 
+     * gets the movement factor
+     * @return double
+     */
+    public double getMovementFactor() {
+        return movementFactor;
     }
 }

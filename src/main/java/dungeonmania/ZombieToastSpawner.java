@@ -84,6 +84,13 @@ public class ZombieToastSpawner extends StaticEntity {
         return counter;
     }
 
-
+    /** 
+     * Sets the movement factor of the entity
+     * @return double
+     */
+    @Override
+    public double setMovementFactor() {
+        return -1;
+    }
 
 }

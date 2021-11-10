@@ -20,6 +20,7 @@ public class Door extends StaticEntity {
     public void update(Direction direction) {
         if (this.getPosition().equals(this.getPlayerPosition())) {
             this.locked = false;
+
         }
     }
 
@@ -45,5 +46,18 @@ public class Door extends StaticEntity {
      */
     public int getKey() {
         return this.key;
+    }
+
+    /** 
+     * Sets the movement factor of the entity
+     * @return double
+     */
+    @Override
+    public double setMovementFactor() {
+        if (isLocked()) {
+            return -1;
+        } else {
+            return 1;
+        }
     }
 }

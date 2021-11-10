@@ -25,4 +25,14 @@ public class Wall extends StaticEntity {
         return;
     }
 
+
+    /** 
+     * Sets the movement factor of the entity
+     * @return double
+     */
+    @Override
+    public double setMovementFactor() {
+        return -1;
+    }
+    
 }
