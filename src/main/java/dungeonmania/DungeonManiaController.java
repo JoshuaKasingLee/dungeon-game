@@ -606,13 +606,15 @@ public class DungeonManiaController {
         
         Player player = activeGame.getPlayer();
 
+        Inventory inventory = activeGame.getInventory();
+
         // Use item if appropriate. This does nothing if itemUsed is null or empty.
         // Throws exceptions where appropriate.
         if (itemUsed != null) {
-            player.useItem(itemUsed);
+            player.useItem(inventory.getItemTypeFromId(itemUsed));
         }
         
-        List<EntityResponse> entityResponses = new ArrayList<EntityResponse>();
+        // List<EntityResponse> entityResponses = new ArrayList<EntityResponse>();
         List<Entity> entities = activeGame.getEntities();
         List<Entity> entitiesCopy = new ArrayList<>(entities);
         
