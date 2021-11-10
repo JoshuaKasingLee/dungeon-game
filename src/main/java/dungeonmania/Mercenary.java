@@ -3,8 +3,11 @@ package dungeonmania;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Map;
+import java.util.HashMap;
 
 import dungeonmania.util.Position;
+
 
 public class Mercenary extends Enemy {
     public static final int ORIGINAL_HEALTH = 10;
@@ -53,7 +56,12 @@ public class Mercenary extends Enemy {
         } else if (((Player)player).getCharacterState().getType().equals("Invisible")) {
             return;
         } else {
-            direction = distanceOfPositions.indexOf(Collections.min(distanceOfPositions));
+            // Use Dijkstra's Algorithm to find the fastest path to the player
+            // direction = distanceOfPositions.indexOf(Collections.min(distanceOfPositions));
+
+            Map<Position, Position> pathMap = dijkstras(getDungeon().getGrid(), getPosition(), player.getPosition());
+            
+            direction = getNextDirection(pathMap, player.getPosition());
         }
         
         if (getPosition().equals(player.getPosition())) {
@@ -73,6 +81,8 @@ public class Mercenary extends Enemy {
             case 3:
                 moveRight();
                 break;
+            case 4:
+                return;
         }
     }
 
@@ -162,4 +172,129 @@ public class Mercenary extends Enemy {
         // always rounds up
         return (double) (Math.sqrt(squaredDist));
     }
+
+    
+    /** 
+     * @param grid
+     * @param source
+     * @return Map<Position, Position>
+     * @throws Exception
+     */
+    public Map<Position, Position> dijkstras(List<Position> grid, Position source, Position destination) {
+        Map<Position, Double> dist = new HashMap<Position, Double>();
+        Map<Position, Position> prev = new HashMap<Position, Position>();
+
+        for (Position position : grid) {
+            dist.put(position, null);
+            prev.put(position, null);
+        }
+        dist.put(source, 0.0);
+
+        List<Position> queue = new ArrayList<Position>(grid);
+        
+        while (!queue.isEmpty()) {
+            Position lowestPosition = null;
+            // Find the node with the smallest distance
+            // Traverse queue to find node with the lowest distance
+            for (Position position : queue) {
+                if (lowestPosition == null && dist.get(position) != null) {
+                    lowestPosition = position;
+                } else if (dist.get(position) != null && dist.get(position) < dist.get(lowestPosition)) {
+                    lowestPosition = position;
+                }
+            }
+            
+
+            // assert lowest position is null
+            if (lowestPosition == null) {
+                System.out.println("ERROR");
+                return null;
+            }
+
+            // Check each cardinal neighbour of the lowest position
+            for (Position neighbour : getCardinalNeighbours(lowestPosition.getX(), lowestPosition.getY())) {
+                if (dist.containsKey(neighbour)) {
+                    double moveFactor = getDungeon().getMovementFactor(neighbour);
+                    if (moveFactor == -1) {
+                        moveFactor = Integer.MAX_VALUE;
+                    }
+                    if (dist.get(neighbour) == null) {
+                        dist.put(neighbour, dist.get(lowestPosition) + moveFactor);
+                        prev.put(neighbour, lowestPosition);
+                    } else if (dist.get(lowestPosition) + moveFactor < dist.get(neighbour)) {
+                        dist.put(neighbour, dist.get(lowestPosition) + moveFactor);
+                        prev.put(neighbour, lowestPosition);
+                    }
+                }
+            }
+            
+            // If found player, quit
+            if (lowestPosition.equals(destination)) {
+                queue.clear();
+            }
+            queue.remove(lowestPosition);
+        }
+        return prev;
+    }
+
+    /** 
+     * returns list of positions zombie toast can move into
+     * @return List<Position>
+     */
+    public List<Position> getCardinalNeighbours(int x, int y) {
+        List<Position> cardinalNeighbours = new ArrayList<Position>();
+        // Up position
+        cardinalNeighbours.add(new Position(x, y-1));
+        // Down position
+        cardinalNeighbours.add(new Position(x, y+1));
+        // Left position
+        cardinalNeighbours.add(new Position(x-1, y));
+        // Right position
+        cardinalNeighbours.add(new Position(x+1, y));
+        return cardinalNeighbours;
+    }
+
+    
+    
+    /** 
+     * Get the next direction of given a hashmap of next positions and a destination
+     * @param prev
+     * @param destination
+     * @return Direction
+     */
+    public int getNextDirection(Map<Position, Position> prev, Position destination) {
+        // Pointer to next position
+        Position nextPosition = destination;
+
+        // Go through the previous hashmap to find the next move
+        while (!prev.get(nextPosition).equals(getPosition())) {
+            // System.out.println("StuckHere: " + nextPosition);
+            nextPosition = prev.get(nextPosition);
+        }
+
+        Position offset = Position.calculatePositionBetween(getPosition(), nextPosition);
+
+        // Initialise error direction
+        int nextDirection = -1;
+
+        if (offset.equals(new Position(0, -1))) {
+            nextDirection = 0;
+        } else if (offset.equals(new Position(0, 1))) {
+            nextDirection = 1;
+        } else if (offset.equals(new Position(-1, 0))) {
+            nextDirection = 2;
+        } else if (offset.equals(new Position(1, 0))) {
+            nextDirection = 3;
+        } else if (offset.equals(new Position(0, 0))) {
+            nextDirection = 4;
+        }
+
+        if (nextDirection == -1) {
+            System.out.println("ERROR");
+            return -1;
+        }
+
+        return nextDirection;
+    }
+
 }
