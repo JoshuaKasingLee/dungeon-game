@@ -83,9 +83,10 @@ public class Player extends MovingEntity {
         for (Entity e : getDungeon().getEntities(pos)) {
             if (e instanceof Door) {
                 Door door = (Door) e;
+                if (!door.isLocked()) {
+                    return true;
+                }
                 return inventory.useKey(door, this); // if wrong key, will return false here
-            } else {
-                return true;
             }
         }
         return true;
@@ -137,6 +138,10 @@ public class Player extends MovingEntity {
             if (e instanceof Item) {
                 if (e instanceof Treasure) {
                     e.notifyObservers();
+                }
+                // Key already exists in inventory
+                if (e instanceof Key && inventory.containsKey()) {
+                    return;
                 }
                 Item i = (Item) e;
                 getDungeon().removeEntity(i);
