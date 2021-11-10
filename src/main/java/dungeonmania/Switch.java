@@ -25,7 +25,6 @@ public class Switch extends StaticEntity {
         for (Entity entity : this.getEntities()) {
             if (entity instanceof Boulder) {
                 if (this.getPosition().equals(entity.getPosition())) {
-                    
                     return true;
                 }
             }
