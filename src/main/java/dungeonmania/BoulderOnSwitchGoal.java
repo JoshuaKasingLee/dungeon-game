@@ -6,9 +6,9 @@ import java.util.Map;
 import org.json.JSONObject;
 
 public class BoulderOnSwitchGoal implements GoalComponent, Observer  {
-    private int unpressedSwitches;
+    private HashMap<String,Boolean> arePressed;
     public BoulderOnSwitchGoal() {
-        unpressedSwitches = 0;
+        arePressed = new HashMap<String, Boolean>();
     }
 
     
@@ -18,7 +18,12 @@ public class BoulderOnSwitchGoal implements GoalComponent, Observer  {
      */
     @Override
     public boolean isComplete() {
-        return (unpressedSwitches == 0);
+        for (Boolean isPressed: arePressed.values()) {
+            if (!isPressed) {
+                return false;
+            }
+        }
+        return true;
     }
 
     
@@ -29,10 +34,11 @@ public class BoulderOnSwitchGoal implements GoalComponent, Observer  {
     @Override
     public void update(Subject entity) {
         Switch currSwitch = (Switch) entity;
+        String switchId = currSwitch.getId();
         if (currSwitch.hasBoulder()) {
-            unpressedSwitches--;
+            arePressed.put(switchId, true);
         } else {
-            unpressedSwitches++;
+            arePressed.put(switchId, false);
         }
     }
 
@@ -44,8 +50,9 @@ public class BoulderOnSwitchGoal implements GoalComponent, Observer  {
     @Override
     public void tryToAttach(Subject entity) {
         if (entity instanceof Switch) {
+            Switch currSwitch = (Switch) entity;
+            arePressed.put(currSwitch.getId(), false);
             entity.attach(this);
-            unpressedSwitches++;
         }
 
     }
