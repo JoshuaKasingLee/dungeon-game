@@ -255,4 +255,51 @@ public class Dungeon {
         this.overallGoal = overallGoal;
     }
 
+
+    /** 
+     * Return the movement factor of a given position
+     * @return double
+     */
+    public double getMovementFactor(Position position) {
+        double movementFactor = 0;
+        for (Entity entity : entities) {
+            // Account for more than one static entity (i.e. boulder on switch)
+            if (entity instanceof StaticEntity && 
+                entity.getPosition().equals(position) && 
+                movementFactor != -1) {
+                movementFactor = ((StaticEntity)entity).getMovementFactor();
+            }
+        }
+
+        // if movementFactor remains 0, return 1 else return movementFactor
+        movementFactor = movementFactor == 0 ? 1 : movementFactor;
+        
+        return movementFactor;
+    }
+
+    public List<Position> getGrid() {
+        // Initialise co-ordinates
+        int lowestX = Integer.MAX_VALUE;
+        int lowestY = Integer.MAX_VALUE;
+        int highestX = Integer.MIN_VALUE;
+        int highestY = Integer.MIN_VALUE;
+
+        // Find values of coordinates
+        for (Entity entity : entities) {
+            lowestX = (entity.getXPosition() < lowestX) ? (entity.getXPosition()) : (lowestX);
+            lowestY = (entity.getXPosition() < lowestY) ? (entity.getYPosition()) : (lowestY);
+            highestX = (entity.getXPosition() > highestX) ? (entity.getXPosition()) : (highestX);
+            highestY = (entity.getXPosition() > highestY) ? (entity.getYPosition()) : (highestY);
+        }
+
+        // Create a list of all possible positions
+        List<Position> grid = new ArrayList<Position>();
+        for (int i = lowestX; i <= highestX; i++) {
+            for (int j = lowestY; j <= highestY; j++) {
+                grid.add(new Position(i, j));
+            }
+        }
+
+        return grid;
+    }
 }

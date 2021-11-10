@@ -612,7 +612,7 @@ public class DungeonManiaController {
         
 
 
-
+        //TODO: Check with team if updating the dungeon inside each entity is okay (Line 630-632)
         for (Entity entity: entitiesCopy) {
             if (movementDirection != null) {
                 if (entity instanceof Player) {
@@ -627,6 +627,9 @@ public class DungeonManiaController {
     
         for (Entity entity: entitiesCopy) {
             if (entity instanceof Enemy) {
+                if (entity instanceof Mercenary) {
+                    entity.setDungeon(getActiveGame());
+                }
                 ((Enemy) entity).updatePosition();
             }
             if (movementDirection != null) {
