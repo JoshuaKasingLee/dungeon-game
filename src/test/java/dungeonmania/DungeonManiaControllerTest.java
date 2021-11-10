@@ -413,4 +413,9 @@ public class DungeonManiaControllerTest {
 
     }
 
+    @Test
+    public void testZombieSpawn() {
+        
+    }
+
 }
