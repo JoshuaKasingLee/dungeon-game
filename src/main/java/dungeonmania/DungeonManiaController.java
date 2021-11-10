@@ -126,7 +126,7 @@ public class DungeonManiaController {
         for (GoalComponent simpleGoal : activeGame.getSimpleGoals()) {
             String simpleGoalString = simpleGoal.simpleGoalToString();
             if (!goalString.contains(simpleGoalString)) {
-                goalString += simpleGoal.simpleGoalToString();
+                goalString += simpleGoalString;
             }
         }
 
@@ -606,12 +606,10 @@ public class DungeonManiaController {
         
         Player player = activeGame.getPlayer();
 
-        Inventory inventory = activeGame.getInventory();
-
         // Use item if appropriate. This does nothing if itemUsed is null or empty.
         // Throws exceptions where appropriate.
         if (itemUsed != null) {
-            player.useItem(inventory.getItemTypeFromId(itemUsed));
+            player.useItem(activeGame.getEntityTypeFromId(itemUsed));
         }
         
         // List<EntityResponse> entityResponses = new ArrayList<EntityResponse>();
@@ -620,7 +618,7 @@ public class DungeonManiaController {
         
 
 
-        if (movementDirection != Direction.NONE) {
+        if (movementDirection != Direction.NONE || movementDirection != null) {
             for (Entity entity: entitiesCopy) {
                 if (entity instanceof Player) {
                     ((Player) entity).move(movementDirection);
