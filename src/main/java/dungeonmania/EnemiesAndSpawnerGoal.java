@@ -29,7 +29,7 @@ public class EnemiesAndSpawnerGoal implements GoalComponent, Observer  {
      */
     @Override
     public void tryToAttach(Subject entity) {
-        if (entity instanceof Enemy && !((Enemy) entity).isAlly()) {
+        if ((entity instanceof Enemy && !((Enemy) entity).isAlly()) || entity instanceof ZombieToastSpawner) {
             entity.attach(this);
             numLiving++;
         }
