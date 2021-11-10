@@ -618,7 +618,7 @@ public class DungeonManiaController {
         
 
 
-        if (movementDirection != Direction.NONE || movementDirection != null) {
+        if (movementDirection != Direction.NONE && movementDirection != null) {
             for (Entity entity: entitiesCopy) {
                 if (entity instanceof Player) {
                     ((Player) entity).move(movementDirection);
