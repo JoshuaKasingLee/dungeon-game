@@ -619,6 +619,14 @@ public class DungeonManiaController {
 
 
         if (movementDirection != Direction.NONE && movementDirection != null) {
+            
+            activeGame.tickCounter();
+            
+            for (Entity entity: entitiesCopy) {
+                if (entity instanceof Enemy) {
+                    ((Enemy) entity).updatePosition();
+                }
+            }
             for (Entity entity: entitiesCopy) {
                 if (entity instanceof Player) {
                     ((Player) entity).move(movementDirection);
@@ -628,17 +636,13 @@ public class DungeonManiaController {
                 
                 // Move character and update boulders accordingly.
             }
-
-            activeGame.tickCounter();
-        
             for (Entity entity: entitiesCopy) {
                 if (entity instanceof StaticEntity) {
                     ((StaticEntity) entity).update(movementDirection);
                 }
-                if (entity instanceof Enemy) {
-                    ((Enemy) entity).updatePosition();
-                }
+
             }
+
         }
         
         for (Entity entity : entities) {
