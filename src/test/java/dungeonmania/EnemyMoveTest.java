@@ -6,6 +6,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 import dungeonmania.util.Position;
+import dungeonmania.util.Direction;
+
+import dungeonmania.response.models.DungeonResponse;
+import dungeonmania.response.models.EntityResponse;
 
 import org.junit.jupiter.api.Test;
 
@@ -265,5 +269,91 @@ public class EnemyMoveTest {
         assertEquals(new Position(5,0), mercenary.getPosition());
         mercenary.updatePosition();
         assertEquals(new Position(5,0), mercenary.getPosition());
+    }
+
+    @Test
+    public void dijkstrasMovement() {
+        // Create a controller
+        DungeonManiaController controller = new DungeonManiaController();
+
+        // Create a new game
+        DungeonResponse dungeonInfo = controller.newGame("advanced-2", "Standard");
+
+        // Get player entity
+        EntityResponse player = null;
+        player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("player")).findFirst().orElse(null);
+
+        // Assert player location is 1,1
+        assertEquals(new Position(1, 1), player.getPosition());
+
+        // Get mercenary entity
+        EntityResponse mercenary = null;
+        mercenary = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("mercenary")).findFirst().orElse(null);
+
+        // Assert mercenary location is 3,5
+        assertEquals(new Position(3, 5), mercenary.getPosition());
+
+        // Move character into wall and position remains the same
+        dungeonInfo = controller.tick(null, Direction.UP);
+        // Assert player location is 1,1
+        player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("player")).findFirst().orElse(null);
+        assertEquals(new Position(1, 1), player.getPosition());
+        // Assert mercenary location updated
+        mercenary = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("mercenary")).findFirst().orElse(null);
+        assertEquals(new Position(2, 5), mercenary.getPosition());
+
+        // Move character into wall and position remains the same
+        dungeonInfo = controller.tick(null, Direction.LEFT);
+        // Assert player location is 1,1
+        player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("player")).findFirst().orElse(null);
+        assertEquals(new Position(1, 1), player.getPosition());
+        // Assert mercenary location updated
+        mercenary = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("mercenary")).findFirst().orElse(null);
+        assertEquals(new Position(1, 5), mercenary.getPosition());
+
+        // Move character into wall and position remains the same
+        dungeonInfo = controller.tick(null, Direction.DOWN);
+        // Assert player location is 0,0
+        player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("player")).findFirst().orElse(null);
+        assertEquals(new Position(1, 2), player.getPosition());
+        // Assert mercenary location updated
+        mercenary = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("mercenary")).findFirst().orElse(null);
+        assertEquals(new Position(1, 4), mercenary.getPosition());
+
+        // Move character into wall and position remains the same
+        dungeonInfo = controller.tick(null, Direction.RIGHT);
+        // Assert player location is 0,0
+        player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("player")).findFirst().orElse(null);
+        assertEquals(new Position(2, 2), player.getPosition());
+        // Assert mercenary location updated
+        mercenary = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("mercenary")).findFirst().orElse(null);
+        assertEquals(new Position(1, 3), mercenary.getPosition());
+        
+        // Move character into wall and position remains the same
+        dungeonInfo = controller.tick(null, Direction.UP);
+        // Assert player location is 0,0
+        player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("player")).findFirst().orElse(null);
+        assertEquals(new Position(2, 1), player.getPosition());
+        // Assert mercenary location updated
+        mercenary = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("mercenary")).findFirst().orElse(null);
+        assertEquals(new Position(1, 2), mercenary.getPosition());
+        
+        // Move character into wall and position remains the same
+        dungeonInfo = controller.tick(null, Direction.RIGHT);
+        // Assert player location is 0,0
+        player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("player")).findFirst().orElse(null);
+        assertEquals(new Position(3, 1), player.getPosition());
+        // Assert mercenary location updated
+        mercenary = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("mercenary")).findFirst().orElse(null);
+        assertEquals(new Position(1, 1), mercenary.getPosition());
+        
+        // Move character into wall and position remains the same
+        dungeonInfo = controller.tick(null, Direction.RIGHT);
+        // Assert player location is 0,0
+        player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("player")).findFirst().orElse(null);
+        assertEquals(new Position(4, 1), player.getPosition());
+        // Assert mercenary location updated
+        mercenary = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("mercenary")).findFirst().orElse(null);
+        assertEquals(new Position(2, 1), mercenary.getPosition());
     }
 }
