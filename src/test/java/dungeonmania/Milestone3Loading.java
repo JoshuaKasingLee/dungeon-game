@@ -22,12 +22,14 @@ public class Milestone3Loading {
     public void testNewEntitiesNewGame() {
         DungeonManiaController controller = new DungeonManiaController();
         DungeonResponse dungeonInfo = controller.newGame("milestone3Entities", "Standard");
+        assertEquals(true, dungeonInfo.getEntities().stream().anyMatch(x -> x.getType().equals("assassin")));
         assertEquals(true, dungeonInfo.getEntities().stream().anyMatch(x -> x.getType().equals("hydra")));
         assertEquals(true, dungeonInfo.getEntities().stream().anyMatch(x -> x.getType().equals("sun_stone")));
         assertEquals(true, dungeonInfo.getEntities().stream().anyMatch(x -> x.getType().equals("anduril")));
 
         assertDoesNotThrow(() -> controller.saveGame("testingNewEntities"));
         dungeonInfo = controller.loadGame("testingNewEntities");
+        assertEquals(true, dungeonInfo.getEntities().stream().anyMatch(x -> x.getType().equals("assassin")));
         assertEquals(true, dungeonInfo.getEntities().stream().anyMatch(x -> x.getType().equals("hydra")));
         assertEquals(true, dungeonInfo.getEntities().stream().anyMatch(x -> x.getType().equals("sun_stone")));
         assertEquals(true, dungeonInfo.getEntities().stream().anyMatch(x -> x.getType().equals("anduril")));
