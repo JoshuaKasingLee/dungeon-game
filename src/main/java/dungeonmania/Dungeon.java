@@ -199,7 +199,7 @@ public class Dungeon {
     }
 
 
-    public void RandomizedPrims(int width, int height, Position start, Position end) {
+    public void randomizedPrims(int width, int height, Position start, Position end) {
         boolean[][] mazeMap = new boolean[height][width];
         for (boolean[] row : mazeMap) {
             Arrays.fill(row, false);
@@ -212,13 +212,13 @@ public class Dungeon {
         List<Position> options = new ArrayList<>();
         options = primAdjacentPositions(start, mazeMap, false, 2);
 
-        int randomInt = (int)Math.random()*(options.size());
         while (!options.isEmpty()) {
+            int randomInt = (int)(Math.random()*(options.size()));
             Position next = options.get(randomInt);
             options.remove(randomInt);
             List<Position> neighbours = primAdjacentPositions(next, mazeMap, true, 2);
             if (!neighbours.isEmpty()) {
-                randomInt = (int)Math.random()*(neighbours.size());
+                randomInt = (int)(Math.random()*(neighbours.size()));
                 Position neighbour = neighbours.get(randomInt);
                 mazeMap[next.getY()][next.getX()] = true;
                 Position inBetween = getInBetween(next, neighbour);
@@ -226,7 +226,9 @@ public class Dungeon {
             }
             List<Position> newNeighbours = primAdjacentPositions(next, mazeMap, false, 2);
             for (Position n : newNeighbours) {
-                options.add(n);
+                if (!options.contains(n)) {
+                    options.add(n);
+                }
             }
         }
         
@@ -237,15 +239,16 @@ public class Dungeon {
             List<Position> endNeighboursEmpty = primAdjacentPositions(end, mazeMap, true, 1);
             List<Position> endNeighboursWalls = primAdjacentPositions(end, mazeMap, false, 1);
             if (endNeighboursEmpty.isEmpty()) {
-                randomInt = (int)Math.random()*(endNeighboursEmpty.size());
+                int randomInt = (int)(Math.random()*(endNeighboursWalls.size()));
                 Position neighbour = endNeighboursWalls.get(randomInt);
                 mazeMap[neighbour.getY()][neighbour.getX()] = true;
             }
 
         }
         
-        setOverallGoal(new ExitGoal());
-        addSimpleGoals(new ExitGoal());
+        GoalComponent exit = new ExitGoal();
+        setOverallGoal(exit);
+        addSimpleGoals(exit);
 
         // now to make it all into active game.
         extractPrimMaze(mazeMap, start, end);
@@ -264,22 +267,25 @@ public class Dungeon {
         List<Position> primAdjPositions = new ArrayList<Position>();
         int currX = pos.getX();
         int currY = pos.getY();
-        for (int row = currX - distance; row <= currX + distance; row += distance) {
-            for (int column = currY - distance; column <= currY + distance; column += distance) {
-                if (mazeMap[row][column] == empty && !PosOnMapBoundary(row, column, mazeMap) && notSamePos(currX, column, currY, row)) {
-                    primAdjPositions.add(new Position(column, row));
-                }
+
+
+
+        int[] xChange = {-distance, distance, 0, 0};
+        int[] yChange = {0, 0, -distance, distance};
+
+        for (int i = 0; i < 4; i++) {
+            int newX = currX + xChange[i];
+            int newY = currY + yChange[i];
+            if (!posPastMapBoundary(newY, newX, mazeMap) && mazeMap[newY][newX] == empty) {
+                primAdjPositions.add(new Position(newX, newY));
             }
         }
         return primAdjPositions;
     }
 
-    private static boolean notSamePos(int x1, int x2, int y1, int y2) {
-        return (x1 != x2 || y1 != y2);
-    }
 
-    private static boolean PosOnMapBoundary(int currY, int currX, boolean[][] mazeMap) {
-        return (currX == 0 || currX == mazeMap.length - 1 || currY == 0 || currY == mazeMap.length - 1);
+    private static boolean posPastMapBoundary(int currY, int currX, boolean[][] mazeMap) {
+        return (currX <= 0 || currX >= mazeMap.length - 1 || currY <= 0 || currY >= mazeMap.length - 1);
     }
 
 

@@ -233,7 +233,7 @@ public class DungeonManiaController {
 
         String dungeonId = newDungeonId();
         activeGame = new Dungeon("PrimsMaze", gameMode, dungeonId);
-        activeGame.RandomizedPrims(50, 50, new Position(xStart, yStart), new Position(xEnd, yEnd));
+        activeGame.randomizedPrims(50, 50, new Position(xStart, yStart), new Position(xEnd, yEnd));
 
         return createDungeonResponse();
     }
