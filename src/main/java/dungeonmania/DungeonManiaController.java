@@ -511,6 +511,25 @@ public class DungeonManiaController {
                     durability = entityList.getJSONObject(i).getInt("totalArmour");
                     boolean isAlly = entityList.getJSONObject(i).getBoolean("ally");
                     currEntity = new Mercenary(currPosition, activeGame, durability, isAlly);
+                    
+                    Mercenary mercenary = (Mercenary)currEntity;
+                    String mercState = entityList.getJSONObject(i).getString("mercState");
+
+                    if (mercState.equals("MercControlled")) {
+                        mercenary.setMercenaryState(new MercControlledState(mercenary, entityList.getJSONObject(i).getInt("timeLeft")));
+                    }
+                    break;
+                case "assassin":
+                    durability = entityList.getJSONObject(i).getInt("totalArmour");
+                    isAlly = entityList.getJSONObject(i).getBoolean("ally");
+                    currEntity = new Mercenary(currPosition, activeGame, durability, isAlly);
+                    
+                    Assassin assassin = (Assassin)currEntity;
+                    String assState = entityList.getJSONObject(i).getString("mercState");
+
+                    if (assState.equals("MercControlled")) {
+                        assassin.setMercenaryState(new MercControlledState(assassin, entityList.getJSONObject(i).getInt("timeLeft")));
+                    }
                     break;
                 case "treasure":
                     currEntity = new Treasure(currPosition, activeGame);
@@ -543,6 +562,13 @@ public class DungeonManiaController {
                 case "player":
                     currEntity = new Player(currPosition, activeGame, entityList.getJSONObject(i).getInt("health"),entityList.getJSONObject(i).getBoolean("teleported"));
                     // TODO: Load in player state
+                    Player player = (Player)currEntity;
+                    String characterState = entityList.getJSONObject(i).getString("characterState");
+                    if (characterState.equals("Invincible")) {
+                        player.setCharacterState(new InvincibleState(player, entityList.getJSONObject(i).getInt("timeLeft")));
+                    } else if (characterState.equals("Invisible")) {
+                        player.setCharacterState(new InvisibleState(player, entityList.getJSONObject(i).getInt("timeLeft")));
+                    }
                     break;
             }
             currEntity.setId(entityList.getJSONObject(i).getString("entityId"));
