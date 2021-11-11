@@ -112,7 +112,6 @@ public class DungeonManiaControllerTest {
 
         assertDoesNotThrow(() -> controller.newGame("boulders", "Peaceful"));
         assertDoesNotThrow(() -> controller.saveGame("boulders2"));
-        assertDoesNotThrow(() -> controller.loadGame("boulders2"));
         DungeonResponse dungeonInfo = controller.loadGame("boulders2");
         assertEquals("boulders", dungeonInfo.getDungeonName());
         assertEquals(new ArrayList<ItemResponse>(), dungeonInfo.getInventory());
@@ -128,15 +127,24 @@ public class DungeonManiaControllerTest {
         DungeonManiaController controller = new DungeonManiaController();
         assertDoesNotThrow(() -> controller.newGame("exit", "Standard"));
 
-        assertThrows(IllegalArgumentException.class, () -> controller.tick("random", null));
+        assertThrows(IllegalArgumentException.class, () -> controller.tick("random", Direction.UP));
     }
 
     @Test
     public void testTickItemNotInInventory() {
         DungeonManiaController controller = new DungeonManiaController();
-        assertDoesNotThrow(() -> controller.newGame("exit", "Standard"));
+        assertDoesNotThrow(() -> controller.newGame("potionUsed", "Standard"));
+        List<Entity> entities = controller.getActiveGame().getEntities(); 
+        String potionId = null;
+        for (Entity entity: entities) {
+            if (entity instanceof InvincibilityPotion) {
+                potionId = entity.getId();
+            }
+        }
 
-        assertThrows(InvalidActionException.class, () -> controller.tick("invincibility_potion", null));
+        final String unusableItem = potionId;
+
+        assertThrows(InvalidActionException.class, () -> controller.tick(unusableItem, null));
     }
 
     @Test
@@ -273,7 +281,9 @@ public class DungeonManiaControllerTest {
         DungeonResponse dungeonInfo = controller.tick(null, Direction.DOWN);
         EntityResponse player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("player")).findFirst().orElse(null);
         assertEquals(new Position(1,2), player.getPosition());
-        assertDoesNotThrow(() -> controller.tick("invincibility_potion", null));
+
+        ItemResponse invincibilityPotion = dungeonInfo.getInventory().stream().filter(n -> n.getType().equals("invincibility_potion")).findFirst().orElse(null);
+        assertDoesNotThrow(() -> controller.tick(invincibilityPotion.getId(), null));
     }
 
     @Test
@@ -291,9 +301,11 @@ public class DungeonManiaControllerTest {
         assertDoesNotThrow(() -> controller.saveGame("differentEntitiesSaveTester"));
         assertDoesNotThrow(() -> controller.loadGame("differentEntitiesSaveTester"));
         assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
-        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
-        assertDoesNotThrow(() -> controller.saveGame("differentEntitiesSaveTester"));
-        assertDoesNotThrow(() -> controller.tick("invincibility_potion", null));
+        // assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        DungeonResponse dungeonInfo = controller.tick(null, Direction.DOWN);
+        ItemResponse invincibilityPotion = dungeonInfo.getInventory().stream().filter(n -> n.getType().equals("invincibility_potion")).findFirst().orElse(null);
+
+        assertDoesNotThrow(() -> controller.tick(invincibilityPotion.getId(), null));
         assertDoesNotThrow(() -> controller.loadGame("differentEntitiesSaveTester"));
 
     }
@@ -378,7 +390,173 @@ public class DungeonManiaControllerTest {
             assertTrue(!("zombie").equals(entityResponse.getType()));
         }
     }
+
+
+    // bug fixing after milestone 2 below
     
+    @Test
+    public void testSpiderSpawn() {
+        DungeonManiaController controller = new DungeonManiaController();
+        assertDoesNotThrow(() -> controller.newGame("boulders", "Hard"));
+        assertDoesNotThrow(() -> controller.saveGame("testingSpiders"));
+        assertDoesNotThrow(() -> controller.loadGame("testingSpiders"));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        DungeonResponse dungeonInfo =  controller.tick(null, Direction.DOWN);
+        List<EntityResponse> entities = dungeonInfo.getEntities();
+        assertEquals(true, entities.stream().anyMatch(x -> x.getType().equals("spider")));
+        
+        
+
+
+    }
+
+    @Test
+    public void testKeepDoorOpen() {
+        DungeonManiaController controller = new DungeonManiaController();
+        assertDoesNotThrow(() -> controller.newGame("doors", "Hard"));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.RIGHT));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.UP));
+
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.RIGHT));
+
+        
+        Player player = controller.getActiveGame().getPlayer();
+        assertEquals(new Position(3, 2), player.getPosition());
+            
+
+        
+        assertDoesNotThrow(() -> controller.tick(null, Direction.RIGHT));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.LEFT));
+
+        assertEquals(new Position(3, 2), player.getPosition());
+    }
+
+    @Test
+    public void testTwoKeyPickup() {
+        DungeonManiaController controller = new DungeonManiaController();
+        assertDoesNotThrow(() -> controller.newGame("doors", "peaceful"));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.RIGHT));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.UP));
+
+        DungeonResponse dungeonInfo = controller.tick(null, Direction.DOWN);
+        List<ItemResponse> inventory = dungeonInfo.getInventory();
+        assertEquals(true, inventory.stream().anyMatch(x -> x.getType().equals("key")));
+        String keyId = null;
+
+        for (ItemResponse item : inventory) {
+            if (item.getType().equals("key")) {
+                keyId = item.getId();
+            }
+        }
+        
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+
+        dungeonInfo = controller.tick(null, Direction.DOWN);
+        inventory = dungeonInfo.getInventory();
+        assertEquals(true, inventory.stream().anyMatch(x -> x.getType().equals("key")));
+
+        int countKeys = 0;
+        for (ItemResponse item : inventory) {
+            if (item.getType().equals("key")) {
+                assertEquals(keyId, item.getId());
+                countKeys++;
+            }
+        }
+
+        assertEquals(1, countKeys);
+
+    }
+
+
+    @Test
+    public void testOrGoalString() {
+        DungeonManiaController controller = new DungeonManiaController();
+        DungeonResponse dungeonInfo = controller.newGame("orGoalTester", "standard");
+        assertDoesNotThrow(() -> controller.tick(null, Direction.RIGHT));
+
+        assertEquals(":treasure :exit ", dungeonInfo.getGoals());
+        
+    }
+
+    @Test
+    public void testDroppingBomb() {
+        DungeonManiaController controller = new DungeonManiaController();
+        DungeonResponse dungeonInfo = controller.newGame("bombs", "standard");
+        assertEquals(false, dungeonInfo.getInventory().stream().anyMatch(x -> x.getType().equals("bomb")));
+ 
+        
+        dungeonInfo = controller.tick(null, Direction.RIGHT);
+        ItemResponse bomb = dungeonInfo.getInventory().stream().filter(n -> n.getType().equals("bomb")).findFirst().orElse(null);
+        String bombId = bomb.getId();
+        
+        dungeonInfo = controller.tick(bombId, null);
+
+        controller.getActiveGame().getEntities();
+
+        assertEquals(false, dungeonInfo.getInventory().stream().anyMatch(x -> x.getType().equals("bomb")));
+
+        assertDoesNotThrow(() -> controller.tick(null, Direction.RIGHT)); 
+        dungeonInfo = controller.tick(null, Direction.LEFT); 
+        assertEquals(true, dungeonInfo.getInventory().stream().anyMatch(x -> x.getType().equals("bomb")));
+        dungeonInfo = controller.tick(bombId, null);
+        assertEquals(false, dungeonInfo.getInventory().stream().anyMatch(x -> x.getType().equals("bomb")));
+    }
+
+    @Test
+    public void testZombiesAndSpidersSpawnedStandard() {
+        DungeonManiaController controller = new DungeonManiaController();
+        DungeonResponse dungeonInfo = controller.newGame("spawnerinteract", "standard");
+        assertEquals(false, dungeonInfo.getEntities().stream().anyMatch(x -> x.getType().equals("spider")));
+        assertEquals(false, dungeonInfo.getEntities().stream().anyMatch(x -> x.getType().equals("zombie_toast")));
+
+
+        for (int i = 0; i < 19; i++) {
+            assertDoesNotThrow(() -> controller.tick(null, Direction.RIGHT)); 
+        }
+        dungeonInfo = controller.tick(null, Direction.RIGHT);
+        assertEquals(true, dungeonInfo.getEntities().stream().anyMatch(x -> x.getType().equals("spider")));
+        assertEquals(true, dungeonInfo.getEntities().stream().anyMatch(x -> x.getType().equals("zombie_toast")));
+
+
+    }
+
+    @Test
+    public void testZombiesAndSpidersSpawnedHard() {
+        DungeonManiaController controller = new DungeonManiaController();
+        DungeonResponse dungeonInfo = controller.newGame("spawnerinteract", "hard");
+        assertEquals(false, dungeonInfo.getEntities().stream().anyMatch(x -> x.getType().equals("spider")));
+        assertEquals(false, dungeonInfo.getEntities().stream().anyMatch(x -> x.getType().equals("zombie_toast")));
+
+
+        for (int i = 0; i < 14; i++) {
+            assertDoesNotThrow(() -> controller.tick(null, Direction.RIGHT)); 
+        }
+        dungeonInfo = controller.tick(null, Direction.RIGHT);
+        assertEquals(true, dungeonInfo.getEntities().stream().anyMatch(x -> x.getType().equals("spider")));
+        assertEquals(true, dungeonInfo.getEntities().stream().anyMatch(x -> x.getType().equals("zombie_toast")));
+
+
+    }
 
 
 }

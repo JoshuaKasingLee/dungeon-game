@@ -28,6 +28,7 @@
             "entityId": "2"
         }
     ],
+    "counter": 0,
     "gamemode": "Standard",
     "dungeonId": "0"
 }

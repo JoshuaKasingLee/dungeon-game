@@ -7,9 +7,9 @@ import org.json.JSONObject;
 
 public class ExitGoal implements GoalComponent, Observer  {
 
-    private boolean onExit; 
+    private HashMap<String,Boolean> onExits; 
     public ExitGoal() {
-        onExit = false;
+        onExits = new HashMap<String, Boolean>();
     }
     
     /** 
@@ -18,7 +18,7 @@ public class ExitGoal implements GoalComponent, Observer  {
      */
     @Override
     public boolean isComplete() {
-        return onExit;
+        return onExits.containsValue(true);
     }
 
     
@@ -29,8 +29,10 @@ public class ExitGoal implements GoalComponent, Observer  {
     @Override
     public void tryToAttach(Subject entity) {
 
+
         if (entity instanceof Exit) {
-            
+            Exit exit = (Exit) entity;
+            onExits.put(exit.getId(), false);
             entity.attach(this);
         }
     }
@@ -43,10 +45,11 @@ public class ExitGoal implements GoalComponent, Observer  {
     @Override
     public void update(Subject entity) {
         Exit currExit = (Exit) entity;
+        String exitId = currExit.getId();
         if (currExit.hasPlayer()) {
-            onExit = true;
+            onExits.put(exitId, true);
         } else {
-            onExit = false;
+            onExits.put(exitId, false);
         }
     }
 

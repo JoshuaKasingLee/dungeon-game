@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.lang.Math;
 
+import java.util.Random;
+
 public class Dungeon {
 
     private String dungeonName;
@@ -17,25 +19,84 @@ public class Dungeon {
     private Inventory inventory = new Inventory();    // subject to change name or class to entity
     private List<GoalComponent> simpleGoals = new ArrayList<GoalComponent>();
     private GoalComponent overallGoal;
+    private int counter;
 
     public Dungeon(String dungeonName, String gamemodeString, String dungeonId) {
         this.dungeonName = dungeonName;
         initialiseGameMode(gamemodeString); 
         this.dungeonId = dungeonId;
+        this.counter = 0;
     }
 
+    public String getEntityTypeFromId(String id) {
+        for (Entity entity : entities) {
+            if (entity.getId().equals(id)) {
+                return entity.getType();
+            }
+        }
+        List<Item> items = inventory.getInventoryList();
+        for (Item item : items) {
+            if (item.getId().equals(id)) {
+                return item.getType();
+            }
+        }
+
+        throw new IllegalArgumentException("Not a valid id!");
+    }
+
+    
+
+    public void tickCounter() {
+        counter++;
+        spiderSpawn();
+    }
+
+    public void spiderSpawn() {
+        if (getSpawnTimer() == 0) {
+            return;
+        } 
+
+        if (countSpiders() >= 5) {
+            return;
+        }
+                
+        if (counter % getSpawnTimer() == 0) {
+            Position randPos = randomSpiderPosition();
+            while (getEntities(randPos).stream().anyMatch(x -> x.getType().equals("boulder"))) {
+                randPos = randomSpiderPosition();
+            }
+            new Spider(randPos, this);
+        }
+    }
+
+    public Position randomSpiderPosition() {
+        Random number = new Random();
+        int bound = 20;
+        int xRandom = number.nextInt(bound);
+        int yRandom = number.nextInt(bound);
+        Position randPos = new Position(xRandom, yRandom);
+        return randPos;
+    }
+
+    public long countSpiders() {
+        return entities.stream().filter(x -> x instanceof Spider).count();
+    }
+
+    public int getSpawnTimer() {
+        return getGamemode().getSpawnTimer();
+    }
     
     /** 
      * @param gamemodeString
      */
     public void initialiseGameMode(String gamemodeString) {
-        if (gamemodeString.equals("Peaceful")) {
+        if (gamemodeString.equals("Peaceful") || gamemodeString.equals("peaceful")) {
             gamemode = new Peaceful();
         }
-        else if (gamemodeString.equals("Standard")) {
+        else if (gamemodeString.equals("Standard") || gamemodeString.equals("standard")) {
             gamemode = new Standard();
         }
-        else if (gamemodeString.equals("Hard")) {
+        else if (gamemodeString.equals("Hard") || gamemodeString.equals("hard")) {
             gamemode = new Hard();
         }
     }
@@ -348,6 +409,21 @@ public class Dungeon {
      */
     public void setOverallGoal(GoalComponent overallGoal) {
         this.overallGoal = overallGoal;
+    }
+
+
+    /**
+     * @return int return the counter
+     */
+    public int getCounter() {
+        return counter;
+    }
+
+    /**
+     * @param counter the counter to set
+     */
+    public void setCounter(int counter) {
+        this.counter = counter;
     }
 
 }

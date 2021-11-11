@@ -65,7 +65,7 @@ public class DungeonManiaController {
      * @return List<String>
      */
     public List<String> getGameModes() {
-        return Arrays.asList("Standard", "Peaceful", "Hard");
+        return Arrays.asList("Standard", "Peaceful", "Hard", "standard","peaceful","hard");
     }
 
     /**
@@ -126,7 +126,7 @@ public class DungeonManiaController {
         for (GoalComponent simpleGoal : activeGame.getSimpleGoals()) {
             String simpleGoalString = simpleGoal.simpleGoalToString();
             if (!goalString.contains(simpleGoalString)) {
-                goalString += simpleGoal.simpleGoalToString();
+                goalString += simpleGoalString;
             }
         }
 
@@ -298,9 +298,9 @@ public class DungeonManiaController {
                         entityData.put("timeLeft", ((InvisibleState)characterState).getTimeLeft());
                     }
                     break;
-                case "zombie_toast_spawner":
-                    entityData.put("counter", ((ZombieToastSpawner)currEntity).getCounter());
-                    break;
+                // case "zombie_toast_spawner":
+                //     entityData.put("counter", ((ZombieToastSpawner)currEntity).getCounter());
+                //     break;
                 case "spider":
                     entityData.put("startingPositionx", ((Spider)currEntity).getStartingPosition().getX());
                     entityData.put("startingPositiony", ((Spider)currEntity).getStartingPosition().getY());
@@ -365,6 +365,7 @@ public class DungeonManiaController {
         String dungeonName = activeGame.getDungeonName();
         dungeonMap.put("dungeonId", dungeonId);
         dungeonMap.put("dungeonName", dungeonName);
+        dungeonMap.put("counter", activeGame.getCounter());
 
         JSONObject dungeonJSON = new JSONObject(dungeonMap);
 
@@ -391,6 +392,9 @@ public class DungeonManiaController {
         }
 
         List<String> buildables = activeGame.getInventory().getBuildables();
+
+        
+
         return new DungeonResponse(dungeonId, dungeonName, entityResponses, itemResponses, buildables, goalString);
     }
 
@@ -418,8 +422,10 @@ public class DungeonManiaController {
         String dungeonName = dungeonObj.getString("dungeonName");
         String dungeonId = dungeonObj.getString("dungeonId");
         String dungeonMode = dungeonObj.getString("gamemode");
+        int counter = dungeonObj.getInt("counter");
 
         activeGame = new Dungeon(dungeonName, dungeonMode, dungeonId);
+        activeGame.setCounter(counter);
 
         JSONObject goalCondition = dungeonObj.getJSONObject("goal-condition");
         GoalComponent overallGoal = extractAllGoals(goalCondition, activeGame);
@@ -468,7 +474,7 @@ public class DungeonManiaController {
                     currEntity = new Portal(currPosition, activeGame, colour);
                     break;
                 case "zombie_toast_spawner":
-                    currEntity = new ZombieToastSpawner(currPosition, activeGame, entityList.getJSONObject(i).getInt("counter"));
+                    currEntity = new ZombieToastSpawner(currPosition, activeGame);
                     break;
                 case "one_ring":
                     currEntity = new OneRing(currPosition, activeGame);
@@ -616,70 +622,75 @@ public class DungeonManiaController {
         // Use item if appropriate. This does nothing if itemUsed is null or empty.
         // Throws exceptions where appropriate.
         if (itemUsed != null) {
-            player.useItem(itemUsed);
+            player.useItem(activeGame.getEntityTypeFromId(itemUsed));
         }
         
-        List<EntityResponse> entityResponses = new ArrayList<EntityResponse>();
+        // List<EntityResponse> entityResponses = new ArrayList<EntityResponse>();
         List<Entity> entities = activeGame.getEntities();
         List<Entity> entitiesCopy = new ArrayList<>(entities);
         
 
 
-
-        for (Entity entity: entitiesCopy) {
-            if (movementDirection != null) {
+        if (movementDirection != Direction.NONE && movementDirection != null) {
+            
+            activeGame.tickCounter();
+            
+            for (Entity entity: entitiesCopy) {
+                if (entity instanceof Enemy) {
+                    ((Enemy) entity).updatePosition();
+                }
+            }
+            for (Entity entity: entitiesCopy) {
                 if (entity instanceof Player) {
                     ((Player) entity).move(movementDirection);
                     // move(movementDirection);
                 } 
+                // Move all enemies
+                
+                // Move character and update boulders accordingly.
             }
-            // Move all enemies
-            
-            // Move character and update boulders accordingly.
-        }
-    
-        for (Entity entity: entitiesCopy) {
-            if (entity instanceof Enemy) {
-                ((Enemy) entity).updatePosition();
-            }
-            if (movementDirection != null) {
+            for (Entity entity: entitiesCopy) {
                 if (entity instanceof StaticEntity) {
                     ((StaticEntity) entity).update(movementDirection);
                 }
+
             }
+
         }
         
         for (Entity entity : entities) {
             if (entity instanceof Exit || entity instanceof Switch) {
                 entity.notifyObservers();
             }
-            entityResponses.add(new EntityResponse(entity.getId(), entity.getType(), entity.getPosition(), entity.isInteractable()));
+            // entityResponses.add(new EntityResponse(entity.getId(), entity.getType(), entity.getPosition(), entity.isInteractable()));
         }
 
-        List<Item> items = activeGame.getInventory().getInventoryList();        
-        List<ItemResponse> itemResponses = new ArrayList<ItemResponse>();
-        for (Item item : items) {
-            itemResponses.add(new ItemResponse(item.getId(), item.getType()));
-        }
+        return createDungeonResponse();
+
+        // List<Item> items = activeGame.getInventory().getInventoryList();        
+        // List<ItemResponse> itemResponses = new ArrayList<ItemResponse>();
+        // for (Item item : items) {
+        //     // itemResponses.add(new ItemResponse(item.getId(), item.getType()));
+        // }
 
 
-        String goalString = "";
+        // String goalString = "";
 
-        for (GoalComponent simpleGoal : activeGame.getSimpleGoals()) {
-            String simpleGoalString = simpleGoal.simpleGoalToString();
-            if (!goalString.contains(simpleGoalString) && !simpleGoal.isComplete()) {
-                goalString += simpleGoal.simpleGoalToString();
-            }
-        }
+        // for (GoalComponent simpleGoal : activeGame.getSimpleGoals()) {
+        //     String simpleGoalString = simpleGoal.simpleGoalToString();
+        //     if (!goalString.contains(simpleGoalString) && !simpleGoal.isComplete()) {
+        //         goalString += simpleGoal.simpleGoalToString();
+        //     }
+        // }
 
-        if (activeGame.getOverallGoal().isComplete()) {
-            goalString = "";
-        }
+        // if (activeGame.getOverallGoal().isComplete()) {
+        //     goalString = "";
+        // }
 
         
 
-        List<String> buildables = activeGame.getInventory().getBuildables();
-        return new DungeonResponse(activeGame.getDungeonId(), activeGame.getDungeonName(), entityResponses, itemResponses, buildables, goalString);
+        // List<String> buildables = activeGame.getInventory().getBuildables();
+        // return new DungeonResponse(activeGame.getDungeonId(), activeGame.getDungeonName(), entityResponses, itemResponses, buildables, goalString);
     }
 
     
@@ -716,14 +727,15 @@ public class DungeonManiaController {
             throw new IllegalArgumentException("Entity Id is not valid.");
         }
 
-        String dungeonId = activeGame.getDungeonId();
-        String dungeonName = activeGame.getDungeonName();
-        List<EntityResponse> entityResponses = createEntityResponseList();
-        List<ItemResponse> itemResponses = createItemResponseList();
-        List<String> buildables = createBuildableList();
-        String goalString = createGoalString();
+        return createDungeonResponse();
+        // String dungeonId = activeGame.getDungeonId();
+        // String dungeonName = activeGame.getDungeonName();
+        // List<EntityResponse> entityResponses = createEntityResponseList();
+        // List<ItemResponse> itemResponses = createItemResponseList();
+        // List<String> buildables = createBuildableList();
+        // String goalString = createGoalString();
 
-        return new DungeonResponse(dungeonId, dungeonName, entityResponses, itemResponses, buildables, goalString);
+        // return new DungeonResponse(dungeonId, dungeonName, entityResponses, itemResponses, buildables, goalString);
     }
 
     
@@ -748,14 +760,15 @@ public class DungeonManiaController {
             inventory.craftShield(player);
         }
 
-        String dungeonId = activeGame.getDungeonId();
-        String dungeonName = activeGame.getDungeonName();
-        List<EntityResponse> entityResponses = createEntityResponseList();
-        List<ItemResponse> itemResponses = createItemResponseList();
-        List<String> buildables = createBuildableList();
-        String goalString = createGoalString();
+        return createDungeonResponse();
+        // String dungeonId = activeGame.getDungeonId();
+        // String dungeonName = activeGame.getDungeonName();
+        // List<EntityResponse> entityResponses = createEntityResponseList();
+        // List<ItemResponse> itemResponses = createItemResponseList();
+        // List<String> buildables = createBuildableList();
+        // String goalString = createGoalString();
 
-        return new DungeonResponse(dungeonId, dungeonName, entityResponses, itemResponses, buildables, goalString);
+        // return new DungeonResponse(dungeonId, dungeonName, entityResponses, itemResponses, buildables, goalString);
     }
 
 
@@ -824,6 +837,18 @@ public class DungeonManiaController {
         return overallGoal;
     }
 
+    public DungeonResponse createDungeonResponse() {
+        String dungeonId = activeGame.getDungeonId();
+        String dungeonName = activeGame.getDungeonName();
+        List<EntityResponse> entityResponses = createEntityResponseList();
+        List<ItemResponse> itemResponses = createItemResponseList();
+        List<String> buildables = createBuildableList();
+        String goalString = createGoalString();
+
+        return new DungeonResponse(dungeonId, dungeonName, entityResponses, itemResponses, buildables, goalString);
+    }
+
+
     
     /** 
      * creates list of entity responses
@@ -865,7 +890,11 @@ public class DungeonManiaController {
                 goalString += simpleGoal.simpleGoalToString();
             }
         }
+        if (activeGame.getOverallGoal().isComplete()) {
+            goalString = "";
+        }
         return goalString;
+
     }
 
     
