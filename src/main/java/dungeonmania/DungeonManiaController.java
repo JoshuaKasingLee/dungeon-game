@@ -122,18 +122,18 @@ public class DungeonManiaController {
         GoalComponent overallGoal = extractAllGoals(goalCondition, activeGame);
         activeGame.setOverallGoal(overallGoal); 
         
-        String goalString = "";
-        for (GoalComponent simpleGoal : activeGame.getSimpleGoals()) {
-            String simpleGoalString = simpleGoal.simpleGoalToString();
-            if (!goalString.contains(simpleGoalString)) {
-                goalString += simpleGoalString;
-            }
-        }
+        // String goalString = "";
+        // for (GoalComponent simpleGoal : activeGame.getSimpleGoals()) {
+        //     String simpleGoalString = simpleGoal.simpleGoalToString();
+        //     if (!goalString.contains(simpleGoalString)) {
+        //         goalString += simpleGoalString;
+        //     }
+        // }
 
         JSONArray entityList = dungeonObj.getJSONArray("entities");
         
         // Create a list of EntityResponse
-        List<EntityResponse> entityResponses = new ArrayList<EntityResponse>();
+        // List<EntityResponse> entityResponses = new ArrayList<EntityResponse>();
         
         for (int i = 0; i < entityList.length(); i++) {
             String entityType = entityList.getJSONObject(i).getString("type");
@@ -143,86 +143,100 @@ public class DungeonManiaController {
 
             // Create entities based on type in JSON File using a bunch of if statements
             //create entity object and add it into activegame
-            Entity currEntity = null;
+            // Entity currEntity = null;
             int key;
             String colour;
 
             switch (entityType) {
                 case "wall":
-                    currEntity = new Wall(currPosition, activeGame);  
+                    new Wall(currPosition, activeGame);  
                     break;
                 case "exit":
-                    currEntity = new Exit(currPosition, activeGame);
+                    new Exit(currPosition, activeGame);
                     break;
                 case "boulder":
-                    currEntity = new Boulder(currPosition, activeGame);
+                    new Boulder(currPosition, activeGame);
                     break;
                 case "switch":
-                    currEntity = new Switch(currPosition, activeGame);
+                    new Switch(currPosition, activeGame);
                     break;
                 case "door":
                     key = entityList.getJSONObject(i).getInt("key");
-                    currEntity = new Door(currPosition, activeGame, key);
+                    new Door(currPosition, activeGame, key);
                     break;
                 case "portal":
                     colour = entityList.getJSONObject(i).getString("colour");
-                    currEntity = new Portal(currPosition, activeGame, colour);
+                    new Portal(currPosition, activeGame, colour);
                     break;
                 case "zombie_toast_spawner":
-                    currEntity = new ZombieToastSpawner(currPosition, activeGame);
+                    new ZombieToastSpawner(currPosition, activeGame);
                     break;
                 case "one_ring":
-                    currEntity = new OneRing(currPosition, activeGame);
+                    new OneRing(currPosition, activeGame);
                     break;
                 case "spider":
-                    currEntity = new Spider(currPosition, activeGame);
+                    new Spider(currPosition, activeGame);
                     break;
                 case "zombie_toast":
-                    currEntity = new ZombieToast(currPosition, activeGame);
+                    new ZombieToast(currPosition, activeGame);
                     break;
                 case "mercenary":
-                    currEntity = new Mercenary(currPosition, activeGame);
+                    new Mercenary(currPosition, activeGame);
                     break;
                 case "treasure":
-                    currEntity = new Treasure(currPosition, activeGame);
+                    new Treasure(currPosition, activeGame);
                     break;
                 case "key":
                     key = entityList.getJSONObject(i).getInt("key");
-                    currEntity = new Key(currPosition, activeGame, key);
+                    new Key(currPosition, activeGame, key);
                     break;
                 case "health_potion":
-                    currEntity = new HealthPotion(currPosition, activeGame);
+                    new HealthPotion(currPosition, activeGame);
                     break;
                 case "invincibility_potion":
-                    currEntity = new InvincibilityPotion(currPosition, activeGame);
+                    new InvincibilityPotion(currPosition, activeGame);
                     break;
                 case "invisibility_potion":
-                    currEntity = new InvisibilityPotion(currPosition, activeGame);
+                    new InvisibilityPotion(currPosition, activeGame);
                     break;
                 case "wood":
-                    currEntity = new Wood(currPosition, activeGame);
+                    new Wood(currPosition, activeGame);
                     break;
                 case "arrow":
-                    currEntity = new Arrow(currPosition, activeGame); 
+                    new Arrow(currPosition, activeGame); 
                     break;
                 case "bomb":
-                    currEntity = new Bomb(currPosition, activeGame);
+                    new Bomb(currPosition, activeGame);
                     break;
                 case "sword":
-                    currEntity = new Sword(currPosition, activeGame);
+                    new Sword(currPosition, activeGame);
                     break;
                 case "player":
-                    currEntity = new Player(currPosition, activeGame);
+                    new Player(currPosition, activeGame);
                     break;
+                case "assassin":
+                    new Assassin(currPosition, activeGame);
+                    break;
+                case "hydra":
+                    new Hydra(currPosition, activeGame);
+                    break;
+                case "sun_stone":
+                    new SunStone(currPosition, activeGame);
+                    break;
+                case "anduril":
+                    new Anduril(currPosition, activeGame);
+                    break;
+
+                //TODO: Add in swamp_tile!!!
             }
 
-            entityResponses.add(new EntityResponse(currEntity.getId(), currEntity.getType(), currEntity.getPosition(), currEntity.isInteractable()));
+            // entityResponses.add(new EntityResponse(currEntity.getId(), currEntity.getType(), currEntity.getPosition(), currEntity.isInteractable()));
 
         }
 
+        return createDungeonResponse();
         
-        
-        return new DungeonResponse(dungeonId, dungeonName, entityResponses, new ArrayList<ItemResponse>(), new ArrayList<String>(), goalString);
+        // return new DungeonResponse(dungeonId, dungeonName, entityResponses, new ArrayList<ItemResponse>(), new ArrayList<String>(), goalString);
     }
     
     
