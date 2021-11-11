@@ -12,6 +12,10 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -395,10 +399,17 @@ public class DungeonManiaController {
 
         String dungeonSave = dungeonJSON.toString();
 
+        
         try {
-            PrintWriter fileLocation = new PrintWriter(new FileWriter("./src/main/resources/saveFiles/" + name + ".json"));
+            Path savePath = Files.createDirectories(Paths.get("saveFiles"));
+
+            PrintWriter fileLocation = new PrintWriter(new FileWriter(savePath.resolve(name + ".json").toFile()));
             fileLocation.print(dungeonSave);
             fileLocation.close();
+
+            // PrintWriter fileLocation = new PrintWriter(new FileWriter("./src/main/resources/saveFiles/" + name + ".json"));
+            // fileLocation.print(dungeonSave);
+            // fileLocation.close();
         } catch (IOException e) {
             System.out.println("Working Directory = " + System.getProperty("user.dir"));
             System.out.println(e.toString());
@@ -433,16 +444,17 @@ public class DungeonManiaController {
         if (!allGames().contains(name)) {
             throw new IllegalArgumentException("Invalid saveName");
         }
-
+        
         String fileContents;
         try {
-            fileContents = FileLoader.loadResourceFile("/saveFiles/" + name + ".json");
-        } catch (IOException e) {
+            fileContents = new String(Files.readAllBytes(Paths.get("saveFiles/" + name + ".json")));
+        } catch (Exception e) {
             System.out.println("Working Directory = " + System.getProperty("user.dir"));
             System.out.println(e.toString());
             return null;
         }
         JSONObject dungeonObj = new JSONObject(fileContents);
+        
         String dungeonName = dungeonObj.getString("dungeonName");
         String dungeonId = dungeonObj.getString("dungeonId");
         String dungeonMode = dungeonObj.getString("gamemode");
@@ -450,11 +462,10 @@ public class DungeonManiaController {
 
         activeGame = new Dungeon(dungeonName, dungeonMode, dungeonId);
         activeGame.setCounter(counter);
-
+        
         JSONObject goalCondition = dungeonObj.getJSONObject("goal-condition");
         GoalComponent overallGoal = extractAllGoals(goalCondition, activeGame);
         activeGame.setOverallGoal(overallGoal); 
-
         // String goalString = "";
         // for (GoalComponent simpleGoal : activeGame.getSimpleGoals()) {
         //     String simpleGoalString = simpleGoal.simpleGoalToString();
@@ -672,7 +683,7 @@ public class DungeonManiaController {
      */
     public List<String> allGames() {
         try {
-            return FileLoader.listFileNamesInResourceDirectory("/saveFiles");
+            return FileLoader.listFileNamesInDirectoryOutsideOfResources("saveFiles");
         } catch (IOException e) {
             return new ArrayList<>();
         }
