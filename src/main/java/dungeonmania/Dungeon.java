@@ -47,6 +47,7 @@ public class Dungeon {
     public void tickCounter() {
         counter++;
         spiderSpawn();
+        hydraSpawn();
     }
 
     public void spiderSpawn() {
@@ -59,15 +60,30 @@ public class Dungeon {
         }
                 
         if (counter % getSpawnTimer() == 0) {
-            Position randPos = randomSpiderPosition();
+            Position randPos = randomSpawnPosition();
             while (getEntities(randPos).stream().anyMatch(x -> x.getType().equals("boulder"))) {
-                randPos = randomSpiderPosition();
+                randPos = randomSpawnPosition();
             }
             new Spider(randPos, this);
         }
     }
 
-    public Position randomSpiderPosition() {
+    public void hydraSpawn() {
+        if (getHydraSpawnTimer() == 0) {
+            return;
+        }
+
+        if (counter % getHydraSpawnTimer() == 0) {
+            Position randPos = randomSpawnPosition();
+            // Cannot spawn in this position. There is already an entity there.
+            while (getEntities().size() != 0) {
+                randPos = randomSpawnPosition();
+            }
+            new Hydra(randPos, this);
+        }
+    }
+
+    public Position randomSpawnPosition() {
         Random number = new Random();
         int bound = 20;
         int xRandom = number.nextInt(bound);
@@ -82,6 +98,10 @@ public class Dungeon {
 
     public int getSpawnTimer() {
         return getGamemode().getSpawnTimer();
+    }
+
+    public int getHydraSpawnTimer() {
+        return getGamemode().getHydraSpawnTimer();
     }
     
     /** 
