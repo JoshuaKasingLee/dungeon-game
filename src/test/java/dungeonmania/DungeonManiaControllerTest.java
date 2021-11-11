@@ -359,6 +359,21 @@ public class DungeonManiaControllerTest {
         assertDoesNotThrow(() -> controller.build("shield"));
     }
 
+    @Test
+    public void testCraftInsufficientResources() {
+        DungeonManiaController controller = new DungeonManiaController();
+        assertDoesNotThrow(() -> controller.newGame("craftingTest", "Standard"));
+        assertThrows(InvalidActionException.class, () -> controller.build("bow"));
+        assertThrows(InvalidActionException.class, () -> controller.build("shield"));
+    }
+
+    @Test
+    public void testCraftInvalidItem() {
+        DungeonManiaController controller = new DungeonManiaController();
+        assertDoesNotThrow(() -> controller.newGame("craftingTest", "Standard"));
+        assertThrows(IllegalArgumentException.class, () -> controller.build("Key"));
+    }
+
     
     
     @Test
