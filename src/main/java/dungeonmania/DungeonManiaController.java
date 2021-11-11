@@ -225,6 +225,19 @@ public class DungeonManiaController {
         return new DungeonResponse(dungeonId, dungeonName, entityResponses, new ArrayList<ItemResponse>(), new ArrayList<String>(), goalString);
     }
     
+
+    public DungeonReponse generateDungeon(int xStart, int yStart, int xEnd, int yEnd, String gameMode) throws IllegalArgumentException {
+        if (!getGameModes().contains(gameMode)) {
+            throw new IllegalArgumentException();
+        }
+
+        String dungeonId = newDungeonId();
+        activeGame = new Dungeon("PrimsMaze", gameMode, dungeonId);
+        activeGame.RandomizedPrims(50, 50, new Position(xStart, yStart), new Position(xEnd, yEnd));
+        List<Entity> entities = activeGame.getEntities();
+
+        return new DungeonResponse(dungeonId, "PrimsMaze", entities, new ArrayList<ItemResponse>(), new ArrayList<String>(), ":exit ");
+    }
     
     /** 
      * saves a game to a filename

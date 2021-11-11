@@ -5,6 +5,8 @@ import java.util.List;
 import dungeonmania.util.Position;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.lang.Math;
 
 public class Dungeon {
 
@@ -133,9 +135,102 @@ public class Dungeon {
                 removeEntity(entity);
             }
         }
+    }
+
+
+    public void RandomizedPrims(int width, int height, Position start, Position end) {
+        boolean[][] mazeMap = new boolean[height][width];
+        for (boolean[] row : mazeMap) {
+            Arrays.fill(row, false);
+        }
+
+        int xStart = start.getX();
+        int yStart = start.getY();
+        mazeMap[yStart][xStart] = true;
+
+        List<Position> options = new ArrayList<>();
+        options = primAdjacentPositions(start, mazeMap, false, 2);
+
+        int randomInt = (int)Math.random()*(options.size());
+        while (!options.isEmpty()) {
+            Position next = options.get(randomInt);
+            options.remove(randomInt);
+            List<Position> neighbours = primAdjacentPositions(next, mazeMap, true, 2);
+            if (!neighbours.isEmpty()) {
+                randomInt = (int)Math.random()*(neighbours.size());
+                Position neighbour = neighbours.get(randomInt);
+                mazeMap[next.getY()][next.getX()] = true;
+                Position inBetween = getInBetween(next, neighbour);
+                mazeMap[inBetween.getY()][inBetween.getX()] = true;
+            }
+            List<Position> newNeighbours = primAdjacentPositions(next, mazeMap, false, 2);
+            for (Position n : newNeighbours) {
+                options.add(n);
+            }
+        }
+        
+        int xEnd = end.getX();
+        int yEnd = end.getY();
+        if (mazeMap[yEnd][xEnd] == false) {
+            mazeMap[yEnd][xEnd] = true;
+            List<Position> endNeighboursEmpty = primAdjacentPositions(end, mazeMap, true, 1);
+            if (endNeighboursEmpty.isEmpty()) {
+                randomInt = (int)Math.random()*(endNeighboursEmpty.size());
+                Position neighbour = endNeighboursEmpty.get(randomInt);
+                mazeMap[neighbour.getY()][neighbour.getX()] = true;
+            }
+
+        }
+        
+        setOverallGoal(new ExitGoal());
+        addSimpleGoals(new ExitGoal());
+
+        // now to make it all into active game.
+        extractPrimMaze(mazeMap, start, end);
 
 
 
+    }
+
+    private static Position getInBetween(Position next, Position neighbour) {
+        int newX = (next.getX() + neighbour.getX())/2;
+        int newY = (next.getY() + neighbour.getY())/2;
+        return new Position(newX, newY);
+    }
+
+    private static List<Position> primAdjacentPositions(Position pos, boolean[][] mazeMap, boolean isWall, int distance) {
+        List<Position> primAdjPositions = new ArrayList<Position>();
+        int currX = pos.getX();
+        int currY = pos.getY();
+        for (int row = currX - distance; row <= currX + distance; row += distance) {
+            for (int column = currY - distance; column <= currY + distance; column += distance) {
+                if (mazeMap[row][column] == isWall && !PosOnMapBoundary(row, column, mazeMap) && notSamePos(currX, row, currY, column)) {
+                    primAdjPositions.add(new Position(column, row));
+                }
+            }
+        }
+        return primAdjPositions;
+    }
+
+    private static boolean PosOnMapBoundary(int currX, int currY, boolean[][] mazeMap) {
+        return (currX == 0 || currX == mazeMap.length - 1 || currY == 0 || currY == mazeMap.length - 1);
+    }
+
+    private static boolean notSamePos(int x1, int x2, int y1, int y2) {
+        return (x1 != x2 || y1 != y2);
+    }
+
+    private void extractPrimMaze(boolean[][] mazeMap, Position start, Position end) {
+        for (int i = 0; i < mazeMap.length; i++) {
+            for (int j = 0; j < mazeMap[i].length; j++) {
+                if (mazeMap[i][j] == false) {
+                    new Wall(new Position(j, i) , this);
+                }
+            }
+        }
+
+        new Player(start, this);
+        new Exit(end, this);
     }
 
     
