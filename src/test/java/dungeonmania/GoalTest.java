@@ -61,8 +61,7 @@ public class GoalTest {
         DungeonManiaController controller = new DungeonManiaController();
 
         DungeonResponse dungeonInfo = controller.newGame("enemyGoalTester", "Peaceful");
-        dungeonInfo = controller.tick(null , Direction.UP);
-        assertEquals(dungeonInfo.getGoals(), "");
+        assertEquals(":enemies ", dungeonInfo.getGoals());
         
     }     
     
