@@ -10,7 +10,6 @@ public class Player extends MovingEntity {
     private Inventory inventory;
     private CharacterState characterState;
     private boolean teleported;
-    private boolean slowed = false;
     public static final int ORIGINAL_HEALTH_STANDARD = 10;
     public static final int ORIGINAL_HEALTH_HARD = 7;
     public static final int CHARACTER_ATTACK_DAMAGE = 3;
@@ -294,8 +293,9 @@ public class Player extends MovingEntity {
     /** 
      * @param slowed: Set whether the player has been slowed
      */
-    public void setSlowed(boolean slowed) {
-        this.slowed = slowed;
+    @Override
+    public void incrementSlowed() {
+        return;
     }
 }
 

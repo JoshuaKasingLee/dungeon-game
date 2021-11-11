@@ -481,46 +481,12 @@ public class StaticEntityTest {
         // Move stuck in swamp
         dungeonInfo = controller.tick(null, Direction.DOWN);
         player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("player")).findFirst().orElse(null);
-        assertEquals(new Position(1, 2), player.getPosition());
+        assertEquals(new Position(1, 3), player.getPosition());
 
         // Move out of swamp
         dungeonInfo = controller.tick(null, Direction.RIGHT);
         player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("player")).findFirst().orElse(null);
-        assertEquals(new Position(2, 2), player.getPosition());
-    }
-
-    @Test
-    public void testSwampHard() {
-        // Test whether the swamp slows player
-        // Assumes Standard slows player in place for 3 ticks
-        // Create a controller
-        DungeonManiaController controller = new DungeonManiaController();
-
-        // Create a new game
-        DungeonResponse dungeonInfo = controller.newGame("swampTile", "Hard");
-
-        // Get player entity
-        EntityResponse player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("player")).findFirst().orElse(null);
-
-        // Move into swamp
-        dungeonInfo = controller.tick(null, Direction.DOWN);
-        player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("player")).findFirst().orElse(null);
-        assertEquals(new Position(1, 2), player.getPosition());
-
-        // Move stuck in swamp
-        dungeonInfo = controller.tick(null, Direction.DOWN);
-        player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("player")).findFirst().orElse(null);
-        assertEquals(new Position(1, 2), player.getPosition());
-
-        // Move stuck in swamp
-        dungeonInfo = controller.tick(null, Direction.RIGHT);
-        player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("player")).findFirst().orElse(null);
-        assertEquals(new Position(1, 2), player.getPosition());
-
-        // Move out of swamp
-        dungeonInfo = controller.tick(null, Direction.RIGHT);
-        player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("player")).findFirst().orElse(null);
-        assertEquals(new Position(2, 2), player.getPosition());
+        assertEquals(new Position(2, 3), player.getPosition());
     }
 
     @Test

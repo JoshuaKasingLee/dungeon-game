@@ -356,4 +356,8 @@ public class EnemyMoveTest {
         mercenary = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("mercenary")).findFirst().orElse(null);
         assertEquals(new Position(2, 1), mercenary.getPosition());
     }
+
+    //TODO: Tests mercenary gets slowed in swamp
+
+
 }

@@ -6,6 +6,7 @@ import dungeonmania.util.Direction;
 public abstract class MovingEntity extends Entity {
     private int health;
     private int attackDamage;
+    private int slowed = 1;
 
     public MovingEntity(Position position, Dungeon dungeon) {
         super(position, dungeon);
@@ -94,6 +95,11 @@ public abstract class MovingEntity extends Entity {
                     }
                 }   
             }
+            if (e instanceof SwampTile) {
+                if (getSlowed() <= getGamemode().getSwampMovement()) {
+                    return false;
+                }
+            }
         }
         return true;
     }
@@ -128,5 +134,22 @@ public abstract class MovingEntity extends Entity {
         this.attackDamage = attackDamage;
     }
     
+    /** 
+     * @param slowed: Set whether the entity has been slowed
+     */
+    public void incrementSlowed() {
+        this.slowed++;
+    }
+
+    public int getSlowed() {
+        return slowed;
+    }
+
+    /** 
+     * @param slowed: Set whether the entity has been slowed
+     */
+    public void setSlowed(int slowed) {
+        this.slowed = slowed;
+    }
 }
 

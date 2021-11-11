@@ -8,11 +8,10 @@ public class SwampTile extends StaticEntity {
     // Update function increases the counter, and update function resets counter if does not have player
     // Can boulders go through swamps?
     // TODO: Check whether player is called first or static entity
-    int playerHeldCounter = 1;
+    // TODO: Add a movement_factor and remove it from Gamemode
 
     public SwampTile(Position position, Dungeon dungeon) {
         super(position, dungeon);
-        playerHeldCounter = 1;
     }
 
     /**
@@ -20,12 +19,10 @@ public class SwampTile extends StaticEntity {
      * @param direction
      */
     public void update(Direction direction) {
-        if (getPosition().equals(getPlayerPosition())) {
-            updatePlayerSlowed();
-            playerHeldCounter++;
-        } else if (!getPosition().equals(getPlayerPosition())) {
-            updatePlayerSlowed();
-            playerHeldCounter = 1;
+        for (Entity entity : getDungeon().getEntities()) {
+            if (entity instanceof MovingEntity && getPosition().equals(entity.getPosition())) {
+                updateEntitySlowed(entity);
+            }
         }
     }
 
@@ -49,11 +46,11 @@ public class SwampTile extends StaticEntity {
     /** 
      * Updates the slowness state of the player
      */
-    public void updatePlayerSlowed() {
-        if (playerHeldCounter < getMovementFactor() && getPosition().equals(getPlayerPosition())) {
-            getDungeon().getPlayer().setSlowed(true);
+    public void updateEntitySlowed(Entity entity) {
+        if (((MovingEntity)entity).getSlowed() < getMovementFactor() && getPosition().equals(getPlayerPosition())) {
+            ((MovingEntity)entity).incrementSlowed();
         } else {
-            getDungeon().getPlayer().setSlowed(false);
+            ((MovingEntity)entity).setSlowed(1);
         }
     }
 }
