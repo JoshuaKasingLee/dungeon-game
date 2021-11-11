@@ -235,9 +235,10 @@ public class Dungeon {
         if (mazeMap[yEnd][xEnd] == false) {
             mazeMap[yEnd][xEnd] = true;
             List<Position> endNeighboursEmpty = primAdjacentPositions(end, mazeMap, true, 1);
+            List<Position> endNeighboursWalls = primAdjacentPositions(end, mazeMap, false, 1);
             if (endNeighboursEmpty.isEmpty()) {
                 randomInt = (int)Math.random()*(endNeighboursEmpty.size());
-                Position neighbour = endNeighboursEmpty.get(randomInt);
+                Position neighbour = endNeighboursWalls.get(randomInt);
                 mazeMap[neighbour.getY()][neighbour.getX()] = true;
             }
 
@@ -259,13 +260,13 @@ public class Dungeon {
         return new Position(newX, newY);
     }
 
-    private static List<Position> primAdjacentPositions(Position pos, boolean[][] mazeMap, boolean isWall, int distance) {
+    private static List<Position> primAdjacentPositions(Position pos, boolean[][] mazeMap, boolean empty, int distance) {
         List<Position> primAdjPositions = new ArrayList<Position>();
         int currX = pos.getX();
         int currY = pos.getY();
         for (int row = currX - distance; row <= currX + distance; row += distance) {
             for (int column = currY - distance; column <= currY + distance; column += distance) {
-                if (mazeMap[row][column] == isWall && !PosOnMapBoundary(row, column, mazeMap) && notSamePos(currX, row, currY, column)) {
+                if (mazeMap[row][column] == empty && !PosOnMapBoundary(row, column, mazeMap) && notSamePos(currX, column, currY, row)) {
                     primAdjPositions.add(new Position(column, row));
                 }
             }
@@ -273,13 +274,15 @@ public class Dungeon {
         return primAdjPositions;
     }
 
-    private static boolean PosOnMapBoundary(int currX, int currY, boolean[][] mazeMap) {
-        return (currX == 0 || currX == mazeMap.length - 1 || currY == 0 || currY == mazeMap.length - 1);
-    }
-
     private static boolean notSamePos(int x1, int x2, int y1, int y2) {
         return (x1 != x2 || y1 != y2);
     }
+
+    private static boolean PosOnMapBoundary(int currY, int currX, boolean[][] mazeMap) {
+        return (currX == 0 || currX == mazeMap.length - 1 || currY == 0 || currY == mazeMap.length - 1);
+    }
+
+
 
     private void extractPrimMaze(boolean[][] mazeMap, Position start, Position end) {
         for (int i = 0; i < mazeMap.length; i++) {
@@ -289,7 +292,6 @@ public class Dungeon {
                 }
             }
         }
-
         new Player(start, this);
         new Exit(end, this);
     }
