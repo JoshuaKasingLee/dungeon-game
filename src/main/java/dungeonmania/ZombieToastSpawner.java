@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 import dungeonmania.util.Position;
+import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.util.Direction;
 
 public class ZombieToastSpawner extends StaticEntity {
@@ -37,18 +38,23 @@ public class ZombieToastSpawner extends StaticEntity {
             // Get adjacent positions
             List<Position> adjacentPositions = new ArrayList<Position>(this.getPosition().getAdjacentPositions());
             // createZombieToast(new Position(0, 0));
-            
+
             // Check whether adjacent positions are free and spawn a zombie
+            boolean obstructed = false;
             for (Position position : adjacentPositions) {
-                for (Entity e : getDungeon().getEntities(position)) {
-                    if (!(e instanceof Wall) ||
-                        !(e instanceof Boulder) ||
-                        !(e instanceof Door) ||
-                        !(e instanceof ZombieToastSpawner)) {
-                        new ZombieToast(position, getDungeon());
-                        return;
+                List<Entity> entitiesAtPos = getDungeon().getEntities(position);
+                for (Entity e : entitiesAtPos) {
+                    if ((e instanceof Wall) ||
+                        (e instanceof Boulder) ||
+                        (e instanceof Door) ||
+                        (e instanceof ZombieToastSpawner)) {
+                        obstructed = true;
                     }
                 }
+                if (!obstructed) {
+                    new ZombieToast(position, getDungeon());
+                    return;
+                }                
             }
         }
     }
