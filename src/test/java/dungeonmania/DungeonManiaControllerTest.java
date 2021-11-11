@@ -511,7 +511,7 @@ public class DungeonManiaControllerTest {
         
         dungeonInfo = controller.tick(bombId, null);
 
-         controller.getActiveGame().getEntities();
+        controller.getActiveGame().getEntities();
 
         assertEquals(false, dungeonInfo.getInventory().stream().anyMatch(x -> x.getType().equals("bomb")));
 
@@ -520,9 +520,43 @@ public class DungeonManiaControllerTest {
         assertEquals(true, dungeonInfo.getInventory().stream().anyMatch(x -> x.getType().equals("bomb")));
         dungeonInfo = controller.tick(bombId, null);
         assertEquals(false, dungeonInfo.getInventory().stream().anyMatch(x -> x.getType().equals("bomb")));
+    }
 
+    @Test
+    public void testZombiesAndSpidersSpawnedStandard() {
+        DungeonManiaController controller = new DungeonManiaController();
+        DungeonResponse dungeonInfo = controller.newGame("spawnerinteract", "standard");
+        assertEquals(false, dungeonInfo.getEntities().stream().anyMatch(x -> x.getType().equals("spider")));
+        assertEquals(false, dungeonInfo.getEntities().stream().anyMatch(x -> x.getType().equals("zombie_toast")));
+
+
+        for (int i = 0; i < 19; i++) {
+            assertDoesNotThrow(() -> controller.tick(null, Direction.RIGHT)); 
+        }
+        dungeonInfo = controller.tick(null, Direction.RIGHT);
+        assertEquals(true, dungeonInfo.getEntities().stream().anyMatch(x -> x.getType().equals("spider")));
+        assertEquals(true, dungeonInfo.getEntities().stream().anyMatch(x -> x.getType().equals("zombie_toast")));
 
 
     }
+
+    @Test
+    public void testZombiesAndSpidersSpawnedHard() {
+        DungeonManiaController controller = new DungeonManiaController();
+        DungeonResponse dungeonInfo = controller.newGame("spawnerinteract", "hard");
+        assertEquals(false, dungeonInfo.getEntities().stream().anyMatch(x -> x.getType().equals("spider")));
+        assertEquals(false, dungeonInfo.getEntities().stream().anyMatch(x -> x.getType().equals("zombie_toast")));
+
+
+        for (int i = 0; i < 14; i++) {
+            assertDoesNotThrow(() -> controller.tick(null, Direction.RIGHT)); 
+        }
+        dungeonInfo = controller.tick(null, Direction.RIGHT);
+        assertEquals(true, dungeonInfo.getEntities().stream().anyMatch(x -> x.getType().equals("spider")));
+        assertEquals(true, dungeonInfo.getEntities().stream().anyMatch(x -> x.getType().equals("zombie_toast")));
+
+
+    }
+
 
 }
