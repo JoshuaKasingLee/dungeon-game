@@ -20,7 +20,6 @@ public class Milestone3Loading {
 
     @Test
     public void testNewEntitiesNewGame() {
-
         DungeonManiaController controller = new DungeonManiaController();
         DungeonResponse dungeonInfo = controller.newGame("milestone3Entities", "Standard");
         assertEquals(true, dungeonInfo.getEntities().stream().anyMatch(x -> x.getType().equals("assassin")));
@@ -34,9 +33,6 @@ public class Milestone3Loading {
         assertEquals(true, dungeonInfo.getEntities().stream().anyMatch(x -> x.getType().equals("hydra")));
         assertEquals(true, dungeonInfo.getEntities().stream().anyMatch(x -> x.getType().equals("sun_stone")));
         assertEquals(true, dungeonInfo.getEntities().stream().anyMatch(x -> x.getType().equals("anduril")));
-
-
-
     }
     
 }
