@@ -554,7 +554,19 @@ public class DungeonManiaControllerTest {
         dungeonInfo = controller.tick(null, Direction.RIGHT);
         assertEquals(true, dungeonInfo.getEntities().stream().anyMatch(x -> x.getType().equals("spider")));
         assertEquals(true, dungeonInfo.getEntities().stream().anyMatch(x -> x.getType().equals("zombie_toast")));
+    }
 
+    @Test
+    public void testHydraSpawning() {
+        DungeonManiaController controller = new DungeonManiaController();
+        DungeonResponse dungeonInfo = controller.newGame("simple", "hard");
+        assertEquals(false, dungeonInfo.getEntities().stream().anyMatch(x -> x.getType().equals("hydra")));
+
+        for (int i = 0; i < 49; i++) {
+            assertDoesNotThrow(() -> controller.tick(null, Direction.RIGHT)); 
+        }
+        dungeonInfo = controller.tick(null, Direction.RIGHT);
+        assertEquals(true, dungeonInfo.getEntities().stream().anyMatch(x -> x.getType().equals("hydra")));
 
     }
 
