@@ -452,16 +452,16 @@ public class DungeonManiaController {
         GoalComponent overallGoal = extractAllGoals(goalCondition, activeGame);
         activeGame.setOverallGoal(overallGoal); 
 
-        String goalString = "";
-        for (GoalComponent simpleGoal : activeGame.getSimpleGoals()) {
-            String simpleGoalString = simpleGoal.simpleGoalToString();
-            if (!goalString.contains(simpleGoalString)) {
-                goalString += simpleGoal.simpleGoalToString();
-            }
-        }
+        // String goalString = "";
+        // for (GoalComponent simpleGoal : activeGame.getSimpleGoals()) {
+        //     String simpleGoalString = simpleGoal.simpleGoalToString();
+        //     if (!goalString.contains(simpleGoalString)) {
+        //         goalString += simpleGoal.simpleGoalToString();
+        //     }
+        // }
 
         JSONArray entityList = dungeonObj.getJSONArray("entities");
-        List<EntityResponse> entityResponses = new ArrayList<EntityResponse>();
+        // List<EntityResponse> entityResponses = new ArrayList<EntityResponse>();
 
         for (int i = 0; i < entityList.length(); i++) {
             String entityType = entityList.getJSONObject(i).getString("type");
@@ -547,10 +547,10 @@ public class DungeonManiaController {
             }
             currEntity.setId(entityList.getJSONObject(i).getString("entityId"));
 
-            entityResponses.add(new EntityResponse(currEntity.getId(), currEntity.getType(), currEntity.getPosition(), currEntity.isInteractable()));
+            // entityResponses.add(new EntityResponse(currEntity.getId(), currEntity.getType(), currEntity.getPosition(), currEntity.isInteractable()));
         }
 
-        List<ItemResponse> itemResponses = new ArrayList<ItemResponse>();
+        // List<ItemResponse> itemResponses = new ArrayList<ItemResponse>();
         JSONArray itemList = dungeonObj.getJSONArray("items");
         
         for (int i = 0; i < itemList.length(); i++) {
@@ -604,14 +604,14 @@ public class DungeonManiaController {
                     break;
             }
             currItem.setId(entityList.getJSONObject(i).getString("entityId"));
-            itemResponses.add(new ItemResponse(currItem.getId(), currItem.getType()));
+            // itemResponses.add(new ItemResponse(currItem.getId(), currItem.getType()));
             activeGame.moveToInventory(currItem);
         }
 
+        return createDungeonResponse();
 
-
-        List<String> buildables = activeGame.getInventory().getBuildables();
-        return new DungeonResponse(dungeonId, dungeonName, entityResponses, itemResponses, buildables, goalString);
+        // List<String> buildables = activeGame.getInventory().getBuildables();
+        // return new DungeonResponse(dungeonId, dungeonName, entityResponses, itemResponses, buildables, goalString);
     }
 
     
