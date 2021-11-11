@@ -7,6 +7,7 @@ public class SunStone extends Item {
 
     public SunStone(Position position, Dungeon dungeon) {
         super(position, dungeon);
+        dungeon.addEntity(this);
     }
 
     /** 
