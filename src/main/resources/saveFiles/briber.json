@@ -9,6 +9,7 @@
             "health": 10,
             "type": "player",
             "entityId": "0",
+            "characterState": "Standard",
             "y": 0,
             "teleported": false
         },
@@ -17,6 +18,7 @@
             "entityId": "1",
             "totalArmour": 0,
             "type": "mercenary",
+            "mercState": "MercStandardState",
             "ally": false,
             "y": 2
         },
