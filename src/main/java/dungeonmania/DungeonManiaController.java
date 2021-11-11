@@ -796,6 +796,8 @@ public class DungeonManiaController {
             }
         }
 
+        // TODO: account for sceptre in interact
+
         if (found == false) {
             throw new IllegalArgumentException("Entity Id is not valid.");
         }
@@ -820,8 +822,8 @@ public class DungeonManiaController {
      * @throws InvalidActionException
      */
     public DungeonResponse build(String buildable) throws IllegalArgumentException, InvalidActionException {
-        if (!buildable.equals("bow") && !buildable.equals("shield")) {
-            throw new IllegalArgumentException("Can only build bow or shield!");
+        if (!buildable.equals("bow") && !buildable.equals("shield") && !buildable.equals("sceptre") && !buildable.equals("midnight_armour")) {
+            throw new IllegalArgumentException("Can only build bow, shield, sceptre or midnight_armour!");
         }
 
         Inventory inventory = activeGame.getInventory();
@@ -829,8 +831,12 @@ public class DungeonManiaController {
         
         if (buildable.equals("bow")) {
             inventory.craftBow(player);
-        } else {
+        } else if (buildable.equals("shield")) {
             inventory.craftShield(player);
+        } else if (buildable.equals("sceptre")) {
+            inventory.craftSceptre(player);
+        } else if (buildable.equals("midnight_armour")) {
+            inventory.craftMidnightArmour(player);
         }
 
         return createDungeonResponse();
