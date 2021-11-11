@@ -15,6 +15,11 @@ public class MercControlledState implements MercenaryState {
         this.timeLeft = SCEPTRE_TIME_LIMIT;
     }
 
+    public MercControlledState(Mercenary merc, int timeLeft) {
+        this(merc);
+        this.timeLeft = timeLeft;
+    }
+
     public void updateState() {
         timeLeft--;
         if (timeLeft <= 0) {
