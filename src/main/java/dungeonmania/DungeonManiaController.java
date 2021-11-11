@@ -214,7 +214,7 @@ public class DungeonManiaController {
                 case "player":
                     new Player(currPosition, activeGame);
                     break;
-                case "assassin":
+                case "assassin": // TODO: CHeck this!!! Maybe assassins don't get spawned in directly.
                     new Assassin(currPosition, activeGame);
                     break;
                 case "hydra":
@@ -251,12 +251,12 @@ public class DungeonManiaController {
         List<Entity> entities = activeGame.getEntities();
 
         JSONArray entitiesJSON = new JSONArray();
-        List<EntityResponse> entityResponses = new ArrayList<EntityResponse>();
+        // List<EntityResponse> entityResponses = new ArrayList<EntityResponse>();
         
         for (int i = 0; i < entities.size(); i++) {
             Entity currEntity = entities.get(i);
 
-            entityResponses.add(new EntityResponse(currEntity.getId(), currEntity.getType(), currEntity.getPosition(), currEntity.isInteractable()));
+            // entityResponses.add(new EntityResponse(currEntity.getId(), currEntity.getType(), currEntity.getPosition(), currEntity.isInteractable()));
 
             
             String currType = currEntity.getType();
@@ -286,7 +286,27 @@ public class DungeonManiaController {
                 case "mercenary":
                     entityData.put("totalArmour", ((Mercenary)currEntity).getArmour());
                     entityData.put("ally", ((Mercenary)currEntity).isAlly());
+
+                    MercenaryState state = ((Mercenary)currEntity).getMercenaryState();
+                    String mercState = state.getType();
+                    entityData.put("mercState", mercState);
+                    if (mercState.equals("MercControlled")) {
+                        entityData.put("timeLeft", ((MercControlledState)state).getTimeLeft());
+                        entityData.put("wasAlly", ((MercControlledState)state).isWasAlly());
+                    }
                     break; 
+                case "assassin":
+                    entityData.put("totalArmour", ((Assassin)currEntity).getArmour());
+                    entityData.put("ally", ((Assassin)currEntity).isAlly());
+
+                    MercenaryState assassinState = ((Assassin)currEntity).getMercenaryState();
+                    String assState = assassinState.getType();
+                    entityData.put("mercState", assState);
+                    if (assState.equals("MercControlled")) {
+                        entityData.put("timeLeft", ((MercControlledState)assassinState).getTimeLeft());
+                        entityData.put("wasAlly", ((MercControlledState)assassinState).isWasAlly());
+                    }
+                    break;  
                 case "player":
                     CharacterState characterState = ((Player)currEntity).getCharacterState();
                     String stateType = characterState.getType();
@@ -299,9 +319,6 @@ public class DungeonManiaController {
                         entityData.put("timeLeft", ((InvisibleState)characterState).getTimeLeft());
                     }
                     break;
-                // case "zombie_toast_spawner":
-                //     entityData.put("counter", ((ZombieToastSpawner)currEntity).getCounter());
-                //     break;
                 case "spider":
                     entityData.put("startingPositionx", ((Spider)currEntity).getStartingPosition().getX());
                     entityData.put("startingPositiony", ((Spider)currEntity).getStartingPosition().getY());
@@ -317,12 +334,12 @@ public class DungeonManiaController {
         List<Item> items = activeGame.getInventory().getInventoryList();
         JSONArray itemsJSON = new JSONArray();
 
-        List<ItemResponse> itemResponses = new ArrayList<ItemResponse>();
+        // List<ItemResponse> itemResponses = new ArrayList<ItemResponse>();
 
         for (int i = 0; i < items.size(); i++) {
             Entity currItem = items.get(i);
 
-            itemResponses.add(new ItemResponse(currItem.getId(), currItem.getType()));
+            // itemResponses.add(new ItemResponse(currItem.getId(), currItem.getType()));
 
 
             String currType = currItem.getType();
@@ -346,6 +363,9 @@ public class DungeonManiaController {
                     break;
                 case "shield":
                     itemData.put("usesLeft", ((Shield)currItem).getUsesLeft());
+                    break;
+                case "midnight_armour":
+                    itemData.put("usesLeft", ((MidnightArmour)currItem).getUsesLeft());
                     break;
             }
             JSONObject itemJSON = new JSONObject(itemData);
@@ -382,21 +402,21 @@ public class DungeonManiaController {
             return null;
         }
 
-        String goalString = "";
+        // String goalString = "";
        
 
-        for (GoalComponent simpleGoal : activeGame.getSimpleGoals()) {
-            String simpleGoalString = simpleGoal.simpleGoalToString();
-            if (!goalString.contains(simpleGoalString)) {
-                goalString += simpleGoal.simpleGoalToString();
-            }
-        }
+        // for (GoalComponent simpleGoal : activeGame.getSimpleGoals()) {
+        //     String simpleGoalString = simpleGoal.simpleGoalToString();
+        //     if (!goalString.contains(simpleGoalString)) {
+        //         goalString += simpleGoal.simpleGoalToString();
+        //     }
+        // }
 
-        List<String> buildables = activeGame.getInventory().getBuildables();
+        // List<String> buildables = activeGame.getInventory().getBuildables();
 
-        
+        return createDungeonResponse();
 
-        return new DungeonResponse(dungeonId, dungeonName, entityResponses, itemResponses, buildables, goalString);
+        // return new DungeonResponse(dungeonId, dungeonName, entityResponses, itemResponses, buildables, goalString);
     }
 
     
@@ -522,6 +542,7 @@ public class DungeonManiaController {
                     break;
                 case "player":
                     currEntity = new Player(currPosition, activeGame, entityList.getJSONObject(i).getInt("health"),entityList.getJSONObject(i).getBoolean("teleported"));
+                    // TODO: Load in player state
                     break;
             }
             currEntity.setId(entityList.getJSONObject(i).getString("entityId"));
