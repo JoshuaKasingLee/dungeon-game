@@ -367,6 +367,9 @@ public class DungeonManiaController {
                 case "midnight_armour":
                     itemData.put("usesLeft", ((MidnightArmour)currItem).getUsesLeft());
                     break;
+                case "anduril":
+                    itemData.put("usesLeft", ((Anduril)currItem).getUsesLeft());
+                    break;
             }
             JSONObject itemJSON = new JSONObject(itemData);
             itemsJSON.put(itemJSON);
@@ -522,7 +525,7 @@ public class DungeonManiaController {
                 case "assassin":
                     durability = entityList.getJSONObject(i).getInt("totalArmour");
                     isAlly = entityList.getJSONObject(i).getBoolean("ally");
-                    currEntity = new Mercenary(currPosition, activeGame, durability, isAlly);
+                    currEntity = new Assassin(currPosition, activeGame, durability, isAlly);
                     
                     Assassin assassin = (Assassin)currEntity;
                     String assState = entityList.getJSONObject(i).getString("mercState");
@@ -561,7 +564,6 @@ public class DungeonManiaController {
                     break;
                 case "player":
                     currEntity = new Player(currPosition, activeGame, entityList.getJSONObject(i).getInt("health"),entityList.getJSONObject(i).getBoolean("teleported"));
-                    // TODO: Load in player state
                     Player player = (Player)currEntity;
                     String characterState = entityList.getJSONObject(i).getString("characterState");
                     if (characterState.equals("Invincible")) {
@@ -569,6 +571,15 @@ public class DungeonManiaController {
                     } else if (characterState.equals("Invisible")) {
                         player.setCharacterState(new InvisibleState(player, entityList.getJSONObject(i).getInt("timeLeft")));
                     }
+                    break;
+                case "hydra":
+                    currEntity = new Hydra(currPosition, activeGame);
+                    break;
+                case "sun_stone":
+                    currEntity = new SunStone(currPosition, activeGame);
+                    break;
+                case "anduril":
+                    currEntity = new Anduril(currPosition, activeGame);
                     break;
             }
             currEntity.setId(entityList.getJSONObject(i).getString("entityId"));
@@ -626,6 +637,20 @@ public class DungeonManiaController {
                     break;
                 case "shield":
                     currItem = new Shield(activeGame);
+                    currItem.setUsesLeft(itemList.getJSONObject(i).getInt("usesLeft"));
+                    break;
+                case "sun_stone":
+                    currItem = new SunStone(posPlaceholder, activeGame);
+                    break;
+                case "anduril":
+                    currItem = new Anduril(posPlaceholder, activeGame);
+                    currItem.setUsesLeft(itemList.getJSONObject(i).getInt("usesLeft"));
+                    break;
+                case "sceptre":
+                    currItem = new Sceptre(activeGame);
+                    break;
+                case "midnight_armour":
+                    currItem = new MidnightArmour(activeGame);
                     currItem.setUsesLeft(itemList.getJSONObject(i).getInt("usesLeft"));
                     break;
             }
