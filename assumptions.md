@@ -12,7 +12,7 @@ Team Avocado
     Bow - 2
 - Bomb radius is less than or equal to 3 positions away
 - Shield completely deflects an enemy's attack
-- Sword instantly destroys an enemy
+- Sword will deduct 10 health points from enemy in any battle
 - Only one invicibility/invisibility potion can be taken at a time - player is always in state of most recently consumed potion
 - Armours and shields will not be used in invincible state, since enemies cannot damage their health already
 - Invincibility/invisibility time limit = 10 ticks
@@ -21,6 +21,10 @@ Team Avocado
 - Original starting health is 10, unless hard mode - then is 7
 - Weapons get "used" when used to destroy zombie toast spawner
 - Only the most recently used potion state is active if one potion is used before another potion is finished
+- The following health/attack damages were assumed:
+    Health (Standard/Peaceful): 10
+    Health (Hard): 7
+    Attack Damage (Standard/Peaceful): 3
 
 /// MOVING ///
 - Player cannot move on top of zombie toast spawner
@@ -30,16 +34,27 @@ Team Avocado
 
 /// BATTLES ///
 - Player and enemy health point deductions occur simultaneously (i.e. doesn't matter if player or enemy strikes first, result will be the same)
-- Only one weapon and one protection item can be used per round -> no point using bow if sword already instantly kills, and no point using armour if shield already deflects all attack
+- Only one weapon and one protection item can be used per round -> e.g. no point using armour if shield already deflects all attack
 - And for above reasons:
     - Sword will be prioritised over bow
     - Shield will be prioritised over armour
-- Using sword takes precedence over enemy's armour - amoured enemy will still instantly be destroyed
+- Using sword takes precedence over enemy's armour
 - An enemy's hits will also deduct health points from player, and not allied mercenaries
 
 /// ENEMIES ///
 - Zombie Toast has 25% chance spawning with armour
 - Mercenary has 50% chance spawning with armour
+- The following constants were assumed:
+    - Spider
+        Health: 5 
+        Attack Damage: 2
+    - ZombieToast
+        Health: 7
+        Attack Damage: 3
+    - Mercenary
+        Health: 10
+        Attack Damage: 4
+        Battle Radius: 3
 
 /// MERCENARIES ///
 - Can be bribed using 1 treasure
@@ -67,19 +82,28 @@ Team Avocado
 
 
 //////// MILESTONE 3 ASSUMPTIONS /////////
-- Assume if sunstone can be used in place of a key/bribe, it will get used first (i.e. key or treasure will remain in inventory if exists)
+
+/// BOSSES ///
+- The following constants were assumed:
+    - Assassin
+        Health: 20
+        Attack Damage: 6
+    - Hydra
+        Health: 15
+        Attack Damage: 4
+
+/// NEW ITEMS ///
+
+- If sunstone can be used in place of a key/bribe, it will get used first (i.e. key or treasure will remain in inventory if exists)
 - Where there is an option, sunstone is used last in crafting - we want to "save" it since it is the most valuable
 - Sceptre only has 1 use
-- Assume you need to decide to "use" the sceptre (like a potion)
-<!-- - NOT ANYMORE Assume sceptre effect only works on entities that are within 2 cardinally adjacent tiles (i.e. same distance as a bribe) -->
-- Assume buildables can only be built (i.e. can't be picked up from the ground)
-- Crafting midnight armour: returns InvalidActionException if zombie is in dungeon
+- Sceptre is "used" like a potion
+- Buildables can only be built (i.e. can't be picked up from the ground)
+- Crafting midnight armour returns InvalidActionException if zombie is in dungeon
 - Midnight Armour has same durability as armour (2 uses)
 - Midnight Armour adds 2 attack damage points points to player if used as a weapon
 - Midnight Armour has same functionaltiy as Armour if used as protection
-- Use midnight shield last when player has multiple weapons/protection choices
-- If we try to create midnight armour while there is a zombie in the dungeon, returns InvalidActionException
-- Sword changed to take off 10 damage points
+- Use midnight armour last when player has multiple weapons/protection choices as it is most valuable
 - Anduril has same number of uses as sword (since it is a subclass)
 - Anduril gets used last if used for destroying zombie toast spawner, because it is the most valuable
 - Crafting sceptre: list of priorities:

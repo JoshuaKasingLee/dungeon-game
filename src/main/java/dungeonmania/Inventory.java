@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.List;
 
 import dungeonmania.exceptions.InvalidActionException;
-import dungeonmania.util.Position;
 
 public class Inventory {
     private List<Item> inventory = new ArrayList<Item>();
