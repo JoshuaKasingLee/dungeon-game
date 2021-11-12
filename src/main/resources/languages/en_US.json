@@ -1,9 +1,9 @@
 {
     "main_menu": {
         "font": "alagard.ttf",
-        "title": "Dungeon Mania",
+        "title": "Dungeon Story",
         "subtitle_1": "Frontend created by:\n Braedon Wooding, George Litsas, Nick Patrikeos, Noa Challis",
-        "subtitle_2": "Backend created by: <your names here>",
+        "subtitle_2": "Backend created by: Cyrus Chow, Kelly Zhou, Joshua Lee, Sami Al-Hilfi",
         "buttons": {
             "new_game": "Start New Game",
             "load_game": "Load Game",
