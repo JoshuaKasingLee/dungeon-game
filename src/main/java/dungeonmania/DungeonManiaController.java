@@ -21,6 +21,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -174,7 +175,13 @@ public class DungeonManiaController {
                     new ZombieToast(currPosition, activeGame);
                     break;
                 case "mercenary":
-                    new Mercenary(currPosition, activeGame);
+                    // 10% chance that assassin is spawned in.
+                    int randomOneDigitNum = new Random().nextInt(10);
+                    if (randomOneDigitNum == 1) {
+                        new Assassin(currPosition, activeGame);
+                    } else {
+                        new Mercenary(currPosition, activeGame);
+                    }
                     break;
                 case "treasure":
                     new Treasure(currPosition, activeGame);
