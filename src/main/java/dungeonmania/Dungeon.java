@@ -5,6 +5,8 @@ import java.util.List;
 import dungeonmania.util.Position;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+
 
 import java.util.Random;
 
@@ -214,9 +216,39 @@ public class Dungeon {
                 removeEntity(entity);
             }
         }
+    }
+
+
+    public void randomizedPrims(int width, int height, Position start, Position end) {
+        boolean[][] mazeMap = new boolean[height][width];
+        for (boolean[] row : mazeMap) {
+            Arrays.fill(row, false);
+        }
+
+        PrimDungeon primDungeon = new PrimDungeon(width, height, start, end, mazeMap);
+        primDungeon.primGenerate();
+
+        GoalComponent exit = new ExitGoal();
+        setOverallGoal(exit);
+        addSimpleGoals(exit);
+
+        extractPrimMaze(primDungeon.getMazeMap(), start, end);
+
+    }
 
 
 
+
+    private void extractPrimMaze(boolean[][] mazeMap, Position start, Position end) {
+        for (int i = 0; i < mazeMap.length; i++) {
+            for (int j = 0; j < mazeMap[i].length; j++) {
+                if (mazeMap[i][j] == false) {
+                    new Wall(new Position(j, i) , this);
+                }
+            }
+        }
+        new Player(start, this);
+        new Exit(end, this);
     }
 
     

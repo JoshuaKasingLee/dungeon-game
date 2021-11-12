@@ -3,6 +3,7 @@ package dungeonmania;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
@@ -582,6 +583,62 @@ public class DungeonManiaControllerTest {
         }
         dungeonInfo = controller.tick(null, Direction.RIGHT);
         assertEquals(true, dungeonInfo.getEntities().stream().anyMatch(x -> x.getType().equals("hydra")));
+
+    }
+
+
+    @Test void illegalGenerateGamemode() {
+        DungeonManiaController controller = new DungeonManiaController();
+        assertThrows(IllegalArgumentException.class, () -> controller.generateDungeon(1, 2, 3, 4, "superduperhard"));
+    }
+
+    @Test void testPrimGenerate() {
+        DungeonManiaController controller = new DungeonManiaController();
+        controller.generateDungeon(1, 2, 3, 4, "peaceful");
+        Dungeon activeGame = controller.getActiveGame();
+        List<Entity> entities =  activeGame.getEntities();
+        int exitCounter = 0;
+        int playerCounter = 0;
+        for (Entity e : entities) {
+            if (e.getType().equals("exit")) {
+                exitCounter++;
+            }
+            if (e.getType().equals("player")) {
+                playerCounter++;
+            }
+        }
+        assertEquals(1, exitCounter);
+        assertEquals(1, playerCounter);
+
+        Position positionChecker = new Position(0, 0);
+
+        for (int i = 0; i < 50; i++) {
+            positionChecker.translateBy(Direction.RIGHT);
+            List<Entity> entitiesAtPos = activeGame.getEntities(positionChecker);
+            boolean checkWall = entitiesAtPos.stream().anyMatch(e -> e instanceof Wall);
+            assertTrue(checkWall);
+        }
+
+        for (int i = 0; i < 50; i++) {
+            positionChecker.translateBy(Direction.DOWN);
+            List<Entity> entitiesAtPos = activeGame.getEntities(positionChecker);
+            boolean checkWall = entitiesAtPos.stream().anyMatch(e -> e instanceof Wall);
+            assertTrue(checkWall);
+        }
+        
+        for (int i = 0; i < 50; i++) {
+            positionChecker.translateBy(Direction.LEFT);
+            List<Entity> entitiesAtPos = activeGame.getEntities(positionChecker);
+            boolean checkWall = entitiesAtPos.stream().anyMatch(e -> e instanceof Wall);
+            assertTrue(checkWall);
+        }
+
+        for (int i = 0; i < 50; i++) {
+            positionChecker.translateBy(Direction.UP);
+            List<Entity> entitiesAtPos = activeGame.getEntities(positionChecker);
+            boolean checkWall = entitiesAtPos.stream().anyMatch(e -> e instanceof Wall);
+            assertTrue(checkWall);
+        }
 
     }
 
