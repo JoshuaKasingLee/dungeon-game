@@ -804,7 +804,7 @@ public class DungeonManiaControllerTest {
         ItemResponse bomb = dungeonInfo.getInventory().stream().filter(n -> n.getType().equals("bomb")).findFirst().orElse(null);
         String bombId = bomb.getId();
 
-        dungeonInfo = controller.tick(bombId, Direction.RIGHT); 
+        dungeonInfo = controller.tick(bombId, null); 
         assertEquals(false, dungeonInfo.getInventory().stream().anyMatch(x -> x.getType().equals("bomb")));
 
         assertDoesNotThrow(() -> controller.tick(null, Direction.LEFT)); 
@@ -816,15 +816,10 @@ public class DungeonManiaControllerTest {
         assertDoesNotThrow(() -> controller.tick(null, Direction.RIGHT)); 
         assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN)); 
         assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN)); 
-        DungeonResponse dungeonId = controller.tick(null, Direction.LEFT); 
+        dungeonInfo = controller.tick(null, Direction.LEFT); 
 
         assertEquals(false, dungeonInfo.getEntities().stream().anyMatch(x -> x.getType().equals("bomb")));
         assertEquals(false, dungeonInfo.getEntities().stream().anyMatch(x -> x.getType().equals("wall")));
-
-
-
-
-
     }
 
 
