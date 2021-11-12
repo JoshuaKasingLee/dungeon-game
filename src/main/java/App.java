@@ -102,6 +102,10 @@ public class App {
             return callUsingSessionAndArgument(request, (dmc) -> dmc.tick(request.queryParams("itemUsed"), Direction.valueOf(request.queryParams("movementDirection").toUpperCase())));
         }, gson::toJson);
 
+        Spark.post("/api/game/new/generate/", "application/json", (request, response) -> {
+            return callUsingSessionAndArgument(request, (dmc) -> dmc.generateDungeon(Integer.parseInt(request.queryParams("xStart")), Integer.parseInt(request.queryParams("yStart")), Integer.parseInt(request.queryParams("xEnd")), Integer.parseInt(request.queryParams("yEnd")), request.queryParams("gameMode")));
+        }, gson::toJson);
+
         Spark.post("/api/game/build/", "application/json", (request, response) -> {
             return callUsingSessionAndArgument(request, (dmc) -> dmc.build(request.queryParams("buildable")));
         }, gson::toJson);
