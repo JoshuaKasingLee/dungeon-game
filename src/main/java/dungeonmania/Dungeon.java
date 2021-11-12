@@ -6,7 +6,7 @@ import dungeonmania.util.Position;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.lang.Math;
+
 
 import java.util.Random;
 
@@ -205,88 +205,17 @@ public class Dungeon {
             Arrays.fill(row, false);
         }
 
-        int xStart = start.getX();
-        int yStart = start.getY();
-        mazeMap[yStart][xStart] = true;
+        PrimDungeon primDungeon = new PrimDungeon(width, height, start, end, mazeMap);
+        primDungeon.primGenerate();
 
-        List<Position> options = new ArrayList<>();
-        options = primAdjacentPositions(start, mazeMap, false, 2);
-
-        while (!options.isEmpty()) {
-            int randomInt = (int)(Math.random()*(options.size()));
-            Position next = options.get(randomInt);
-            options.remove(randomInt);
-            List<Position> neighbours = primAdjacentPositions(next, mazeMap, true, 2);
-            if (!neighbours.isEmpty()) {
-                randomInt = (int)(Math.random()*(neighbours.size()));
-                Position neighbour = neighbours.get(randomInt);
-                mazeMap[next.getY()][next.getX()] = true;
-                Position inBetween = getInBetween(next, neighbour);
-                mazeMap[inBetween.getY()][inBetween.getX()] = true;
-            }
-            List<Position> newNeighbours = primAdjacentPositions(next, mazeMap, false, 2);
-            for (Position n : newNeighbours) {
-                if (!options.contains(n)) {
-                    options.add(n);
-                }
-            }
-        }
-        
-        int xEnd = end.getX();
-        int yEnd = end.getY();
-        if (mazeMap[yEnd][xEnd] == false) {
-            mazeMap[yEnd][xEnd] = true;
-            List<Position> endNeighboursEmpty = primAdjacentPositions(end, mazeMap, true, 1);
-            List<Position> endNeighboursWalls = primAdjacentPositions(end, mazeMap, false, 1);
-            if (endNeighboursEmpty.isEmpty()) {
-                int randomInt = (int)(Math.random()*(endNeighboursWalls.size()));
-                Position neighbour = endNeighboursWalls.get(randomInt);
-                mazeMap[neighbour.getY()][neighbour.getX()] = true;
-            }
-
-        }
-        
         GoalComponent exit = new ExitGoal();
         setOverallGoal(exit);
         addSimpleGoals(exit);
 
-        // now to make it all into active game.
-        extractPrimMaze(mazeMap, start, end);
-
-
+        extractPrimMaze(primDungeon.getMazeMap(), start, end);
 
     }
 
-    private static Position getInBetween(Position next, Position neighbour) {
-        int newX = (next.getX() + neighbour.getX())/2;
-        int newY = (next.getY() + neighbour.getY())/2;
-        return new Position(newX, newY);
-    }
-
-    private static List<Position> primAdjacentPositions(Position pos, boolean[][] mazeMap, boolean empty, int distance) {
-        List<Position> primAdjPositions = new ArrayList<Position>();
-        int currX = pos.getX();
-        int currY = pos.getY();
-
-
-
-        int[] xChange = {-distance, distance, 0, 0};
-        int[] yChange = {0, 0, -distance, distance};
-
-        for (int i = 0; i < 4; i++) {
-            int newX = currX + xChange[i];
-            int newY = currY + yChange[i];
-            if (!posPastMapBoundary(newY, newX, mazeMap) && mazeMap[newY][newX] == empty) {
-                primAdjPositions.add(new Position(newX, newY));
-            }
-        }
-        return primAdjPositions;
-    }
-
-
-    private static boolean posPastMapBoundary(int currY, int currX, boolean[][] mazeMap) {
-        return (currX <= 0 || currX >= mazeMap.length - 1 || currY <= 0 || currY >= mazeMap.length - 1);
-    }
 
 
 
