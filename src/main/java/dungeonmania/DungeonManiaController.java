@@ -720,7 +720,6 @@ public class DungeonManiaController {
             }
         }
 
-        // TODO: account for sceptre in interact
 
         if (found == false) {
             throw new IllegalArgumentException("Entity Id is not valid.");
