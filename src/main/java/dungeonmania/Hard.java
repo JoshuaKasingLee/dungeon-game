@@ -8,6 +8,7 @@ public class Hard extends Gamemode {
 
     
     /** 
+     * returns a string "Hard"
      * @return String
      */
     @Override
