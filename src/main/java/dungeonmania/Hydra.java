@@ -61,28 +61,6 @@ public class Hydra extends Enemy {
      */
     @Override
     public void updatePosition() {
-        Entity player = getDungeon().getEntities().stream().filter(n -> n.getType().equals("player")).findFirst().orElse(null);
-        if (((Player)player).getCharacterState().getType().equals("Invincible")) {
-            this.possiblePositions = getPossiblePositions();
-            this.distanceOfPositions = getDistanceOfPositions();
-            int direction = distanceOfPositions.indexOf(Collections.max(distanceOfPositions));
-            switch(direction) {
-                case 0:
-                    moveUp();
-                    break;
-                case 1:
-                    moveDown();
-                    break;
-                case 2:
-                    moveLeft();
-                    break;
-                case 3:
-                    moveRight();
-                    break;
-            }
-            return;
-        }
-        
         Random rand = new Random();
         int randN = rand.nextInt();
         if (randN % 4 == 0) {
