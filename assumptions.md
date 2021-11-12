@@ -38,7 +38,7 @@ Team Avocado
 - And for above reasons:
     - Sword will be prioritised over bow
     - Shield will be prioritised over armour
-- Using sword takes precedence over enemy's armour - amoured enemy will still instantly be destroyed
+- Using sword takes precedence over enemy's armour
 - An enemy's hits will also deduct health points from player, and not allied mercenaries
 
 /// ENEMIES ///
