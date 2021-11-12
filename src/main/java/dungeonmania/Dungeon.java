@@ -57,15 +57,13 @@ public class Dungeon {
         List<Entity> bombs = getEntitiesOfType("bomb");
         List<Entity> switches = getEntitiesOfType("switch");
 
-        for (Entity b : bombs) {
-            for (Entity s : switches) {
-                String positionB = b.getPosition().toString();
-                String positionS = b.getPosition().toString();
-                throw new IllegalArgumentException(positionB + positionS);
-
-                // if (Position.isAdjacent(b.getPosition(), s.getPosition())) {
-                //     ((Bomb)b).explode();
-                // }
+        List<Entity> bombsCopy = new ArrayList<Entity>(bombs);
+        List<Entity> switchesCopy = new ArrayList<Entity>(switches);
+        for (Entity b : bombsCopy) {
+            for (Entity s : switchesCopy) {
+                if (Position.isAdjacent(b.getPosition(), s.getPosition()) && ((Switch)s).hasBoulder()) {
+                    ((Bomb)b).explode();
+                }
             }
         }
 
@@ -237,10 +235,10 @@ public class Dungeon {
      * remove entity from a position
      * @param position
      */
-    public void removeFrom(Position position) {
+    public void explodePosition(Position position) {
         List<Entity> entitiesCopy = new ArrayList<Entity>(entities);
         for (Entity entity : entitiesCopy) {
-            if (entity.getPosition().equals(position)) {
+            if (entity.getPosition().equals(position) && !entity.getType().equals("player")) {
                 removeEntity(entity);
             }
         }
