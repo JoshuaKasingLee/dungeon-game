@@ -34,5 +34,17 @@ public class Milestone3Loading {
         assertEquals(true, dungeonInfo.getEntities().stream().anyMatch(x -> x.getType().equals("sun_stone")));
         assertEquals(true, dungeonInfo.getEntities().stream().anyMatch(x -> x.getType().equals("anduril")));
     }
+
+    @Test
+    public void testAssassinsSpawnedFromMercenary() {
+        DungeonManiaController controller = new DungeonManiaController();
+        DungeonResponse dungeonInfo = controller.newGame("enemyGoalTester", "Standard");
+
+        while (!dungeonInfo.getEntities().stream().anyMatch(x -> x.getType().equals("assassin"))) {
+            dungeonInfo = controller.newGame("enemyGoalTester", "Standard");
+        }
+
+        assertEquals(true, dungeonInfo.getEntities().stream().anyMatch(x -> x.getType().equals("assassin")));
+    }
     
 }
