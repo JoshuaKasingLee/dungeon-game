@@ -69,7 +69,7 @@ public class DungeonManiaController {
      * @return List<String>
      */
     public List<String> getGameModes() {
-        return Arrays.asList("Standard", "Peaceful", "Hard", "standard","peaceful","hard");
+        return Arrays.asList("standard","peaceful","hard");
     }
 
     /**
@@ -99,7 +99,9 @@ public class DungeonManiaController {
         if (!dungeons().contains(dungeonName)) {
             throw new IllegalArgumentException("Invalid dungeonName");
         }
-        if (!getGameModes().contains(gameMode)) {
+
+        String standardisedGamemodeString = gameMode.toLowerCase();
+        if (!getGameModes().contains(standardisedGamemodeString)) {
             throw new IllegalArgumentException();
         }
         String fileContents = null;
@@ -114,7 +116,7 @@ public class DungeonManiaController {
         String dungeonId = newDungeonId();
 
         // Make the Dungeon Class
-        activeGame = new Dungeon(dungeonName, gameMode, dungeonId);
+        activeGame = new Dungeon(dungeonName, standardisedGamemodeString, dungeonId);
 
         
         
