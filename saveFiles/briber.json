@@ -22,13 +22,44 @@
             "ally": false,
             "y": 2
         },
+        {
+            "x": 0,
+            "entityId": "2",
+            "totalArmour": 0,
+            "type": "assassin",
+            "mercState": "MercStandardState",
+            "ally": false,
+            "y": 2
+        },
         {"x":2,"y":20,"entityId":"229","type":"exit"}
     ],
     "items": [
         {
             "type": "treasure",
             "entityId": "2"
+        },
+        {
+            "type": "treasure",
+            "entityId": "6"
+        },
+        {
+            "type": "treasure",
+            "entityId": "7"
+        },
+        {
+            "type": "sceptre",
+            "entityId": "3"
+        },
+        {
+            "type": "armour",
+            "entityId": "4",
+            "usesLeft": 3
+        },
+        {
+            "type": "sun_stone",
+            "entityId": "5"
         }
+
     ],
     "counter": 0,
     "gamemode": "Standard",
