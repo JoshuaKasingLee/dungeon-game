@@ -428,9 +428,18 @@ public class DungeonManiaControllerTest {
         DungeonResponse dungeonInfo =  controller.tick(null, Direction.DOWN);
         List<EntityResponse> entities = dungeonInfo.getEntities();
         assertEquals(true, entities.stream().anyMatch(x -> x.getType().equals("spider")));
-        
-        
+    }
 
+    @Test
+    public void testMaxFiveSpiders() {
+        DungeonManiaController controller = new DungeonManiaController();
+        assertDoesNotThrow(() -> controller.newGame("exit", "Hard"));
+
+        for (int i = 0; i < 100; i++) {
+            assertDoesNotThrow(() -> controller.tick(null, Direction.RIGHT));
+        }
+        DungeonResponse dungeonInfo =  controller.tick(null, Direction.RIGHT);
+        assertEquals(5, dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("spider")).count());
 
     }
 
