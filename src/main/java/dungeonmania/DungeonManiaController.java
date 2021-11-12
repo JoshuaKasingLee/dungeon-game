@@ -301,7 +301,7 @@ public class DungeonManiaController {
                     entityData.put("teleported", ((Player)currEntity).getTeleported());
                     if (stateType.equals("Invincible")) {
                         entityData.put("timeLeft", ((InvincibleState)characterState).getTimeLeft());
-                    } else if (stateType.equals("Invisibile")) {
+                    } else if (stateType.equals("Invisible")) {
                         entityData.put("timeLeft", ((InvisibleState)characterState).getTimeLeft());
                     }
                     break;
