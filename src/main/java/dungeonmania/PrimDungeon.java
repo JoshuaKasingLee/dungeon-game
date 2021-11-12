@@ -9,20 +9,20 @@ import java.lang.Math;
 
 
 public class PrimDungeon {
-    private int width;
-    private int height;
     private Position start;
     private Position end;
     private boolean[][] mazeMap;
 
-    public PrimDungeon(int width, int height, Position start, Position end, boolean[][] mazeMap) {
-        this.width = width;
-        this.height = height;
+    public PrimDungeon(Position start, Position end, boolean[][] mazeMap) {
         this.start = start;
         this.end = end;
         this.mazeMap = mazeMap;
     }
 
+
+    /** 
+     * generates the mazemap from Prim's Algorithm
+     */
     public void primGenerate() {
         int xStart = start.getX();
         int yStart = start.getY();
@@ -68,12 +68,27 @@ public class PrimDungeon {
     }
 
 
+    
+    /**
+     * gets the position between two positions
+     * @param next
+     * @param neighbour
+     * @return Position
+     */
     private Position getInBetween(Position next, Position neighbour) {
         int newX = (next.getX() + neighbour.getX())/2;
         int newY = (next.getY() + neighbour.getY())/2;
         return new Position(newX, newY);
     }
 
+    
+    /**
+     * finds the up,left,right,down neighbours a certain distance away e.g. 1 or 2 tiles away
+     * @param pos
+     * @param empty
+     * @param distance
+     * @return List<Position>
+     */
     private List<Position> primAdjacentPositions(Position pos, boolean empty, int distance) {
         List<Position> primAdjPositions = new ArrayList<Position>();
         int currX = pos.getX();
@@ -94,79 +109,23 @@ public class PrimDungeon {
         return primAdjPositions;
     }
 
+    
+    /** 
+     * check if passed position is on or outside the map boundary
+     * @param currY
+     * @param currX
+     * @return boolean
+     */
     private boolean posPastMapBoundary(int currY, int currX) {
         return (currX <= 0 || currX >= mazeMap.length - 1 || currY <= 0 || currY >= mazeMap.length - 1);
     }
 
 
     /**
-     * @return int return the width
-     */
-    public int getWidth() {
-        return width;
-    }
-
-    /**
-     * @param width the width to set
-     */
-    public void setWidth(int width) {
-        this.width = width;
-    }
-
-    /**
-     * @return int return the height
-     */
-    public int getHeight() {
-        return height;
-    }
-
-    /**
-     * @param height the height to set
-     */
-    public void setHeight(int height) {
-        this.height = height;
-    }
-
-    /**
-     * @return Position return the start
-     */
-    public Position getStart() {
-        return start;
-    }
-
-    /**
-     * @param start the start to set
-     */
-    public void setStart(Position start) {
-        this.start = start;
-    }
-
-    /**
-     * @return Position return the end
-     */
-    public Position getEnd() {
-        return end;
-    }
-
-    /**
-     * @param end the end to set
-     */
-    public void setEnd(Position end) {
-        this.end = end;
-    }
-
-    /**
      * @return boolean[][] return the mazeMap
      */
     public boolean[][] getMazeMap() {
         return mazeMap;
-    }
-
-    /**
-     * @param mazeMap the mazeMap to set
-     */
-    public void setMazeMap(boolean[][] mazeMap) {
-        this.mazeMap = mazeMap;
     }
 
 }
