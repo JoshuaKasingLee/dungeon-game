@@ -115,6 +115,11 @@ public class Milestone3Loading {
         assertEquals(true, mercenary.isAlly());
         assertEquals("MercControlled", mercenary.getMercenaryState().getType());
 
+        assertDoesNotThrow(() -> controller.saveGame("briberNewSave"));
+        dungeonInfo = controller.loadGame("briberNewSave");
+        mercenary = (Mercenary)activeGame.getEntities().stream().filter(n -> n.getType().equals("mercenary")).findFirst().orElse(null);
+        assertEquals("MercControlled", mercenary.getMercenaryState().getType());
+
     }
 
     @Test
