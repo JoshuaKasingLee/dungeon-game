@@ -5,14 +5,12 @@ public abstract class Gamemode {
     private int spawnTimer;
     private int startingHealth;
     private boolean invincible;
-    private int swampMovement;
 
     public Gamemode(boolean battle, int spawnTimer, int startingHealth, boolean invicible, int swampMovement) {
         this.battle = battle;
         this.spawnTimer = spawnTimer;
         this.startingHealth = startingHealth;   
         this.invincible = invicible; 
-        this.swampMovement = swampMovement;
     }
 
     

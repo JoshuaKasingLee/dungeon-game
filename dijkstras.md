@@ -54,10 +54,4 @@ public Map<Position, Position> dijkstras(List Positions, Position source) {
 Assumptions:
 - Boulders can pass through swamp tiles
 - Dijkstra's algorithm does not account for the ability to go through portals
-- Peaceful: Swamp Tile Movement = 1, Standard: Swamp Tile Movement = 2, Hard: Swamp Tile Movement = 3
-- Enemies are not slowed by swamp tiles
-- Door unlocked
-
-to check in meeting:
-- Can mercenaries go through doors?
-- When traversing entities in the DungeonMania, update the dungeons of each entity
+- Door unlocked (need to add to dungeon) - the type

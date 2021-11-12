@@ -8,12 +8,6 @@ import java.util.HashMap;
 
 import dungeonmania.util.Position;
 
-//TODO: Remove imports and main function
-import dungeonmania.response.models.DungeonResponse;
-import dungeonmania.response.models.EntityResponse;
-import dungeonmania.util.Direction;
-
-
 public class Mercenary extends Enemy {
     public static final int ORIGINAL_HEALTH = 10;
     public static final int MERCENARY_ATTACK_DAMAGE = 4;
@@ -269,7 +263,6 @@ public class Mercenary extends Enemy {
      */
     public int getNextDirection(Map<Position, Position> prev, Position destination) {
         // Pointer to next position
-        // TODO: remove
         Position nextPosition = destination;
 
         // Go through the previous hashmap to find the next move
@@ -303,55 +296,4 @@ public class Mercenary extends Enemy {
         return nextDirection;
     }
 
-    public static void main(String[] args) {
-        // Initialise dungeon
-        DungeonManiaController controller = new DungeonManiaController();
-
-        // Create a new game
-        DungeonResponse dungeonInfo = controller.newGame("swampAndMercenary", "Standard");
-
-        // Get player entity
-        EntityResponse player = null;
-        player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("player")).findFirst().orElse(null);
-
-        // Assert player location is 1,1
-        // assertEquals(new Position(1, 1), player.getPosition());
-        System.out.println("Expected: " + new Position(1, 1) + " Actual: " + player.getPosition());
-
-        // Get mercenary entity
-        EntityResponse mercenary = null;
-        mercenary = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("mercenary")).findFirst().orElse(null);
-
-        // Assert mercenary location is 3,5
-        // assertEquals(new Position(1, 10), mercenary.getPosition());
-        System.out.println("Expected: " + new Position(1, 10) + " Actual: " + mercenary.getPosition());
-
-        // Move character into wall and position remains the same
-        dungeonInfo = controller.tick(null, Direction.DOWN);
-        
-        // Get mercenary entity
-        mercenary = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("mercenary")).findFirst().orElse(null);
-        System.out.println("Expected: " + new Position(1, 9) + " Actual: " + mercenary.getPosition());
-
-        dungeonInfo = controller.tick(null, Direction.DOWN);
-        // Get mercenary entity
-        mercenary = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("mercenary")).findFirst().orElse(null);
-        System.out.println("Expected: " + new Position(1, 9) + " Actual: " + mercenary.getPosition());
-
-        dungeonInfo = controller.tick(null, Direction.NONE);
-        // Get mercenary entity
-        mercenary = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("mercenary")).findFirst().orElse(null);
-        System.out.println("Expected: " + new Position(1, 8) + " Actual: " + mercenary.getPosition());
-
-        dungeonInfo = controller.tick(null, Direction.NONE);
-        // Get mercenary entity
-        mercenary = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("mercenary")).findFirst().orElse(null);
-        System.out.println("Expected: " + new Position(1, 7) + " Actual: " + mercenary.getPosition());
-
-        dungeonInfo = controller.tick(null, Direction.NONE);
-        // Get mercenary entity
-        mercenary = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("mercenary")).findFirst().orElse(null);
-        System.out.println("Expected: " + new Position(1, 6) + " Actual: " + mercenary.getPosition());
-
-    }
 }

@@ -46,6 +46,7 @@ Team Avocado
 - Bribing only occurs if within 2 cardinally adjacent tiles of the original player position (e.g. cannot bribe 1 square diagonally)
 - Battle radius is 3 positions
 - When within radius of a fighting player, position is updated once per battle, not per round (i.e. to simulate moving twice)
+- Dijkstra's algorithm does not account for the ability to go through portals
 
 // STATIC ENTITIES ///
 - Boulders can be pushed onto other items/moving entites
@@ -64,4 +65,5 @@ Team Avocado
 - When a zombie spawner is destroyed, it is removed off the map 
 - Key must be an integer 
 - There is only 1 exit
+- Boulders can pass through swamp tiles without being slowed
 
