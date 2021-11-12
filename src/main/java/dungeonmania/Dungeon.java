@@ -16,7 +16,7 @@ public class Dungeon {
     private Gamemode gamemode;
     private String dungeonId;
     private List<Entity> entities = new ArrayList<Entity>();
-    private Inventory inventory = new Inventory();    // subject to change name or class to entity
+    private Inventory inventory = new Inventory();    
     private List<GoalComponent> simpleGoals = new ArrayList<GoalComponent>();
     private GoalComponent overallGoal;
     private int counter;
@@ -28,6 +28,12 @@ public class Dungeon {
         this.counter = 0;
     }
 
+    
+    /**
+     * get the entity type string from a given entity id
+     * @param id
+     * @return String
+     */
     public String getEntityTypeFromId(String id) {
         for (Entity entity : entities) {
             if (entity.getId().equals(id)) {
@@ -45,13 +51,18 @@ public class Dungeon {
     }
 
     
-
+    /**
+     * tick the global spawn counter and spawn a spider or hydra if needed
+     */
     public void tickCounter() {
         counter++;
         spiderSpawn();
         hydraSpawn();
     }
 
+    /**
+     * spawn a spider if the spawn timer is reached
+     */
     public void spiderSpawn() {
         if (getSpawnTimer() == 0) {
             return;
@@ -70,6 +81,9 @@ public class Dungeon {
         }
     }
 
+    /**
+     * spawn a hydra if the spawn timer is reached
+     */
     public void hydraSpawn() {
         if (getHydraSpawnTimer() == 0) {
             return;
@@ -85,6 +99,11 @@ public class Dungeon {
         }
     }
 
+    
+    /** 
+     * return a random spawn position
+     * @return Position
+     */
     public Position randomSpawnPosition() {
         Random number = new Random();
         int bound = 20;
@@ -94,19 +113,35 @@ public class Dungeon {
         return randPos;
     }
 
+    
+    /**
+     * count the number of spiders in the game 
+     * @return long
+     */
     public long countSpiders() {
         return entities.stream().filter(x -> x instanceof Spider).count();
     }
 
+    
+    /**
+     * get the gamemode's spawn time number for zombie and spiders    
+     * @return int
+     */
     public int getSpawnTimer() {
         return getGamemode().getSpawnTimer();
     }
 
+    
+    /**
+     * get the gamemode's spawn time number for hydra   
+     * @return int
+     */
     public int getHydraSpawnTimer() {
         return getGamemode().getHydraSpawnTimer();
     }
     
-    /** 
+    /**
+     * set the gamemode to one of the difficulties 
      * @param gamemodeString
      */
     public void initialiseGameMode(String gamemodeString) {
@@ -123,7 +158,8 @@ public class Dungeon {
     }
 
     
-    /** 
+    /**
+     * adds an entity to the game and try to attach it to goals 
      * @param entity
      */
     public void addEntity(Entity entity) {
@@ -132,7 +168,8 @@ public class Dungeon {
     }
 
     
-    /** 
+    /**
+     * try to attach entities to goals 
      * @param entity
      */
     public void conditionalAttach(Entity entity) {
@@ -142,16 +179,10 @@ public class Dungeon {
     }
     
     
-    /** 
-     * @param treasure
-     * @return boolean
-     */
-    public boolean isEntityInDungeon(Treasure treasure) {
-        return entities.stream().anyMatch(entity -> (entity instanceof Treasure));
-    }
 
     
     /** 
+     * adds a simple goal to the list of simple goals
      * @param simpleGoal
      */
     public void addSimpleGoals(GoalComponent simpleGoal) {
@@ -159,7 +190,8 @@ public class Dungeon {
     }
     
     
-    /** 
+    /**
+     * get entities at a position 
      * @param position
      * @return List<Entity>
      */
@@ -173,33 +205,10 @@ public class Dungeon {
         return entitiesAtPos;
     }
 
-    
-    /** 
-     * @param position
-     * @return Door
-     */
-    public Door getDoor(Position position) {
-        List<Entity> entityList = getEntities(position);
-        for (Entity entity : entityList) {
-            if (entity instanceof Door) {
-                return (Door) entity;
-            }
-        }
-         return null;
-    }
 
     
-    /** 
-     * @param entity
-     * @param position
-     */
-    public void addTo(Entity entity, Position position) {
-        entity.setPosition(position);
-        addEntity(entity);
-    }
-
-    
-    /** 
+    /**
+     * remove an entity from the game 
      * @param entity
      */
     public void removeEntity(Entity entity) {
@@ -208,6 +217,7 @@ public class Dungeon {
 
     
     /** 
+     * remove entity from a position
      * @param position
      */
     public void removeFrom(Position position) {
@@ -220,13 +230,21 @@ public class Dungeon {
     }
 
 
+    
+    /** 
+     * make a prim algorithm dungeon
+     * @param width
+     * @param height
+     * @param start
+     * @param end
+     */
     public void randomizedPrims(int width, int height, Position start, Position end) {
         boolean[][] mazeMap = new boolean[height][width];
         for (boolean[] row : mazeMap) {
             Arrays.fill(row, false);
         }
 
-        PrimDungeon primDungeon = new PrimDungeon(width, height, start, end, mazeMap);
+        PrimDungeon primDungeon = new PrimDungeon(start, end, mazeMap);
         primDungeon.primGenerate();
 
         GoalComponent exit = new ExitGoal();
@@ -240,6 +258,13 @@ public class Dungeon {
 
 
 
+    
+    /** 
+     * extract the dungeon map made using prim's algorithm into this dungeon
+     * @param mazeMap
+     * @param start
+     * @param end
+     */
     private void extractPrimMaze(boolean[][] mazeMap, Position start, Position end) {
         for (int i = 0; i < mazeMap.length; i++) {
             for (int j = 0; j < mazeMap[i].length; j++) {
@@ -254,6 +279,7 @@ public class Dungeon {
 
     
     /** 
+     * find and return the player
      * @return Player
      */
     public Player getPlayer() {
@@ -267,6 +293,7 @@ public class Dungeon {
 
     
     /** 
+     * move an item to the inventory and out of the entities in the dungeon
      * @param item
      */
     public void moveToInventory(Item item) {
