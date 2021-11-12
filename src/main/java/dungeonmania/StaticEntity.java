@@ -42,6 +42,14 @@ public abstract class StaticEntity extends Entity {
     }
 
     /** 
+     * Returns the movement factor of the tile
+     * @return double
+     */
+    public double setMovementFactor(double movementFactor) {
+        return this.movementFactor = movementFactor;
+    }
+
+    /** 
      * gets the movement factor
      * @return double
      */

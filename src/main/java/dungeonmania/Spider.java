@@ -86,6 +86,10 @@ public class Spider extends Enemy {
     @Override
     public void updatePosition() {
         Entity player = getDungeon().getEntities().stream().filter(n -> n.getType().equals("player")).findFirst().orElse(null);
+        
+        if (!checkValidMove()) {
+            return;
+        }
 
         if (((Player)player).getCharacterState().getType().equals("Invincible")) {
             this.possiblePositions = getPossiblePositions();
@@ -120,6 +124,7 @@ public class Spider extends Enemy {
                 setPositionNumber(1);
             }
         } else {
+            setPositionNumber(getPositionNumber());
             // Check if the next position has a boulder
             if (!checkForBoulder(adjacentPositions.get(getNextPositionNumber()))) {
                 setPosition(adjacentPositions.get(getNextPositionNumber()));
@@ -191,10 +196,14 @@ public class Spider extends Enemy {
      * @return int
      */
     public int getPositionNumber() {
-        if (this.positionNumber < 0) {
-            return (this.positionNumber % 8 + 8);
+        int returnInteger = 0;
+        for (int i = 0; i <= 7; i++) {
+            if (getPosition().equals(adjacentPositions.get(i))) {
+                returnInteger = i;
+                break;
+            }
         }
-        return (this.positionNumber % 8);
+        return returnInteger;
     }
     
     /** 
@@ -223,5 +232,18 @@ public class Spider extends Enemy {
      */
     public Position getStartingPosition() {
         return startingPosition;
+    }
+
+    public boolean checkValidMove() {
+        for (Entity e : getDungeon().getEntities(getPosition())) {
+            if (e instanceof SwampTile) {
+                if (getSlowed() < ((StaticEntity)e).getMovementFactor()) {
+                    incrementSlowed();
+                    return false;
+                }
+            }
+        }
+        setSlowed(1);
+        return true;
     }
 }

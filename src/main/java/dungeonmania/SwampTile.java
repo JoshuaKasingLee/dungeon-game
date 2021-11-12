@@ -10,8 +10,9 @@ public class SwampTile extends StaticEntity {
     // TODO: Check whether player is called first or static entity
     // TODO: Add a movement_factor and remove it from Gamemode
 
-    public SwampTile(Position position, Dungeon dungeon) {
+    public SwampTile(Position position, Dungeon dungeon, double movementFactor) {
         super(position, dungeon);
+        setMovementFactor(movementFactor);
     }
 
     /**
@@ -19,20 +20,7 @@ public class SwampTile extends StaticEntity {
      * @param direction
      */
     public void update(Direction direction) {
-        for (Entity entity : getDungeon().getEntities()) {
-            if (entity instanceof MovingEntity && getPosition().equals(entity.getPosition())) {
-                updateEntitySlowed(entity);
-            }
-        }
-    }
-
-    /** 
-     * Sets the movement factor of the entity
-     * @return double
-     */
-    @Override
-    public double setMovementFactor() {
-        return getGamemode().getSwampMovement();
+        return;
     }
 
     /** 
@@ -43,14 +31,4 @@ public class SwampTile extends StaticEntity {
         return "swamp_tile";
     }
 
-    /** 
-     * Updates the slowness state of the player
-     */
-    public void updateEntitySlowed(Entity entity) {
-        if (((MovingEntity)entity).getSlowed() < getMovementFactor() && getPosition().equals(getPlayerPosition())) {
-            ((MovingEntity)entity).incrementSlowed();
-        } else {
-            ((MovingEntity)entity).setSlowed(1);
-        }
-    }
 }

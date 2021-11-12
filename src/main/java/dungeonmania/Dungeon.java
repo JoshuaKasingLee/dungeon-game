@@ -286,10 +286,10 @@ public class Dungeon {
 
         // Find values of coordinates
         for (Entity entity : entities) {
-            lowestX = (entity.getXPosition() < lowestX) ? (entity.getXPosition()) : (lowestX);
-            lowestY = (entity.getXPosition() < lowestY) ? (entity.getYPosition()) : (lowestY);
-            highestX = (entity.getXPosition() > highestX) ? (entity.getXPosition()) : (highestX);
-            highestY = (entity.getXPosition() > highestY) ? (entity.getYPosition()) : (highestY);
+            lowestX = (entity.getXPosition() < lowestX) ? (entity.getXPosition() - 1) : (lowestX - 1);
+            lowestY = (entity.getYPosition() < lowestY) ? (entity.getYPosition() - 1) : (lowestY - 1);
+            highestX = (entity.getXPosition() > highestX) ? (entity.getXPosition() + 1) : (highestX + 1);
+            highestY = (entity.getYPosition() > highestY) ? (entity.getYPosition() + 1) : (highestY + 1);
         }
 
         // Create a list of all possible positions

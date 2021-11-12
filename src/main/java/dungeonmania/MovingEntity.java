@@ -95,12 +95,16 @@ public abstract class MovingEntity extends Entity {
                     }
                 }   
             }
+        }
+        for (Entity e : getDungeon().getEntities(getPosition())) {
             if (e instanceof SwampTile) {
-                if (getSlowed() <= getGamemode().getSwampMovement()) {
+                if (getSlowed() < ((StaticEntity)e).getMovementFactor()) {
+                    incrementSlowed();
                     return false;
                 }
             }
         }
+        setSlowed(1);
         return true;
     }
 
