@@ -3,6 +3,8 @@ package dungeonmania;
 import dungeonmania.util.Position;
 
 public class Sword extends Item {
+    public static final int ATTACK_DAMAGE = 10;
+
     public Sword(Position position, Dungeon dungeon) {
         super(position, dungeon);
         this.setUsesLeft(3);

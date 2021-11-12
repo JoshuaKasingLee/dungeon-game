@@ -225,7 +225,7 @@ public class BattleTest {
         assertEquals(character.getHealth(), expectedCharHealth3);
         assertEquals(zombie.getHealth(), expectedEnemyHealth3);
 
-        // show sword overrides armour
+        // expect 2 rounds to kill mercenary with sword
         Inventory inv = character.getInventory();
         Sword sword = new Sword(new Position(0, 0), character.getDungeon());
         inv.add(sword);
@@ -233,9 +233,10 @@ public class BattleTest {
         Mercenary merc = new Mercenary(new Position(0, 0), character.getDungeon());
         merc.giveArmour(Armour.DURABILITY);
         int expectedCharHealth4 = expectedCharHealth3 - ((merc.getHealth() * merc.getAttackDamage()) / 10);
+        int expectedCharHealth5 = expectedCharHealth4 - (((merc.getHealth()-5) * merc.getAttackDamage()) / 10);
         state.battleEnemy(merc);
-        assertEquals(character.getHealth(), expectedCharHealth4);
-        assertEquals(merc.getHealth(), Mercenary.ORIGINAL_HEALTH - 10);
+        assertEquals(character.getHealth(), expectedCharHealth5);
+        assertEquals(merc.getHealth(), Mercenary.ORIGINAL_HEALTH - 5*2);
     }
 
     @Test
