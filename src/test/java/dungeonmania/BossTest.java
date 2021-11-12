@@ -3,12 +3,9 @@ package dungeonmania;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import org.junit.jupiter.api.Test;
 
-// import java.util.ArrayList;
-// import java.util.List;
 import java.util.Arrays;
 
 import dungeonmania.exceptions.InvalidActionException;
@@ -111,11 +108,11 @@ public class BossTest {
     public void hydraMovementRange() {
         Player player = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
         Hydra h = new Hydra(new Position(0, 0), player.getDungeon());
-        Door d = new Door(new Position(1, 0), h.getDungeon(), 1);
-        Wall w = new Wall(new Position(-1, 0), h.getDungeon());
-        ZombieToastSpawner z = new ZombieToastSpawner(new Position(0, 1), h.getDungeon());
-        Boulder b1 = new Boulder(new Position(0, -1), h.getDungeon());
-        Boulder b2 = new Boulder(new Position(0, -2), h.getDungeon());
+        new Door(new Position(1, 0), h.getDungeon(), 1);
+        new Wall(new Position(-1, 0), h.getDungeon());
+        new ZombieToastSpawner(new Position(0, 1), h.getDungeon());
+        new Boulder(new Position(0, -1), h.getDungeon());
+        new Boulder(new Position(0, -2), h.getDungeon());
         // test hydra should not be able to move past static entities like player
         h.updatePosition();
         assertEquals(new Position(0, 0), h.getPosition());
