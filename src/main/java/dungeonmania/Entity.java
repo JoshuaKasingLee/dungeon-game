@@ -178,8 +178,16 @@ public abstract class Entity implements Subject {
         this.dungeon = dungeon;
     }
 
-    // abstract functions
+    /**
+     * @return String return the type
+     */
     public abstract String setType();
 
+    /**
+     * @param Updates the type of the entity
+     */
+    public void updateType(String type) {
+        this.type = type;
+    }
 }
 

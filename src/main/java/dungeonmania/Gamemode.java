@@ -50,10 +50,4 @@ public abstract class Gamemode {
         return invincible;
     }
 
-    /**
-     * @return int return the swamp tile movement factor
-     */
-    public int getSwampMovement() {
-        return swampMovement;
-    }
 }

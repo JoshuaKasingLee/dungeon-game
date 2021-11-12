@@ -20,7 +20,7 @@ public class Door extends StaticEntity {
     public void update(Direction direction) {
         if (this.getPosition().equals(this.getPlayerPosition())) {
             this.locked = false;
-
+            updateType("door_unlocked");
         }
     }
 

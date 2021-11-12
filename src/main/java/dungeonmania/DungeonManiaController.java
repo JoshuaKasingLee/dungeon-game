@@ -171,6 +171,9 @@ public class DungeonManiaController {
                 case "zombie_toast_spawner":
                     currEntity = new ZombieToastSpawner(currPosition, activeGame);
                     break;
+                case "swamp_tile":
+                    currEntity = new SwampTile(currPosition, activeGame, entityList.getJSONObject(i).getInt("movement_factor"));
+                    break;
                 case "one_ring":
                     currEntity = new OneRing(currPosition, activeGame);
                     break;
