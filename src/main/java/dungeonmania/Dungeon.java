@@ -9,6 +9,8 @@ import java.util.Arrays;
 
 
 import java.util.Random;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Dungeon {
 
@@ -50,7 +52,30 @@ public class Dungeon {
         throw new IllegalArgumentException("Not a valid id!");
     }
 
-    
+    public void triggerBombExplosion() {
+        
+        List<Entity> bombs = getEntitiesOfType("bomb");
+        List<Entity> switches = getEntitiesOfType("switch");
+
+        for (Entity b : bombs) {
+            for (Entity s : switches) {
+                String positionB = b.getPosition().toString();
+                String positionS = b.getPosition().toString();
+                throw new IllegalArgumentException(positionB + positionS);
+
+                // if (Position.isAdjacent(b.getPosition(), s.getPosition())) {
+                //     ((Bomb)b).explode();
+                // }
+            }
+        }
+
+    }
+
+    public List<Entity> getEntitiesOfType(String type) {
+        return entities.stream().filter(n -> n.getType().equals(type)).collect(Collectors.toList());
+        
+
+    }
     /**
      * tick the global spawn counter and spawn a spider or hydra if needed
      */
@@ -146,15 +171,7 @@ public class Dungeon {
      */
     public void initialiseGameMode(String gamemodeString) {
         String standardisedGamemodeString = gamemodeString.toLowerCase();
-        if (standardisedGamemodeString.equals("peaceful")) {
-            gamemode = new Peaceful();
-        }
-        else if (standardisedGamemodeString.equals("standard")) {
-            gamemode = new Standard();
-        }
-        else if (standardisedGamemodeString.equals("hard")) {
-            gamemode = new Hard();
-        }
+        gamemode = GamemodeFactory.makeGamemode(standardisedGamemodeString);
     }
 
     

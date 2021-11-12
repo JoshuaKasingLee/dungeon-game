@@ -697,8 +697,9 @@ public class DungeonManiaController {
                 if (entity instanceof StaticEntity) {
                     ((StaticEntity) entity).update(movementDirection);
                 }
-
             }
+
+            activeGame.triggerBombExplosion();
 
         }
         

@@ -62,9 +62,9 @@ public class ZombieToastSpawner extends StaticEntity {
     /** 
      * @param position
      */
-    public void createZombieToast(Position position) {
-        getDungeon().addEntity(new ZombieToast(position, getDungeon()));
-    }
+    // public void createZombieToast(Position position) {
+    //     getDungeon().addEntity(new ZombieToast(position, getDungeon()));
+    // }
 
     // basic getters and setters
 

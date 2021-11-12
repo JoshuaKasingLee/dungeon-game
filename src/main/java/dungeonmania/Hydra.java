@@ -69,27 +69,27 @@ public class Hydra extends Enemy {
      */
     @Override
     public void updatePosition() {
-        Entity player = getDungeon().getEntities().stream().filter(n -> n.getType().equals("player")).findFirst().orElse(null);
-        if (((Player)player).getCharacterState().getType().equals("Invincible")) {
-            this.possiblePositions = getPossiblePositions();
-            this.distanceOfPositions = getDistanceOfPositions();
-            int direction = distanceOfPositions.indexOf(Collections.max(distanceOfPositions));
-            switch(direction) {
-                case 0:
-                    moveUp();
-                    break;
-                case 1:
-                    moveDown();
-                    break;
-                case 2:
-                    moveLeft();
-                    break;
-                case 3:
-                    moveRight();
-                    break;
-            }
-            return;
-        }
+        // Entity player = getDungeon().getEntities().stream().filter(n -> n.getType().equals("player")).findFirst().orElse(null);
+        // if (((Player)player).getCharacterState().getType().equals("Invincible")) {
+        //     this.possiblePositions = getPossiblePositions();
+        //     this.distanceOfPositions = getDistanceOfPositions();
+        //     int direction = distanceOfPositions.indexOf(Collections.max(distanceOfPositions));
+        //     switch(direction) {
+        //         case 0:
+        //             moveUp();
+        //             break;
+        //         case 1:
+        //             moveDown();
+        //             break;
+        //         case 2:
+        //             moveLeft();
+        //             break;
+        //         case 3:
+        //             moveRight();
+        //             break;
+        //     }
+        //     return;
+        // }
         
         Random rand = new Random();
         int randN = rand.nextInt();
@@ -108,31 +108,31 @@ public class Hydra extends Enemy {
      * returns list of positions zombie toast can move into
      * @return List<Position>
      */
-    public List<Position> getPossiblePositions() {
-        List<Position> possiblePositions = new ArrayList<Position>();
-        // Up position
-        possiblePositions.add(new Position(x, y-1));
-        // Down position
-        possiblePositions.add(new Position(x, y+1));
-        // Left position
-        possiblePositions.add(new Position(x-1, y));
-        // Right position
-        possiblePositions.add(new Position(x+1, y));
-        return possiblePositions;
-    }
+    // public List<Position> getPossiblePositions() {
+    //     List<Position> possiblePositions = new ArrayList<Position>();
+    //     // Up position
+    //     possiblePositions.add(new Position(x, y-1));
+    //     // Down position
+    //     possiblePositions.add(new Position(x, y+1));
+    //     // Left position
+    //     possiblePositions.add(new Position(x-1, y));
+    //     // Right position
+    //     possiblePositions.add(new Position(x+1, y));
+    //     return possiblePositions;
+    // }
 
     /** 
      * returns list of distance between player and possible zombie toast positions
      * @return List<Double>
      */
-    public List<Double> getDistanceOfPositions() {
-        List<Double> distanceOfPositions = new ArrayList<Double>();
-        // Loop through and add the distance of between two positions
-        for (Position possiblePosition : possiblePositions) {
-            distanceOfPositions.add(calculateDistance(possiblePosition, getDungeon().getPlayer().getPosition()));
-        }
-        return distanceOfPositions;
-    }
+    // public List<Double> getDistanceOfPositions() {
+    //     List<Double> distanceOfPositions = new ArrayList<Double>();
+    //     // Loop through and add the distance of between two positions
+    //     for (Position possiblePosition : possiblePositions) {
+    //         distanceOfPositions.add(calculateDistance(possiblePosition, getDungeon().getPlayer().getPosition()));
+    //     }
+    //     return distanceOfPositions;
+    // }
 
     /** 
      * returns distance between two positions, rounded to nearest whole number
@@ -140,12 +140,12 @@ public class Hydra extends Enemy {
      * @param pos2
      * @return double
      */
-    private static double calculateDistance(Position pos1, Position pos2) {
-        Position dirVector = Position.calculatePositionBetween(pos1, pos2);
-        double squaredDist = (dirVector.getX() * dirVector.getX()) + (dirVector.getY() * dirVector.getY());
-        // always rounds up
-        return (double) (Math.sqrt(squaredDist));
-    }
+    // private static double calculateDistance(Position pos1, Position pos2) {
+    //     Position dirVector = Position.calculatePositionBetween(pos1, pos2);
+    //     double squaredDist = (dirVector.getX() * dirVector.getX()) + (dirVector.getY() * dirVector.getY());
+    //     // always rounds up
+    //     return (double) (Math.sqrt(squaredDist));
+    // }
 
     /** 
      * @return String

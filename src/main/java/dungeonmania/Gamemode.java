@@ -7,15 +7,15 @@ public abstract class Gamemode {
     private boolean invincible;
     private int hydraSpawnTimer = 0;
 
-    public Gamemode(boolean battle, int spawnTimer, int startingHealth, boolean invicible) {
+    public Gamemode(boolean battle, int spawnTimer, int startingHealth, boolean invincible) {
         this.battle = battle;
         this.spawnTimer = spawnTimer;
         this.startingHealth = startingHealth;   
-        this.invincible = invicible;     
+        this.invincible = invincible;     
     }
 
-    public Gamemode(boolean battle, int spawnTimer, int startingHealth, boolean invicible, int hydraSpawnTimer) {
-        this(battle, spawnTimer, startingHealth, invicible);
+    public Gamemode(boolean battle, int spawnTimer, int startingHealth, boolean invincible, int hydraSpawnTimer) {
+        this(battle, spawnTimer, startingHealth, invincible);
         this.hydraSpawnTimer = hydraSpawnTimer;
     }
 
