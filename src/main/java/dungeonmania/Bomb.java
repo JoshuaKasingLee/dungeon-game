@@ -30,7 +30,7 @@ public class Bomb extends Item {
     public void explode() {
         Position bombPos = getPosition();
         for (Position p : blastRadiusPositions(bombPos)) {
-            getDungeon().removeFrom(p);
+            getDungeon().explodePosition(p);
         }
         getDungeon().removeEntity(this);
     }
