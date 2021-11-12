@@ -581,7 +581,7 @@ public class DungeonManiaController {
                     currItem = new Treasure(posPlaceholder, activeGame);
                     break;
                 case "key":
-                    key = entityList.getJSONObject(i).getInt("key");
+                    key = itemList.getJSONObject(i).getInt("key");
                     currItem = new Key(posPlaceholder, activeGame, key);
                     break;
                 case "health_potion":
@@ -632,7 +632,7 @@ public class DungeonManiaController {
                     currItem.setUsesLeft(itemList.getJSONObject(i).getInt("usesLeft"));
                     break;
             }
-            currItem.setId(entityList.getJSONObject(i).getString("entityId"));
+            currItem.setId(itemList.getJSONObject(i).getString("entityId"));
             activeGame.moveToInventory(currItem);
         }
 

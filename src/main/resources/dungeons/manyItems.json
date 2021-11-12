@@ -13,6 +13,12 @@
           },
           {
             "x": 0,
+            "y": 2,
+            "type": "key",
+            "key": 1
+          },
+          {
+            "x": 0,
             "y": 3,
             "type": "health_potion"
           },
@@ -40,11 +46,17 @@
             "x": 0,
             "y": 8,
             "type": "sword"
+          },
+          {
+            "x": 0,
+            "y": 9,
+            "type": "sun_stone"
+          },
+          {
+            "x": 0,
+            "y": 10,
+            "type": "anduril"
           }
-          
-          
-     
-
     ],
     "goal-condition": {
       "goal": "exit"

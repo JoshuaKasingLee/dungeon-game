@@ -198,33 +198,19 @@ public class DungeonManiaControllerTest {
     @Test
     public void testInteractBribingSuccessful() {
         DungeonManiaController controller = new DungeonManiaController();
-        assertDoesNotThrow(() -> controller.loadGame("briber"));
+        DungeonResponse dungeonInfo =  controller.loadGame("briber");
+
+        assertEquals(true, dungeonInfo.getEntities().stream().anyMatch(x -> x.getType().equals("mercenary")));
+        assertEquals(true, dungeonInfo.getInventory().stream().anyMatch(x -> x.getType().equals("treasure")));
 
         Dungeon activeGame = controller.getActiveGame();
-        assertEquals("mercenary", activeGame.getEntities().get(1).getType());
-        
-        Inventory inv = activeGame.getInventory();
 
-        assertEquals(Arrays.asList("treasure"), inv.listInventory());
+        Mercenary mercenary = (Mercenary)activeGame.getEntities().stream().filter(n -> n.getType().equals("mercenary")).findFirst().orElse(null);
+        assertEquals(false, mercenary.isAlly());
 
-        assertEquals("treasure", activeGame.getInventory().getInventoryList().get(0).getType());
-        
-        Treasure treasure = new Treasure(new Position(3, 3), activeGame);
-        activeGame.moveToInventory(treasure);
-        assertEquals("treasure", activeGame.getInventory().getInventoryList().get(1).getType());
         controller.interact("1");
 
-        Dungeon dungeon = controller.getActiveGame();
-        List<Entity> entities = dungeon.getEntities();
-        boolean isAlly = false;
-
-        for (Entity entity: entities) {
-            if (entity instanceof Mercenary) {
-                isAlly = ((Mercenary)entity).isAlly();
-            }
-        }
-
-        assertEquals(true, isAlly);
+        assertEquals(true, mercenary.isAlly());
     }
 
     @Test
@@ -357,7 +343,13 @@ public class DungeonManiaControllerTest {
         assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
         assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
         assertDoesNotThrow(() -> controller.build("bow"));
-        assertDoesNotThrow(() -> controller.build("shield"));
+        DungeonResponse dungeonInfo = controller.build("shield");
+        assertEquals(true, dungeonInfo.getInventory().stream().anyMatch(x -> x.getType().equals("bow")));
+        assertEquals(true, dungeonInfo.getInventory().stream().anyMatch(x -> x.getType().equals("shield")));
+        assertDoesNotThrow(() -> controller.saveGame("craftingResults"));
+        dungeonInfo = controller.loadGame("craftingResults");
+        assertEquals(true, dungeonInfo.getInventory().stream().anyMatch(x -> x.getType().equals("bow")));
+        assertEquals(true, dungeonInfo.getInventory().stream().anyMatch(x -> x.getType().equals("shield")));
     }
 
     @Test
@@ -617,8 +609,8 @@ public class DungeonManiaControllerTest {
         String playerState = player.getCharacterState().getType();
         assertEquals("Standard", playerState);
 
-        assertDoesNotThrow(() -> controller.tick(null, Direction.RIGHT));
-        DungeonResponse dungeonInfo = controller.tick(null, Direction.DOWN);
+        assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
+        DungeonResponse dungeonInfo = controller.tick(null, Direction.RIGHT);
 
         assertEquals(true, dungeonInfo.getInventory().stream().anyMatch(x -> x.getType().equals("invisibility_potion")));
 
@@ -633,6 +625,32 @@ public class DungeonManiaControllerTest {
         player = controller.getActiveGame().getPlayer();
         playerState = player.getCharacterState().getType();
         assertEquals("Invisible", playerState);
+    }
+
+    @Test
+    public void testLoadingManyItems() {
+        DungeonManiaController controller = new DungeonManiaController();
+        assertDoesNotThrow(() -> controller.newGame("manyItems", "standard"));
+
+        for (int i = 0; i < 10; i++) {
+            assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN)); 
+        }
+        DungeonResponse dungeonInfo = controller.tick(null, Direction.DOWN); 
+
+        assertEquals(true, dungeonInfo.getInventory().stream().anyMatch(x -> x.getType().equals("one_ring")));
+        assertEquals(true, dungeonInfo.getInventory().stream().anyMatch(x -> x.getType().equals("health_potion")));
+        assertEquals(true, dungeonInfo.getInventory().stream().anyMatch(x -> x.getType().equals("invisibility_potion")));
+        assertEquals(true, dungeonInfo.getInventory().stream().anyMatch(x -> x.getType().equals("wood")));
+        assertEquals(true, dungeonInfo.getInventory().stream().anyMatch(x -> x.getType().equals("arrow")));
+        assertEquals(true, dungeonInfo.getInventory().stream().anyMatch(x -> x.getType().equals("bomb")));
+        assertEquals(true, dungeonInfo.getInventory().stream().anyMatch(x -> x.getType().equals("sword")));
+        assertEquals(true, dungeonInfo.getInventory().stream().anyMatch(x -> x.getType().equals("sun_stone")));
+        assertEquals(true, dungeonInfo.getInventory().stream().anyMatch(x -> x.getType().equals("anduril")));
+
+
+
+        assertDoesNotThrow(() -> controller.saveGame("manyInventoryItems"));
+        assertDoesNotThrow(() -> controller.loadGame("manyInventoryItems"));
     }
 
 
