@@ -582,7 +582,56 @@ public class DungeonManiaControllerTest {
         }
         dungeonInfo = controller.tick(null, Direction.RIGHT);
         assertEquals(true, dungeonInfo.getEntities().stream().anyMatch(x -> x.getType().equals("hydra")));
+    }
 
+    @Test
+    public void testInvincibleStateSaved() {
+        DungeonManiaController controller = new DungeonManiaController();
+        assertDoesNotThrow(() -> controller.newGame("potionUsed", "standard"));
+        Player player = controller.getActiveGame().getPlayer();
+        String playerState = player.getCharacterState().getType();
+        assertEquals("Standard", playerState);
+
+        DungeonResponse dungeonInfo = controller.tick(null, Direction.DOWN); 
+        assertEquals(true, dungeonInfo.getInventory().stream().anyMatch(x -> x.getType().equals("invincibility_potion")));
+
+        Item invincibilityPotion = player.getInventory().getInventoryList().stream().filter(n -> n.getType().equals("invincibility_potion")).findFirst().orElse(null);
+        String invincibilityPotionId = invincibilityPotion.getId();
+        dungeonInfo = controller.tick(invincibilityPotionId, null);
+        assertEquals(false, dungeonInfo.getInventory().stream().anyMatch(x -> x.getType().equals("invincibility_potion")));
+        
+        assertDoesNotThrow(() -> controller.saveGame("invincibleStateSaved"));
+        assertDoesNotThrow(() -> controller.loadGame("invincibleStateSaved"));
+
+        player = controller.getActiveGame().getPlayer();
+        playerState = player.getCharacterState().getType();
+        assertEquals("Invincible", playerState);
+    }
+
+    @Test
+    public void testInvisibleStateSaved() {
+        DungeonManiaController controller = new DungeonManiaController();
+        assertDoesNotThrow(() -> controller.newGame("potionUsed", "standard"));
+        Player player = controller.getActiveGame().getPlayer();
+        String playerState = player.getCharacterState().getType();
+        assertEquals("Standard", playerState);
+
+        assertDoesNotThrow(() -> controller.tick(null, Direction.RIGHT));
+        DungeonResponse dungeonInfo = controller.tick(null, Direction.DOWN);
+
+        assertEquals(true, dungeonInfo.getInventory().stream().anyMatch(x -> x.getType().equals("invisibility_potion")));
+
+        Item invisibilityPotion = player.getInventory().getInventoryList().stream().filter(n -> n.getType().equals("invisibility_potion")).findFirst().orElse(null);
+        String invisibilityPotionId = invisibilityPotion.getId();
+        dungeonInfo = controller.tick(invisibilityPotionId, null);
+        assertEquals(false, dungeonInfo.getInventory().stream().anyMatch(x -> x.getType().equals("invisibility_potion")));
+        
+        assertDoesNotThrow(() -> controller.saveGame("invisibleStateSaved"));
+        assertDoesNotThrow(() -> controller.loadGame("invisibleStateSaved"));
+
+        player = controller.getActiveGame().getPlayer();
+        playerState = player.getCharacterState().getType();
+        assertEquals("Invisible", playerState);
     }
 
 
