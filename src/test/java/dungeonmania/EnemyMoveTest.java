@@ -357,7 +357,113 @@ public class EnemyMoveTest {
         assertEquals(new Position(2, 1), mercenary.getPosition());
     }
 
-    //TODO: Tests mercenary gets slowed in swamp
+    @Test
+    public void merceneryThroughSwampTest() {
+        // Initialise dungeon
+        DungeonManiaController controller = new DungeonManiaController();
 
+        // Create a new game
+        DungeonResponse dungeonInfo = controller.newGame("swampAndEnemies", "Standard");
+
+        // Get player entity
+        EntityResponse player = null;
+        player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("player")).findFirst().orElse(null);
+
+        // Assert player location is 1,1
+        assertEquals(new Position(1, 1), player.getPosition());
+
+        // Get mercenary entity
+        EntityResponse mercenary = null;
+        mercenary = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("mercenary")).findFirst().orElse(null);
+
+        // Assert mercenary location
+        assertEquals(new Position(1, 10), mercenary.getPosition());
+
+        // Move character into wall and position remains the same
+        dungeonInfo = controller.tick(null, Direction.NONE);
+        
+        // Get mercenary entity
+        mercenary = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("mercenary")).findFirst().orElse(null);
+
+        // Assert mercenary location
+        assertEquals(new Position(1, 9), mercenary.getPosition());
+        
+        // Move character into wall and position remains the same
+        dungeonInfo = controller.tick(null, Direction.NONE);
+        
+        // Get mercenary entity
+        mercenary = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("mercenary")).findFirst().orElse(null);
+
+        // Assert mercenary location
+        assertEquals(new Position(1, 9), mercenary.getPosition());
+        
+        // Move character into wall and position remains the same
+        dungeonInfo = controller.tick(null, Direction.NONE);
+        
+        // Get mercenary entity
+        mercenary = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("mercenary")).findFirst().orElse(null);
+
+        // Assert mercenary location
+        assertEquals(new Position(1, 8), mercenary.getPosition());
+    }
+
+    @Test
+    public void spiderThroughSwamp() {
+        // Initialise dungeon
+        DungeonManiaController controller = new DungeonManiaController();
+
+        // Create a new game
+        DungeonResponse dungeonInfo = controller.newGame("swampAndEnemies", "Standard");
+
+        // Get player entity
+        EntityResponse player = null;
+        player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("player")).findFirst().orElse(null);
+
+        // Assert player location is 1,1
+        assertEquals(new Position(1, 1), player.getPosition());
+
+        // Get spider entity
+        EntityResponse spider = null;
+        spider = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("spider")).findFirst().orElse(null);
+
+        // Assert spider location
+        assertEquals(new Position(5, 5), spider.getPosition());
+
+        // Move character into wall and position remains the same
+        dungeonInfo = controller.tick(null, Direction.NONE);
+        
+        // Get spider entity
+        spider = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("spider")).findFirst().orElse(null);
+
+        // Assert spider location
+        assertEquals(new Position(5, 4), spider.getPosition());
+        
+        // Move character into wall and position remains the same
+        dungeonInfo = controller.tick(null, Direction.NONE);
+        
+        // Get spider entity
+        spider = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("spider")).findFirst().orElse(null);
+
+        // Assert spider location
+        assertEquals(new Position(5, 4), spider.getPosition());
+        
+        // Move character into wall and position remains the same
+        dungeonInfo = controller.tick(null, Direction.NONE);
+        
+        // Get spider entity
+        spider = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("spider")).findFirst().orElse(null);
+
+        // Assert spider location
+        assertEquals(new Position(5, 4), spider.getPosition());
+        
+        // Move character into wall and position remains the same
+        dungeonInfo = controller.tick(null, Direction.NONE);
+        
+        // Get spider entity
+        spider = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("spider")).findFirst().orElse(null);
+
+        // Assert spider location
+        assertEquals(new Position(6, 4), spider.getPosition());
+    }
 
 }
