@@ -32,12 +32,12 @@ public class BossTest {
     }
 
     @Test
-    public void fightAssassinWithBow() {
+    public void fightAssassinWithSword() {
         Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
         Inventory inv = character.getInventory();
-        Bow b = new Bow(character.getDungeon());
-        inv.add(b);
-        assertEquals(Arrays.asList("bow"), inv.listInventory());
+        Sword s = new Sword(new Position(0,0), character.getDungeon());
+        inv.add(s);
+        assertEquals(Arrays.asList("sword"), inv.listInventory());
         Armour a = new Armour(character.getDungeon(), Armour.DURABILITY);
         inv.add(a);
 
@@ -47,7 +47,7 @@ public class BossTest {
 
         // expect assassin to die in battle now
         character.move(Direction.DOWN);
-        assertEquals(Arrays.asList(character), character.getDungeon().getEntities());
+        assertEquals(Arrays.asList(character, s), character.getDungeon().getEntities());
     }
 
     @Test

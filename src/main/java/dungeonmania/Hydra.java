@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class Hydra extends Enemy {
-    public static final int ORIGINAL_HEALTH = 7;
+    public static final int ORIGINAL_HEALTH = 15;
     public static final int HYDRA_ATTACK_DAMAGE = 4;
     private int x = getXPosition();
     private int y = getYPosition();
@@ -32,20 +32,12 @@ public class Hydra extends Enemy {
     @Override
     public void updateHealth(MovingEntity other) {
         if (attackSuccess()) {
-            if (getArmour() > 0) {
-                int newHealth = getHealth() - ((other.getHealth() * other.getAttackDamage()) / 10 );
-                this.setHealth(newHealth);
-                this.giveArmour(getArmour() - 1);
-            } else {
-                int newHealth = getHealth() - ((other.getHealth() * other.getAttackDamage()) / 5 );
-                this.setHealth(newHealth);
-            } 
+            int newHealth = getHealth() - ((other.getHealth() * other.getAttackDamage()) / 5 );
+            this.setHealth(newHealth);
         } else {
-            // assume increase will be based on original equation, regardless of armour
             int newHealth = getHealth() + ((other.getHealth() * other.getAttackDamage()) / 5 );
             this.setHealth(newHealth);
         }
-        
     }
 
     /** 
