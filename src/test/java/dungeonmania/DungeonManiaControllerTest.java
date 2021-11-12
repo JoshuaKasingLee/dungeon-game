@@ -197,33 +197,19 @@ public class DungeonManiaControllerTest {
     @Test
     public void testInteractBribingSuccessful() {
         DungeonManiaController controller = new DungeonManiaController();
-        assertDoesNotThrow(() -> controller.loadGame("briber"));
+        DungeonResponse dungeonInfo =  controller.loadGame("briber");
+
+        assertEquals(true, dungeonInfo.getEntities().stream().anyMatch(x -> x.getType().equals("mercenary")));
+        assertEquals(true, dungeonInfo.getInventory().stream().anyMatch(x -> x.getType().equals("treasure")));
 
         Dungeon activeGame = controller.getActiveGame();
-        assertEquals("mercenary", activeGame.getEntities().get(1).getType());
-        
-        Inventory inv = activeGame.getInventory();
 
-        assertEquals(Arrays.asList("treasure"), inv.listInventory());
+        Mercenary mercenary = (Mercenary)activeGame.getEntities().stream().filter(n -> n.getType().equals("mercenary")).findFirst().orElse(null);
+        assertEquals(false, mercenary.isAlly());
 
-        assertEquals("treasure", activeGame.getInventory().getInventoryList().get(0).getType());
-        
-        Treasure treasure = new Treasure(new Position(3, 3), activeGame);
-        activeGame.moveToInventory(treasure);
-        assertEquals("treasure", activeGame.getInventory().getInventoryList().get(1).getType());
         controller.interact("1");
 
-        Dungeon dungeon = controller.getActiveGame();
-        List<Entity> entities = dungeon.getEntities();
-        boolean isAlly = false;
-
-        for (Entity entity: entities) {
-            if (entity instanceof Mercenary) {
-                isAlly = ((Mercenary)entity).isAlly();
-            }
-        }
-
-        assertEquals(true, isAlly);
+        assertEquals(true, mercenary.isAlly());
     }
 
     @Test
