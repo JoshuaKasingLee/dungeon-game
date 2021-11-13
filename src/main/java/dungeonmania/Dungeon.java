@@ -129,10 +129,12 @@ public class Dungeon {
         }
 
         if (counter % getHydraSpawnTimer() == 0) {
-            Position randPos = randomSpawnPosition();
-            // Cannot spawn in this position. There is already an entity there.
+            List<Position> randomPosList = getGrid();
+            Random random = new Random();
+            int randInt = random.nextInt(10000);
+            Position randPos = randomPosList.get(randInt % randomPosList.size());
             while (getEntities(randPos).size() != 0) {
-                randPos = randomSpawnPosition();
+                randPos = randomPosList.get(randInt % randomPosList.size());
             }
             new Hydra(randPos, this);
         }
