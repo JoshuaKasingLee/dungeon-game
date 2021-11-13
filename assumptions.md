@@ -111,3 +111,9 @@ Team Avocado
 - Crafting sceptre: list of priorities:
     - Wood > Arrow
     - Treasure > Key > Sunstone
+
+/// SWAMP TILES ///
+- Boulders can pass through swamp tiles
+
+/// DIJKSTRA's ///
+- Dijkstra's algorithm does not account for the ability to go through portals
