@@ -109,9 +109,12 @@ public class Dungeon {
         }
                 
         if (counter % getSpawnTimer() == 0) {
-            Position randPos = randomSpawnPosition();
+            List<Position> randomPosList = getGrid();
+            Random random = new Random();
+            int randInt = random.nextInt(10000);
+            Position randPos = randomPosList.get(randInt % randomPosList.size());
             while (getEntities(randPos).stream().anyMatch(x -> x.getType().equals("boulder"))) {
-                randPos = randomSpawnPosition();
+                randPos = randomPosList.get(randInt % randomPosList.size());
             }
             new Spider(randPos, this);
         }
