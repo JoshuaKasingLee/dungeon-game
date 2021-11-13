@@ -538,6 +538,7 @@ public class DungeonManiaController {
                     key = entityList.getJSONObject(i).getInt("key");
                     currEntity = new Door(currPosition, activeGame, key);
                     ((Door)currEntity).setLocked(false);
+                    ((Door)currEntity).update(Direction.NONE);
                     break;
                 case "portal":
                     colour = entityList.getJSONObject(i).getString("colour");
