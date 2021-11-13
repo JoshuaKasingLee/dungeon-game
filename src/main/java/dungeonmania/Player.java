@@ -75,12 +75,18 @@ public class Player extends MovingEntity {
      * @return boolean
      */
     public boolean checkUnlockedDoor(Position pos) {
+        // use sunstone if player has one
+        if (inventory.getItem("sun_stone") != null) {
+            return true;
+        }
+        // else look for key
         for (Entity e : getDungeon().getEntities(pos)) {
             if (e instanceof Door) {
                 Door door = (Door) e;
+                if (!door.isLocked()) {
+                    return true;
+                }
                 return inventory.useKey(door, this); // if wrong key, will return false here
-            } else {
-                return true;
             }
         }
         return true;
@@ -133,6 +139,10 @@ public class Player extends MovingEntity {
                 if (e instanceof Treasure) {
                     e.notifyObservers();
                 }
+                // Key already exists in inventory
+                if (e instanceof Key && inventory.containsKey()) {
+                    return;
+                }
                 Item i = (Item) e;
                 getDungeon().removeEntity(i);
                 inventory.add(i);
@@ -146,11 +156,11 @@ public class Player extends MovingEntity {
      * @param type
      */
     public void useItem(String type) {
-        if (type.equals("health_potion") || type.equals("invincibility_potion") || type.equals("invisibility_potion") || type.equals("bomb")) {
+        if (type.equals("health_potion") || type.equals("invincibility_potion") || type.equals("invisibility_potion") || type.equals("bomb") || type.equals("sceptre")) {
             inventory.use(type, this);
         } else if (type.equals(null) || type.equals("")) {
         } else {
-            throw new IllegalArgumentException("Cannot use" + type);
+            throw new IllegalArgumentException("Cannot use " + type);
         }
     }
 
@@ -166,6 +176,24 @@ public class Player extends MovingEntity {
         List<Position> cardinalAdjMercPos = getCardinalAdjPositions2(mercPos);
         for (Position p : cardinalAdjMercPos) {
             if (p.equals(getPosition())) {
+                if (mercenary instanceof Assassin) {
+                    if (inventory.getItem("sun_stone") != null && inventory.getItem("one_ring") != null) {
+                        inventory.use("one_ring", this);
+                        mercenary.setAlly(true);
+                        return;
+                    } else if (inventory.getItem("one_ring") != null && inventory.getItem("treasure") != null) {
+                        inventory.use("treasure", this);
+                        inventory.use("one_ring", this);
+                        mercenary.setAlly(true);
+                        return;
+                    } else {
+                        throw new InvalidActionException("Insufficient bribery material in inventory");
+                    }
+                }
+                if (inventory.getItem("sun_stone") != null) {
+                    mercenary.setAlly(true);
+                    return;
+                }
                 inventory.use("treasure", this); // will throw exception in use if no treasure
                 mercenary.setAlly(true);
                 return;
@@ -188,12 +216,17 @@ public class Player extends MovingEntity {
             if (p.equals(getPosition())) {
                 if (inventory.getItem("sword") != null) {
                     inventory.use("sword", this);
-                    notifyObservers();
+                    spawner.notifyObservers();
                     getDungeon().removeEntity(spawner);
                     break;
                 } else if (inventory.getItem("bow") != null) {
                     inventory.use("bow", this);
-                    notifyObservers();
+                    spawner.notifyObservers();
+                    getDungeon().removeEntity(spawner);
+                    break;
+                } else if (inventory.getItem("anduril") != null) {
+                    inventory.use("anduril", this);
+                    spawner.notifyObservers();
                     getDungeon().removeEntity(spawner);
                     break;
                 } else {

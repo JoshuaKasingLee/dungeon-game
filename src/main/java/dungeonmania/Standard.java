@@ -8,6 +8,7 @@ public class Standard extends Gamemode {
 
     
     /** 
+     * returns a string "Standard"
      * @return String
      */
     @Override

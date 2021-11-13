@@ -24,11 +24,11 @@ public class Boulder extends StaticEntity{
     public void update(Direction direction) {
         if (getPosition().equals(getPlayerPosition())) {
             move(direction);
-            for (Entity entity : getEntities()) {
-                if (entity instanceof Bomb && getPosition().equals(entity.getPosition())) {
-                    ((Bomb)entity).explode();
-                }
-            }
+            // for (Entity entity : getEntities()) {
+            //     if (entity instanceof Bomb && getPosition().equals(entity.getPosition())) {
+            //         ((Bomb)entity).explode();
+            //     }
+            // }
         }
     }
 

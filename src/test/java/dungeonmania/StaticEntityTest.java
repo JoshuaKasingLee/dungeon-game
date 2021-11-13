@@ -76,11 +76,11 @@ public class StaticEntityTest {
 
         // Game ticks
         for (int i = 0; i < 19; i++) {
-            dungeonInfo = controller.tick(null, Direction.NONE);
+            dungeonInfo = controller.tick(null, Direction.RIGHT);
             assertEquals(dungeonInfo.getEntities().stream().anyMatch(n -> n.getType().equals("zombie_toast")), false);
         }
         // On 20th tick, spawn a zombie on the location of the spawner
-        dungeonInfo = controller.tick(null, Direction.NONE);
+        dungeonInfo = controller.tick(null, Direction.RIGHT);
         assertTrue(dungeonInfo.getEntities().stream().anyMatch(n -> n.getType().equals("zombie_toast")));
     }
 
@@ -111,11 +111,11 @@ public class StaticEntityTest {
 
         // Game ticks
         for (int i = 0; i < 14; i++) {
-            dungeonInfo = controller.tick(null, Direction.NONE);
+            dungeonInfo = controller.tick(null, Direction.RIGHT);
             assertEquals(dungeonInfo.getEntities().stream().anyMatch(n -> n.getType().equals("zombie_toast")), false);
         }
         // On 20th tick, spawn a zombie on the location of the spawner
-        dungeonInfo = controller.tick(null, Direction.NONE);
+        dungeonInfo = controller.tick(null, Direction.RIGHT);
         assertTrue(dungeonInfo.getEntities().stream().anyMatch(n -> n.getType().equals("zombie_toast")));
     }
 
@@ -267,10 +267,10 @@ public class StaticEntityTest {
         dungeonInfo = controller.tick(null, Direction.UP);
         player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("player")).findFirst().orElse(null);
         assertEquals(new Position(2, 4), player.getPosition());
-        // Move character into door
+        // Move character into door. Door should be locked.
         dungeonInfo = controller.tick(null, Direction.RIGHT);
         player = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("player")).findFirst().orElse(null);
-        assertEquals(new Position(3, 4), player.getPosition());
+        assertEquals(new Position(2, 4), player.getPosition());
     }
 
     @Test

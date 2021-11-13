@@ -5,8 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
-// import java.util.ArrayList;
-// import java.util.List;
 import java.util.Arrays;
 
 import dungeonmania.util.Position;
@@ -139,6 +137,107 @@ public class InventoryTest {
         inv.add(i1);
         assertThrows(InvalidActionException.class, () -> inv.craftShield(character));
         assertEquals(Arrays.asList("key"), inv.listInventory());
+    }
+
+    @Test
+    public void craftMidnightArmour() {
+        Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
+        Inventory inv = character.getInventory();
+        Armour a = new Armour(character.getDungeon(), Armour.DURABILITY);
+        SunStone s = new SunStone(new Position(0, 1), character.getDungeon());
+        Wood w = new Wood(new Position(0, 0), character.getDungeon());
+        inv.add(a);
+        inv.add(s);
+        inv.add(w);
+        inv.craftMidnightArmour(character);
+        assertEquals(Arrays.asList("wood", "midnight_armour"), inv.listInventory());
+        // craft another one
+        Armour a1 = new Armour(character.getDungeon(), Armour.DURABILITY);
+        SunStone s1 = new SunStone(new Position(0, 1), character.getDungeon());
+        inv.add(a1);
+        inv.add(s1);
+        inv.craftMidnightArmour(character);
+        assertEquals(Arrays.asList("wood", "midnight_armour", "midnight_armour"), inv.listInventory());
+    }
+
+    @Test
+    public void craftMidnightArmourZombieFail() {
+        Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
+        Inventory inv = character.getInventory();
+        Armour a = new Armour(character.getDungeon(), Armour.DURABILITY);
+        SunStone s = new SunStone(new Position(0, 1), character.getDungeon());
+        inv.add(a);
+        inv.add(s);
+        // build fails due to presence of zombie
+        ZombieToast z = new ZombieToast(new Position(0, 0), character.getDungeon());
+        assertThrows(InvalidActionException.class, () -> inv.craftMidnightArmour(character));
+        assertEquals(Arrays.asList("armour", "sun_stone"), inv.listInventory());
+        // once zombie is removed, build works
+        character.getDungeon().removeEntity(z);
+        inv.craftMidnightArmour(character);
+        assertEquals(Arrays.asList("midnight_armour"), inv.listInventory());
+    }
+
+    @Test
+    public void craftMidnightArmourMaterialFail() {
+        Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
+        Inventory inv = character.getInventory();
+        Armour a = new Armour(character.getDungeon(), Armour.DURABILITY);
+        Wood w = new Wood(new Position(0, 0), character.getDungeon());
+        inv.add(a);
+        inv.add(w);
+        assertThrows(InvalidActionException.class, () -> inv.craftMidnightArmour(character));
+        assertEquals(Arrays.asList("armour", "wood"), inv.listInventory());
+    }
+
+    @Test
+    public void craftSceptre() {
+        Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
+        Inventory inv = character.getInventory();
+
+        // test crafting with different materials
+        Wood w = new Wood(new Position(0, 0), character.getDungeon());
+        Treasure t = new Treasure(new Position(0, 0), character.getDungeon());
+        SunStone s = new SunStone(new Position(0, 1), character.getDungeon());
+        inv.add(w);
+        inv.add(t);
+        inv.add(s);
+        inv.craftSceptre(character);
+        assertEquals(Arrays.asList("sceptre"), inv.listInventory());
+
+        // two sunstones, no treasure
+        Wood w1 = new Wood(new Position(0, 0), character.getDungeon());
+        SunStone s1 = new SunStone(new Position(0, 1), character.getDungeon());
+        SunStone s2 = new SunStone(new Position(0, 1), character.getDungeon());
+        inv.add(w1);
+        inv.add(s1);
+        inv.add(s2);
+        assertEquals(Arrays.asList("sceptre", "wood", "sun_stone", "sun_stone"), inv.listInventory());
+        inv.craftSceptre(character);
+        assertEquals(Arrays.asList("sceptre", "sceptre"), inv.listInventory());
+
+        // arrows and keys
+        Arrow arrow1 = new Arrow(new Position(0, 0), character.getDungeon());
+        Arrow arrow2 = new Arrow(new Position(0, 0), character.getDungeon());
+        Key k = new Key(new Position(0, 0), character.getDungeon(), 1);
+        SunStone s3 = new SunStone(new Position(0, 1), character.getDungeon());
+        inv.add(arrow1);
+        inv.add(arrow2);
+        inv.add(k);
+        inv.add(s3);
+        inv.craftSceptre(character);
+        assertEquals(Arrays.asList("sceptre", "sceptre", "sceptre"), inv.listInventory());
+    }
+
+    @Test
+    public void craftSceptreFail() {
+        Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
+        Inventory inv = character.getInventory();
+        Treasure t = new Treasure(new Position(0, 0), character.getDungeon());
+        SunStone s = new SunStone(new Position(0, 1), character.getDungeon());
+        inv.add(t);
+        inv.add(s);
+        assertThrows(InvalidActionException.class, () -> inv.craftSceptre(character));
     }
     
 }

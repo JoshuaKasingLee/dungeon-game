@@ -1,0 +1,1 @@
+{"entities":[{"teleported":false,"characterState":"Invincible","x":1,"y":2,"health":10,"entityId":"1581","type":"player","timeLeft":10},{"x":1,"y":10,"entityId":"1582","type":"exit"},{"x":2,"y":2,"entityId":"1584","type":"invisibility_potion"}],"goal-condition":{"goal":"exit"},"counter":1,"dungeonName":"potionUsed","items":[],"gamemode":"Standard","dungeonId":"9"}

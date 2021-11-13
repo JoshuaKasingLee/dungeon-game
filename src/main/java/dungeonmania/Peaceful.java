@@ -10,6 +10,7 @@ public class Peaceful extends Gamemode {
 
     
     /** 
+     * returns a string "Peaceful"
      * @return String
      */
     @Override

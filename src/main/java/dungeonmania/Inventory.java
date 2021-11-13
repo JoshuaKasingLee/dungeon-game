@@ -13,7 +13,11 @@ public class Inventory {
     }
 
     // general inventory functions
-    
+
+    public boolean containsKey() {
+        return inventory.stream().anyMatch(x -> x.getType().equals("key"));
+    }
+        
     /** 
      * adds given item to end of inventory list
      * @param item
@@ -21,6 +25,15 @@ public class Inventory {
     public void add(Item item) {
         inventory.add(item);
     }
+
+    // public String getItemTypeFromId(String id) {
+    //     for (Item i : inventory) {
+    //         if (i.getId().equals(id)) {
+    //             return i.getType();
+    //         }
+    //     }
+    //     throw new IllegalArgumentException("Not a valid id!");
+    // }
 
     /** 
      * returns how many of the input item type is in the inventory
@@ -47,6 +60,7 @@ public class Inventory {
         if (item != null) {
             item.activate(player);
             if (item.getUsesLeft() == 0) {
+                item.setUsesLeft(1);
                 inventory.remove(item);
             }
         } else {
@@ -112,9 +126,76 @@ public class Inventory {
                 this.use("wood", player);
                 this.use("key", player);
                 this.add(new Shield(player.getDungeon())); 
+            } else if (this.count("sun_stone") >= 1) {
+                this.use("wood", player);
+                this.use("wood", player);
+                this.use("sun_stone", player);
+                this.add(new Shield(player.getDungeon())); 
             }
         } else {
             throw new InvalidActionException("Insufficient crafting material for Shield");
+        }
+    }
+
+    /** 
+     * creates midnight armour and adds to inventory, adjusts stock of crafting materials
+     * returns InvalidActionException if insufficient crafting material
+     * returns InvalidActionException if zombie is in dungeon
+     */
+    public void craftMidnightArmour(Player player) {
+        Dungeon d = player.getDungeon();
+        // first check for zombies
+        for (Entity e : d.getEntities()) {
+            if (e instanceof ZombieToast) {
+                throw new InvalidActionException("Insufficient crafting material for Shield");
+            }
+        }
+        // then check sufficient crafting materials
+        if (this.count("armour") >= 1 && this.count("sun_stone") >= 1) {
+            Item armour = getItem("armour");
+            inventory.remove(armour);
+            this.use("sun_stone", player);
+            this.add(new MidnightArmour(player.getDungeon()));
+        } else {
+            throw new InvalidActionException("Insufficient crafting material for Midnight Armour");
+        }
+    }
+
+    /** 
+     * creates sceptre and adds to inventory, adjusts stock of crafting materials
+     * returns InvalidActionException if insufficient crafting material
+     * returns InvalidActionException if zombie is in dungeon
+     */
+    public void craftSceptre(Player player) {
+        //  check sufficient crafting materials
+        if (this.count("sun_stone") >= 1) {
+            Boolean bool1 = this.count("wood") >= 1 || this.count("arrow") >= 2;
+            Boolean bool2 = this.count("treasure") >= 1 || this.count("key") >= 1 || this.count("sun_stone") >= 2;
+            if (bool1 && bool2) {
+                this.use("sun_stone", player);
+                System.out.print("hello");
+                // use bool1 items
+                if (this.count("wood") >= 1) {
+                    this.use("wood", player);
+                } else {
+                    this.use("arrow", player);
+                    this.use("arrow", player);
+                }
+                // use bool2 items
+                if (this.count("treasure") >= 1) {
+                    this.use("treasure", player);
+                } else if (this.count("key") >= 1) {
+                    this.use("key", player);
+                } else {
+                    this.use("sun_stone", player);
+                    System.out.print("hel");
+                }
+                this.add(new Sceptre(player.getDungeon()));
+            } else {
+                throw new InvalidActionException("Insufficient crafting material for Sceptre");
+            }
+        } else {
+            throw new InvalidActionException("Insufficient crafting material for Sceptre");
         }
     }
 
@@ -176,4 +257,5 @@ public class Inventory {
         }
         return invList;
     }
+
 }
