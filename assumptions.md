@@ -11,6 +11,7 @@ Team Avocado
     Shield - 3
     Bow - 2
 - Bomb radius is less than or equal to 3 positions away
+- Bombs next to a triggered switch will explode in all cases, even if it hasn't been dropped
 - Shield completely deflects an enemy's attack
 - Sword will deduct 10 health points from enemy in any battle
 - Only one invicibility/invisibility potion can be taken at a time - player is always in state of most recently consumed potion
