@@ -381,6 +381,10 @@ public class DungeonManiaController {
                     entityData.put("positionNumber", ((Spider)currEntity).getPositionNumber());
                     entityData.put("slowed", ((Spider)currEntity).getSlowed());
                     break;
+                case "hydra": {
+                    entityData.put("slowed", ((Hydra)currEntity).getSlowed());
+                    break;
+                }
                 case "swamp_tile":
                     entityData.put("movement_factor", ((SwampTile)currEntity).getMovementFactor());
                     break;
@@ -614,6 +618,7 @@ public class DungeonManiaController {
                     break;
                 case "hydra":
                     currEntity = new Hydra(currPosition, activeGame);
+                    ((Hydra)currEntity).setSlowed(entityList.getJSONObject(i).getInt("slowed"));
                     break;
                 case "sun_stone":
                     currEntity = new SunStone(currPosition, activeGame);
