@@ -15,6 +15,7 @@ import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.moving_entities.Assassin;
 import dungeonmania.moving_entities.Mercenary;
 import dungeonmania.response.models.DungeonResponse;
+import dungeonmania.static_entities.SwampTile;
 import dungeonmania.util.Position;
 import dungeonmania.util.Direction;
 
@@ -161,6 +162,25 @@ public class Milestone3Loading {
         dungeonInfo = controller.loadGame("craftingMidnightArmour");
         assertEquals(true, dungeonInfo.getInventory().stream().anyMatch(x -> x.getType().equals("midnight_armour")));
     }
+
+    @Test
+    public void testLoadingSwampTile() {
+        DungeonManiaController controller = new DungeonManiaController();
+        assertDoesNotThrow(() -> controller.newGame("swampTile", "Standard"));
+        assertEquals(true, controller.getActiveGame().getEntities().stream().anyMatch(x -> x.getType().equals("swamp_tile")));
+        SwampTile swampTile = (SwampTile)controller.getActiveGame().getEntities().stream().filter(n -> n.getType().equals("swamp_tile")).findFirst().orElse(null);
+        double movementFactor = swampTile.getMovementFactor();
+        assertDoesNotThrow(() -> controller.saveGame("swampTile"));
+        assertDoesNotThrow(() -> controller.loadGame("swampTile"));
+        assertEquals(true, controller.getActiveGame().getEntities().stream().anyMatch(x -> x.getType().equals("swamp_tile")));
+        swampTile = (SwampTile)controller.getActiveGame().getEntities().stream().filter(n -> n.getType().equals("swamp_tile")).findFirst().orElse(null);
+        assertEquals(movementFactor, swampTile.getMovementFactor());
+    }
+
+    // @Test
+    // public 
+
+    
 
 }
 
