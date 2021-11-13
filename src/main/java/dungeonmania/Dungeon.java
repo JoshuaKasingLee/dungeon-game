@@ -109,12 +109,9 @@ public class Dungeon {
         }
                 
         if (counter % getSpawnTimer() == 0) {
-            List<Position> randomPosList = getGrid();
-            Random random = new Random();
-            int randInt = random.nextInt(10000);
-            Position randPos = randomPosList.get(randInt % randomPosList.size());
+            Position randPos = randomSpawnPosition();
             while (getEntities(randPos).stream().anyMatch(x -> x.getType().equals("boulder"))) {
-                randPos = randomPosList.get(randInt % randomPosList.size());
+                randPos = randomSpawnPosition();
             }
             new Spider(randPos, this);
         }
@@ -129,12 +126,10 @@ public class Dungeon {
         }
 
         if (counter % getHydraSpawnTimer() == 0) {
-            List<Position> randomPosList = getGrid();
-            Random random = new Random();
-            int randInt = random.nextInt(10000);
-            Position randPos = randomPosList.get(randInt % randomPosList.size());
+            Position randPos = randomSpawnPosition();
+            // Cannot spawn in this position. There is already an entity there.
             while (getEntities(randPos).size() != 0) {
-                randPos = randomPosList.get(randInt % randomPosList.size());
+                randPos = randomSpawnPosition();
             }
             new Hydra(randPos, this);
         }
