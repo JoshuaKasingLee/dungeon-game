@@ -212,7 +212,7 @@ public class Inventory {
     /** 
      * @return List<String>
      */
-    public List<String> getBuildables() {
+    public List<String> getBuildables(Player player) {
         List<String> buildables = new ArrayList<>();
         if (count("wood") >= 1 && count("arrow") >= 3) {
             buildables.add("bow");
@@ -222,6 +222,28 @@ public class Inventory {
                 buildables.add("shield");
             } else if (this.count("key") >= 1) {
                 buildables.add("shield");
+            }
+        }
+
+        if (this.count("sun_stone") >= 1) {
+            Boolean bool1 = this.count("wood") >= 1 || this.count("arrow") >= 2;
+            Boolean bool2 = this.count("treasure") >= 1 || this.count("key") >= 1 || this.count("sun_stone") >= 2;
+            if (bool1 && bool2) {
+                buildables.add("sceptre");
+            }
+
+            if (this.count("armour") >= 1 && this.count("sun_stone") >= 1) {
+                Dungeon d = player.getDungeon();
+                boolean zombiesInDungeon = false;
+                // first check for zombies
+                for (Entity e : d.getEntities()) {
+                    if (e instanceof ZombieToast) {
+                        zombiesInDungeon = true;
+                    }
+                }
+                if (!zombiesInDungeon) {
+                    buildables.add("midnight_armour");
+                }
             }
         }
         return buildables;

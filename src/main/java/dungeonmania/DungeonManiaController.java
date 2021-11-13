@@ -967,7 +967,7 @@ public class DungeonManiaController {
      * @return List<String>
      */
     public List<String> createBuildableList() {
-        return activeGame.getInventory().getBuildables();
+        return activeGame.getInventory().getBuildables(activeGame.getPlayer());
     }
 
 
