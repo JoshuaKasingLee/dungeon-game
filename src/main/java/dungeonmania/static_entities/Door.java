@@ -61,4 +61,12 @@ public class Door extends StaticEntity {
             return 1;
         }
     }
+
+    /**
+     * @param locked the locked to set
+     */
+    public void setLocked(boolean locked) {
+        this.locked = locked;
+    }
+
 }
