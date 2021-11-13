@@ -49,6 +49,8 @@
         "sceptre": "images/tileset/milestone3/sceptre.png",
         "sun_stone": "images/tileset/milestone3/sun_stone.png",
         "the_one_ring": "images/tileset/milestone3/the_one_ring.png",
-        "door_unlocked": "images/tileset/entities/door_unlocked.png"
+        "door_unlocked": "images/tileset/entities/door_unlocked.png",
+        "enemies": "images/tileset/entities/ranger.png",
+        "boulders": "images/tileset/entities/boulder_00.png"
     }
 }
