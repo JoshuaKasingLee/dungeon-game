@@ -45,6 +45,7 @@ Team Avocado
 /// ENEMIES ///
 - Zombie Toast has 25% chance spawning with armour
 - Mercenary has 50% chance spawning with armour
+- Spiders and Hydras can only spawn between x = 0, y = 0 to x = 20, y = 20
 - The following constants were assumed:
     - Spider
         Health: 5 
@@ -64,7 +65,7 @@ Team Avocado
 - When within radius of a fighting player, position is updated once per battle, not per round (i.e. to simulate moving twice)
 - Dijkstra's algorithm does not account for the ability to go through portals
 
-// STATIC ENTITIES ///
+/// STATIC ENTITIES ///
 - Boulders can be pushed onto other items/moving entites
 - Boulders never exist on the edge of the dungeon (i.e. there is always a wall border)
 - Only two portals can exist for the same colour 
@@ -83,6 +84,8 @@ Team Avocado
 - There is only 1 exit
 - Boulders can pass through swamp tiles without being slowed
 
+/// GOALS ///
+- Goals disappear from front-end only upon completion of all goals
 
 //////// MILESTONE 3 ASSUMPTIONS /////////
 
