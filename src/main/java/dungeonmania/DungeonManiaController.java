@@ -336,11 +336,12 @@ public class DungeonManiaController {
                     break;
                 case "zombie_toast": 
                     entityData.put("totalArmour", ((ZombieToast)currEntity).getArmour());
+                    entityData.put("slowed", ((ZombieToast)currEntity).getSlowed());
                     break;       
                 case "mercenary":
                     entityData.put("totalArmour", ((Mercenary)currEntity).getArmour());
                     entityData.put("ally", ((Mercenary)currEntity).isAlly());
-
+                    entityData.put("slowed", ((Mercenary)currEntity).getSlowed());
                     MercenaryState state = ((Mercenary)currEntity).getMercenaryState();
                     String mercState = state.getType();
                     entityData.put("mercState", mercState);
@@ -352,6 +353,7 @@ public class DungeonManiaController {
                 case "assassin":
                     entityData.put("totalArmour", ((Assassin)currEntity).getArmour());
                     entityData.put("ally", ((Assassin)currEntity).isAlly());
+                    entityData.put("slowed", ((Assassin)currEntity).getSlowed());
 
                     MercenaryState assassinState = ((Assassin)currEntity).getMercenaryState();
                     String assState = assassinState.getType();
@@ -377,6 +379,14 @@ public class DungeonManiaController {
                     entityData.put("startingPositionx", ((Spider)currEntity).getStartingPosition().getX());
                     entityData.put("startingPositiony", ((Spider)currEntity).getStartingPosition().getY());
                     entityData.put("positionNumber", ((Spider)currEntity).getPositionNumber());
+                    entityData.put("slowed", ((Spider)currEntity).getSlowed());
+                    break;
+                case "hydra": {
+                    entityData.put("slowed", ((Hydra)currEntity).getSlowed());
+                    break;
+                }
+                case "swamp_tile":
+                    entityData.put("movement_factor", ((SwampTile)currEntity).getMovementFactor());
                     break;
             }
 
@@ -536,15 +546,18 @@ public class DungeonManiaController {
                 case "spider":
                     currEntity = new Spider(currPosition, activeGame, new Position(entityList.getJSONObject(i).getInt("startingPositionx"), entityList.getJSONObject(i).getInt("startingPositiony")),
                         entityList.getJSONObject(i).getInt("positionNumber"));
+                    ((Spider)currEntity).setSlowed(entityList.getJSONObject(i).getInt("slowed"));
                     break;
                 case "zombie_toast":
                     currEntity = new ZombieToast(currPosition, activeGame, entityList.getJSONObject(i).getInt("totalArmour"));
+                    ((ZombieToast)currEntity).setSlowed(entityList.getJSONObject(i).getInt("slowed"));
                     break;
                 case "mercenary":
                     durability = entityList.getJSONObject(i).getInt("totalArmour");
                     boolean isAlly = entityList.getJSONObject(i).getBoolean("ally");
                     currEntity = new Mercenary(currPosition, activeGame, durability, isAlly);
-                    
+                    ((Mercenary)currEntity).setSlowed(entityList.getJSONObject(i).getInt("slowed"));
+
                     Mercenary mercenary = (Mercenary)currEntity;
                     String mercState = entityList.getJSONObject(i).getString("mercState");
 
@@ -556,7 +569,8 @@ public class DungeonManiaController {
                     durability = entityList.getJSONObject(i).getInt("totalArmour");
                     isAlly = entityList.getJSONObject(i).getBoolean("ally");
                     currEntity = new Assassin(currPosition, activeGame, durability, isAlly);
-                    
+                    ((Assassin)currEntity).setSlowed(entityList.getJSONObject(i).getInt("slowed"));
+
                     Assassin assassin = (Assassin)currEntity;
                     String assState = entityList.getJSONObject(i).getString("mercState");
 
@@ -604,12 +618,16 @@ public class DungeonManiaController {
                     break;
                 case "hydra":
                     currEntity = new Hydra(currPosition, activeGame);
+                    ((Hydra)currEntity).setSlowed(entityList.getJSONObject(i).getInt("slowed"));
                     break;
                 case "sun_stone":
                     currEntity = new SunStone(currPosition, activeGame);
                     break;
                 case "anduril":
                     currEntity = new Anduril(currPosition, activeGame);
+                    break;
+                case "swamp_tile":
+                    currEntity = new SwampTile(currPosition, activeGame, entityList.getJSONObject(i).getInt("movement_factor") );
                     break;
             }
             currEntity.setId(entityList.getJSONObject(i).getString("entityId"));
@@ -954,7 +972,7 @@ public class DungeonManiaController {
      * @return List<String>
      */
     public List<String> createBuildableList() {
-        return activeGame.getInventory().getBuildables();
+        return activeGame.getInventory().getBuildables(activeGame.getPlayer());
     }
 
 
