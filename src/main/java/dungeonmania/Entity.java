@@ -1,5 +1,8 @@
 package dungeonmania;
 
+import dungeonmania.gamemode.Gamemode;
+import dungeonmania.goals.Observer;
+import dungeonmania.goals.Subject;
 import dungeonmania.util.Position;
 
 import java.util.ArrayList;
@@ -178,8 +181,16 @@ public abstract class Entity implements Subject {
         this.dungeon = dungeon;
     }
 
-    // abstract functions
+    /**
+     * @return String return the type
+     */
     public abstract String setType();
 
+    /**
+     * @param Updates the type of the entity
+     */
+    public void updateType(String type) {
+        this.type = type;
+    }
 }
 

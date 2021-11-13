@@ -6,11 +6,17 @@
             "type": "player"
         },
 
+        {
+            "x": 4,
+            "y": 2,
+            "type": "boulder"
+        },
 
         {
             "x": 4,
             "y": 1,
-            "type": "wall"
+            "type": "door",
+            "key": 1
         },
         {
             "x": 5,
@@ -23,7 +29,7 @@
             "type": "wall"
         },
         {
-            "x": 6,
+            "x": 7,
             "y": 2,
             "type": "wall"
         },
@@ -46,6 +52,21 @@
             "x": 5,
             "y": 2,
             "type": "zombie_toast_spawner"
+        },
+        {
+            "x": 6,
+            "y": 2,
+            "type": "zombie_toast_spawner"
+        },
+        {
+            "x": 7,
+            "y": 3,
+            "type": "wall"
+        },
+        {
+            "x": 7,
+            "y": 1,
+            "type": "wall"
         }
         
         

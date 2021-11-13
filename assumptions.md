@@ -11,8 +11,9 @@ Team Avocado
     Shield - 3
     Bow - 2
 - Bomb radius is less than or equal to 3 positions away
+- Bombs next to a triggered switch will explode in all cases, even if it hasn't been dropped
 - Shield completely deflects an enemy's attack
-- Sword instantly destroys an enemy
+- Sword will deduct 10 health points from enemy in any battle
 - Only one invicibility/invisibility potion can be taken at a time - player is always in state of most recently consumed potion
 - Armours and shields will not be used in invincible state, since enemies cannot damage their health already
 - Invincibility/invisibility time limit = 10 ticks
@@ -21,6 +22,10 @@ Team Avocado
 - Original starting health is 10, unless hard mode - then is 7
 - Weapons get "used" when used to destroy zombie toast spawner
 - Only the most recently used potion state is active if one potion is used before another potion is finished
+- The following health/attack damages were assumed:
+    Health (Standard/Peaceful): 10
+    Health (Hard): 7
+    Attack Damage (Standard/Peaceful): 3
 
 /// MOVING ///
 - Player cannot move on top of zombie toast spawner
@@ -30,24 +35,37 @@ Team Avocado
 
 /// BATTLES ///
 - Player and enemy health point deductions occur simultaneously (i.e. doesn't matter if player or enemy strikes first, result will be the same)
-- Only one weapon and one protection item can be used per round -> no point using bow if sword already instantly kills, and no point using armour if shield already deflects all attack
+- Only one weapon and one protection item can be used per round -> e.g. no point using armour if shield already deflects all attack
 - And for above reasons:
     - Sword will be prioritised over bow
     - Shield will be prioritised over armour
-- Using sword takes precedence over enemy's armour - amoured enemy will still instantly be destroyed
+- Using sword takes precedence over enemy's armour
 - An enemy's hits will also deduct health points from player, and not allied mercenaries
 
 /// ENEMIES ///
 - Zombie Toast has 25% chance spawning with armour
 - Mercenary has 50% chance spawning with armour
+- Spiders and Hydras can only spawn between x = 0, y = 0 to x = 20, y = 20
+- The following constants were assumed:
+    - Spider
+        Health: 5 
+        Attack Damage: 2
+    - ZombieToast
+        Health: 7
+        Attack Damage: 3
+    - Mercenary
+        Health: 10
+        Attack Damage: 4
+        Battle Radius: 3
 
 /// MERCENARIES ///
 - Can be bribed using 1 treasure
 - Bribing only occurs if within 2 cardinally adjacent tiles of the original player position (e.g. cannot bribe 1 square diagonally)
 - Battle radius is 3 positions
 - When within radius of a fighting player, position is updated once per battle, not per round (i.e. to simulate moving twice)
+- Dijkstra's algorithm does not account for the ability to go through portals
 
-// STATIC ENTITIES ///
+/// STATIC ENTITIES ///
 - Boulders can be pushed onto other items/moving entites
 - Boulders never exist on the edge of the dungeon (i.e. there is always a wall border)
 - Only two portals can exist for the same colour 
@@ -64,4 +82,42 @@ Team Avocado
 - When a zombie spawner is destroyed, it is removed off the map 
 - Key must be an integer 
 - There is only 1 exit
+- Boulders can pass through swamp tiles without being slowed
 
+/// GOALS ///
+- Goals disappear from front-end only upon completion of all goals
+
+//////// MILESTONE 3 ASSUMPTIONS /////////
+ 
+/// BOSSES ///
+- The following constants were assumed:
+    - Assassin
+        Health: 20
+        Attack Damage: 6
+    - Hydra
+        Health: 15
+        Attack Damage: 4
+
+/// NEW ITEMS ///
+
+- If sunstone can be used in place of a key/bribe, it will get used first (i.e. key or treasure will remain in inventory if exists)
+- Where there is an option, sunstone is used last in crafting - we want to "save" it since it is the most valuable
+- Sceptre only has 1 use
+- Sceptre is "used" like a potion
+- Buildables can only be built (i.e. can't be picked up from the ground)
+- Crafting midnight armour returns InvalidActionException if zombie is in dungeon
+- Midnight Armour has same durability as armour (2 uses)
+- Midnight Armour adds 2 attack damage points points to player if used as a weapon
+- Midnight Armour has same functionaltiy as Armour if used as protection
+- Use midnight armour last when player has multiple weapons/protection choices as it is most valuable
+- Anduril has same number of uses as sword (since it is a subclass)
+- Anduril gets used last if used for destroying zombie toast spawner, because it is the most valuable
+- Crafting sceptre: list of priorities:
+    - Wood > Arrow
+    - Treasure > Key > Sunstone
+
+/// SWAMP TILES ///
+- Boulders can pass through swamp tiles
+
+/// DIJKSTRA's ///
+- Dijkstra's algorithm does not account for the ability to go through portals

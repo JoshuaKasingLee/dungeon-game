@@ -2,9 +2,28 @@ package dungeonmania;
 
 import java.util.List;
 
+import dungeonmania.gamemode.Gamemode;
+import dungeonmania.gamemode.GamemodeFactory;
+import dungeonmania.goals.ExitGoal;
+import dungeonmania.goals.GoalComponent;
+import dungeonmania.items.Bomb;
+import dungeonmania.items.Item;
+import dungeonmania.moving_entities.Hydra;
+import dungeonmania.moving_entities.Spider;
+import dungeonmania.player.Inventory;
+import dungeonmania.player.Player;
+import dungeonmania.static_entities.Exit;
+import dungeonmania.static_entities.StaticEntity;
+import dungeonmania.static_entities.Switch;
+import dungeonmania.static_entities.Wall;
 import dungeonmania.util.Position;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+
+
+import java.util.Random;
+import java.util.stream.Collectors;
 
 public class Dungeon {
 
@@ -12,34 +31,163 @@ public class Dungeon {
     private Gamemode gamemode;
     private String dungeonId;
     private List<Entity> entities = new ArrayList<Entity>();
-    private Inventory inventory = new Inventory();    // subject to change name or class to entity
+    private Inventory inventory = new Inventory();    
     private List<GoalComponent> simpleGoals = new ArrayList<GoalComponent>();
     private GoalComponent overallGoal;
+    private int counter;
 
     public Dungeon(String dungeonName, String gamemodeString, String dungeonId) {
         this.dungeonName = dungeonName;
         initialiseGameMode(gamemodeString); 
         this.dungeonId = dungeonId;
+        this.counter = 0;
+    }
+
+    
+    /**
+     * get the entity type string from a given entity id
+     * @param id
+     * @return String
+     */
+    public String getEntityTypeFromId(String id) {
+        for (Entity entity : entities) {
+            if (entity.getId().equals(id)) {
+                return entity.getType();
+            }
+        }
+        List<Item> items = inventory.getInventoryList();
+        for (Item item : items) {
+            if (item.getId().equals(id)) {
+                return item.getType();
+            }
+        }
+
+        throw new IllegalArgumentException("Not a valid id!");
+    }
+
+    public void triggerBombExplosion() {
+        
+        List<Entity> bombs = getEntitiesOfType("bomb");
+        List<Entity> switches = getEntitiesOfType("switch");
+
+        List<Entity> bombsCopy = new ArrayList<Entity>(bombs);
+        List<Entity> switchesCopy = new ArrayList<Entity>(switches);
+        for (Entity b : bombsCopy) {
+            for (Entity s : switchesCopy) {
+                if (Position.isAdjacent(b.getPosition(), s.getPosition()) && ((Switch)s).hasBoulder()) {
+                    ((Bomb)b).explode();
+                }
+            }
+        }
+
+    }
+
+    public List<Entity> getEntitiesOfType(String type) {
+        return entities.stream().filter(n -> n.getType().equals(type)).collect(Collectors.toList());
+        
+
+    }
+    /**
+     * tick the global spawn counter and spawn a spider or hydra if needed
+     */
+    public void tickCounter() {
+        counter++;
+        spiderSpawn();
+        hydraSpawn();
+    }
+
+    /**
+     * spawn a spider if the spawn timer is reached
+     */
+    public void spiderSpawn() {
+        if (getSpawnTimer() == 0) {
+            return;
+        } 
+
+        if (countSpiders() >= 5) {
+            return;
+        }
+                
+        if (counter % getSpawnTimer() == 0) {
+            Position randPos = randomSpawnPosition();
+            while (getEntities(randPos).stream().anyMatch(x -> x.getType().equals("boulder"))) {
+                randPos = randomSpawnPosition();
+            }
+            new Spider(randPos, this);
+        }
+    }
+
+    /**
+     * spawn a hydra if the spawn timer is reached
+     */
+    public void hydraSpawn() {
+        if (getHydraSpawnTimer() == 0) {
+            return;
+        }
+
+        if (counter % getHydraSpawnTimer() == 0) {
+            Position randPos = randomSpawnPosition();
+            // Cannot spawn in this position. There is already an entity there.
+            while (getEntities(randPos).size() != 0) {
+                randPos = randomSpawnPosition();
+            }
+            new Hydra(randPos, this);
+        }
     }
 
     
     /** 
+     * return a random spawn position
+     * @return Position
+     */
+    public Position randomSpawnPosition() {
+        Random number = new Random();
+        int bound = 20;
+        int xRandom = number.nextInt(bound);
+        int yRandom = number.nextInt(bound);
+        Position randPos = new Position(xRandom, yRandom);
+        return randPos;
+    }
+
+    
+    /**
+     * count the number of spiders in the game 
+     * @return long
+     */
+    public long countSpiders() {
+        return entities.stream().filter(x -> x instanceof Spider).count();
+    }
+
+    
+    /**
+     * get the gamemode's spawn time number for zombie and spiders    
+     * @return int
+     */
+    public int getSpawnTimer() {
+        return getGamemode().getSpawnTimer();
+    }
+
+    
+    /**
+     * get the gamemode's spawn time number for hydra   
+     * @return int
+     */
+    public int getHydraSpawnTimer() {
+        return getGamemode().getHydraSpawnTimer();
+    }
+    
+    /**
+     * set the gamemode to one of the difficulties 
      * @param gamemodeString
      */
     public void initialiseGameMode(String gamemodeString) {
-        if (gamemodeString.equals("Peaceful")) {
-            gamemode = new Peaceful();
-        }
-        else if (gamemodeString.equals("Standard")) {
-            gamemode = new Standard();
-        }
-        else if (gamemodeString.equals("Hard")) {
-            gamemode = new Hard();
-        }
+        String standardisedGamemodeString = gamemodeString.toLowerCase();
+        gamemode = GamemodeFactory.makeGamemode(standardisedGamemodeString);
     }
 
     
-    /** 
+    /**
+     * adds an entity to the game and try to attach it to goals 
      * @param entity
      */
     public void addEntity(Entity entity) {
@@ -48,7 +196,8 @@ public class Dungeon {
     }
 
     
-    /** 
+    /**
+     * try to attach entities to goals 
      * @param entity
      */
     public void conditionalAttach(Entity entity) {
@@ -58,16 +207,10 @@ public class Dungeon {
     }
     
     
-    /** 
-     * @param treasure
-     * @return boolean
-     */
-    public boolean isEntityInDungeon(Treasure treasure) {
-        return entities.stream().anyMatch(entity -> (entity instanceof Treasure));
-    }
 
     
     /** 
+     * adds a simple goal to the list of simple goals
      * @param simpleGoal
      */
     public void addSimpleGoals(GoalComponent simpleGoal) {
@@ -75,7 +218,8 @@ public class Dungeon {
     }
     
     
-    /** 
+    /**
+     * get entities at a position 
      * @param position
      * @return List<Entity>
      */
@@ -89,33 +233,10 @@ public class Dungeon {
         return entitiesAtPos;
     }
 
-    
-    /** 
-     * @param position
-     * @return Door
-     */
-    public Door getDoor(Position position) {
-        List<Entity> entityList = getEntities(position);
-        for (Entity entity : entityList) {
-            if (entity instanceof Door) {
-                return (Door) entity;
-            }
-        }
-         return null;
-    }
 
     
-    /** 
-     * @param entity
-     * @param position
-     */
-    public void addTo(Entity entity, Position position) {
-        entity.setPosition(position);
-        addEntity(entity);
-    }
-
-    
-    /** 
+    /**
+     * remove an entity from the game 
      * @param entity
      */
     public void removeEntity(Entity entity) {
@@ -124,22 +245,69 @@ public class Dungeon {
 
     
     /** 
+     * remove entity from a position
      * @param position
      */
-    public void removeFrom(Position position) {
+    public void explodePosition(Position position) {
         List<Entity> entitiesCopy = new ArrayList<Entity>(entities);
         for (Entity entity : entitiesCopy) {
-            if (entity.getPosition().equals(position)) {
+            if (entity.getPosition().equals(position) && !entity.getType().equals("player")) {
                 removeEntity(entity);
             }
         }
+    }
+
+
+    
+    /** 
+     * make a prim algorithm dungeon
+     * @param width
+     * @param height
+     * @param start
+     * @param end
+     */
+    public void randomizedPrims(int width, int height, Position start, Position end) {
+        boolean[][] mazeMap = new boolean[height][width];
+        for (boolean[] row : mazeMap) {
+            Arrays.fill(row, false);
+        }
+
+        PrimDungeon primDungeon = new PrimDungeon(start, end, mazeMap);
+        primDungeon.primGenerate();
+
+        GoalComponent exit = new ExitGoal();
+        setOverallGoal(exit);
+        addSimpleGoals(exit);
+
+        extractPrimMaze(primDungeon.getMazeMap(), start, end);
+
+    }
 
 
 
+
+    
+    /** 
+     * extract the dungeon map made using prim's algorithm into this dungeon
+     * @param mazeMap
+     * @param start
+     * @param end
+     */
+    private void extractPrimMaze(boolean[][] mazeMap, Position start, Position end) {
+        for (int i = 0; i < mazeMap.length; i++) {
+            for (int j = 0; j < mazeMap[i].length; j++) {
+                if (mazeMap[i][j] == false) {
+                    new Wall(new Position(j, i) , this);
+                }
+            }
+        }
+        new Player(start, this);
+        new Exit(end, this);
     }
 
     
     /** 
+     * find and return the player
      * @return Player
      */
     public Player getPlayer() {
@@ -153,6 +321,7 @@ public class Dungeon {
 
     
     /** 
+     * move an item to the inventory and out of the entities in the dungeon
      * @param item
      */
     public void moveToInventory(Item item) {
@@ -253,6 +422,67 @@ public class Dungeon {
      */
     public void setOverallGoal(GoalComponent overallGoal) {
         this.overallGoal = overallGoal;
+    }
+
+
+    /** 
+     * Return the movement factor of a given position
+     * @return double
+     */
+    public double getMovementFactor(Position position) {
+        double movementFactor = 0;
+        for (Entity entity : entities) {
+            // Account for more than one static entity (i.e. boulder on switch)
+            if (entity instanceof StaticEntity && 
+                entity.getPosition().equals(position) && 
+                movementFactor != -1) {
+                movementFactor = ((StaticEntity)entity).getMovementFactor();
+            }
+        }
+
+        // if movementFactor remains 0, return 1 else return movementFactor
+        movementFactor = movementFactor == 0 ? 1 : movementFactor;
+        
+        return movementFactor;
+    }
+
+    public List<Position> getGrid() {
+        // Initialise co-ordinates
+        int lowestX = Integer.MAX_VALUE;
+        int lowestY = Integer.MAX_VALUE;
+        int highestX = Integer.MIN_VALUE;
+        int highestY = Integer.MIN_VALUE;
+
+        // Find values of coordinates
+        for (Entity entity : entities) {
+            lowestX = (entity.getXPosition() < lowestX) ? (entity.getXPosition() - 1) : (lowestX - 1);
+            lowestY = (entity.getYPosition() < lowestY) ? (entity.getYPosition() - 1) : (lowestY - 1);
+            highestX = (entity.getXPosition() > highestX) ? (entity.getXPosition() + 1) : (highestX + 1);
+            highestY = (entity.getYPosition() > highestY) ? (entity.getYPosition() + 1) : (highestY + 1);
+        }
+
+        // Create a list of all possible positions
+        List<Position> grid = new ArrayList<Position>();
+        for (int i = lowestX; i <= highestX; i++) {
+            for (int j = lowestY; j <= highestY; j++) {
+                grid.add(new Position(i, j));
+            }
+        }
+
+        return grid;
+    }
+    /**
+     * @return int return the counter
+     */
+    public int getCounter() {
+        return counter;
+    }
+
+    /**
+     * @param counter the counter to set
+     */
+    public void setCounter(int counter) {
+        this.counter = counter;
     }
 
 }

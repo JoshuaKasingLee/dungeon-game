@@ -1,14 +1,15 @@
 {
     "main_menu": {
         "font": "alagard.ttf",
-        "title": "Dungeon Mania",
+        "title": "Dungeon Story",
         "subtitle_1": "Frontend created by:\n Braedon Wooding, George Litsas, Nick Patrikeos, Noa Challis",
-        "subtitle_2": "Backend created by: <your names here>",
+        "subtitle_2": "Backend created by: Cyrus Chow, Joshua Lee, Kelly Zhou, Sami Al-Hilfi",
         "buttons": {
             "new_game": "Start New Game",
             "load_game": "Load Game",
             "quit_game": "Quit Game",
-            "credits": "Credits"
+            "credits": "Credits",
+            "generate_game": "Generate Dungeon"
         },
         "game_mode": "Game Mode",
         "on_exit": {

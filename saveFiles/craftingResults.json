@@ -1,0 +1,1 @@
+{"entities":[{"teleported":false,"characterState":"Standard","x":0,"y":9,"health":10,"entityId":"1847","type":"player"}],"goal-condition":{"goal":"exit"},"counter":9,"dungeonName":"craftingTest","items":[{"type":"bow","entityId":"1855","usesLeft":2},{"type":"shield","entityId":"1856","usesLeft":3}],"gamemode":"Standard","dungeonId":"19"}
