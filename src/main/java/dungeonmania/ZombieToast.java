@@ -38,7 +38,7 @@ public class ZombieToast extends Enemy {
     public void updatePosition() {
         Entity player = getDungeon().getEntities().stream().filter(n -> n.getType().equals("player")).findFirst().orElse(null);
 
-        if (((Player)player).getCharacterState().getType().equals("Invincible")) {
+        if (((Player)player).getPlayerState().getType().equals("Invincible")) {
             this.possiblePositions = getPossiblePositions();
             this.distanceOfPositions = getDistanceOfPositions();
             int direction = distanceOfPositions.indexOf(Collections.max(distanceOfPositions));

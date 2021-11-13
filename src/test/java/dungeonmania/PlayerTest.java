@@ -16,7 +16,7 @@ import dungeonmania.util.Position;
 import dungeonmania.util.Direction;
 
 
-public class CharacterTest {
+public class PlayerTest {
     @Test
     public void testValidMovement() {
         Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
@@ -281,7 +281,7 @@ public class CharacterTest {
     @Test
     public void testPeacefulBattleHealth() {
         Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Peaceful", "1"));
-        CharacterState state = character.getCharacterState();
+        PlayerState state = character.getPlayerState();
         assertEquals(state.getType(), "Standard");
        
         // spider battle
@@ -300,13 +300,13 @@ public class CharacterTest {
     public void testGamemodeHardHealth() {
         Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Hard", "1"));
         Inventory inv = character.getInventory();
-        CharacterState state = character.getCharacterState();
+        PlayerState state = character.getPlayerState();
         assertEquals(state.getType(), "Standard");
 
         InvincibilityPotion i1 = new InvincibilityPotion(new Position(0, 0), character.getDungeon());
         inv.add(i1);
         character.useItem("invincibility_potion");
-        state = character.getCharacterState();
+        state = character.getPlayerState();
         assertEquals(state.getType(), "Standard");
 
         assertTrue(character.getHealth() == Player.ORIGINAL_HEALTH_HARD);

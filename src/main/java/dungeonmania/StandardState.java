@@ -1,6 +1,6 @@
 package dungeonmania;
 
-public class StandardState implements CharacterState {
+public class StandardState implements PlayerState {
     private Player player;
     private String type;
 

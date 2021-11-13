@@ -1,6 +1,6 @@
 package dungeonmania;
 
-public class InvisibleState implements CharacterState {
+public class InvisibleState implements PlayerState {
     private Player player;
     private int timeLeft;
     private String type;

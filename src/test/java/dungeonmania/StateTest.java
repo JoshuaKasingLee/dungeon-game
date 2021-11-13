@@ -15,9 +15,9 @@ public class StateTest {
         Inventory inv = character.getInventory();
         InvisibilityPotion i = new InvisibilityPotion(new Position(0, 0), character.getDungeon());
         inv.add(i);
-        assertEquals("Standard", character.getCharacterState().getType());
+        assertEquals("Standard", character.getPlayerState().getType());
         inv.use("invisibility_potion", character);
-        assertEquals("Invisible", character.getCharacterState().getType());
+        assertEquals("Invisible", character.getPlayerState().getType());
         // effect is tested in character.java
     }
 
@@ -28,9 +28,9 @@ public class StateTest {
         Inventory inv = character.getInventory();
         InvincibilityPotion i = new InvincibilityPotion(new Position(0, 0), character.getDungeon());
         inv.add(i);
-        assertEquals("Standard", character.getCharacterState().getType());
+        assertEquals("Standard", character.getPlayerState().getType());
         inv.use("invincibility_potion", character);
-        assertEquals("Invincible", character.getCharacterState().getType());
+        assertEquals("Invincible", character.getPlayerState().getType());
         // effect is tested in character.java
     }
 

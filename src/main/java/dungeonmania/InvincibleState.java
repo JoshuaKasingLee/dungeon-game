@@ -1,6 +1,6 @@
 package dungeonmania;
 
-public class InvincibleState implements CharacterState {
+public class InvincibleState implements PlayerState {
     private Player player;
     private String type;
     private int timeLeft;

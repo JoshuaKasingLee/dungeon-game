@@ -54,9 +54,9 @@ public class Mercenary extends Enemy {
         
         int direction;
 
-        if (((Player)player).getCharacterState().getType().equals("Invincible")) {
+        if (((Player)player).getPlayerState().getType().equals("Invincible")) {
             direction = distanceOfPositions.indexOf(Collections.max(distanceOfPositions));
-        } else if (((Player)player).getCharacterState().getType().equals("Invisible")) {
+        } else if (((Player)player).getPlayerState().getType().equals("Invisible")) {
             return;
         } else {
             // Use Dijkstra's Algorithm to find the fastest path to the player

@@ -8,7 +8,7 @@ import dungeonmania.exceptions.InvalidActionException;
 
 public class Player extends MovingEntity {
     private Inventory inventory;
-    private CharacterState characterState;
+    private PlayerState playerState;
     private boolean teleported;
     public static final int ORIGINAL_HEALTH_STANDARD = 10;
     public static final int ORIGINAL_HEALTH_HARD = 7;
@@ -19,7 +19,7 @@ public class Player extends MovingEntity {
         this.setHealth(dungeon.getGamemode().getStartingHealth());
         this.inventory = dungeon.getInventory();
         this.setAttackDamage(CHARACTER_ATTACK_DAMAGE);
-        this.characterState = new StandardState(this);
+        this.playerState = new StandardState(this);
     }
 
     public Player(Position position, Dungeon dungeon, int currHealth, boolean teleported) {
@@ -41,7 +41,7 @@ public class Player extends MovingEntity {
         super.move(direction);
         fightEnemies(getPosition());
         pickItems(getPosition());
-        characterState.updateState();
+        playerState.updateState();
     }
 
     /** 
@@ -104,7 +104,7 @@ public class Player extends MovingEntity {
             if (entity instanceof Enemy) {
                 Enemy e = (Enemy) entity;
                 if (!e.isAlly()) {
-                    characterState.battleEnemy(e);
+                    playerState.battleEnemy(e);
                     // if character health is below zero
                     if (this.getHealth() <= 0) {
                         if (inventory.getItem("one_ring") != null) {
@@ -287,17 +287,17 @@ public class Player extends MovingEntity {
     }
     
     /**
-     * @return CharacterState return the characterState
+     * @return CharacterState return the playerState
      */
-    public CharacterState getCharacterState() {
-        return characterState;
+    public PlayerState getPlayerState() {
+        return playerState;
     }
 
     /**
-     * @param characterState the characterState to set
+     * @param playerState the playerState to set
      */
-    public void setCharacterState(CharacterState characterState) {
-        this.characterState = characterState;
+    public void setCharacterState(PlayerState playerState) {
+        this.playerState = playerState;
     }
     
     /** 

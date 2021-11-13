@@ -314,7 +314,7 @@ public class DungeonManiaController {
                     }
                     break;  
                 case "player":
-                    CharacterState characterState = ((Player)currEntity).getCharacterState();
+                    PlayerState characterState = ((Player)currEntity).getPlayerState();
                     String stateType = characterState.getType();
                     entityData.put("health", ((Player)currEntity).getHealth());
                     entityData.put("characterState", stateType);

@@ -91,7 +91,7 @@ public class Spider extends Enemy {
             return;
         }
 
-        if (((Player)player).getCharacterState().getType().equals("Invincible")) {
+        if (((Player)player).getPlayerState().getType().equals("Invincible")) {
             this.possiblePositions = getPossiblePositions();
             this.distanceOfPositions = getDistanceOfPositions();
             int direction = distanceOfPositions.indexOf(Collections.max(distanceOfPositions));

@@ -175,7 +175,7 @@ public class EnemyMoveTest {
         InvincibilityPotion i1 = new InvincibilityPotion(new Position(0, 0), player.getDungeon());
         inv.add(i1);
         player.useItem("invincibility_potion");
-        CharacterState state = player.getCharacterState();
+        PlayerState state = player.getPlayerState();
         assertEquals(state.getType(), "Invincible");
 
         // Create mercenary
@@ -202,7 +202,7 @@ public class EnemyMoveTest {
         InvincibilityPotion i1 = new InvincibilityPotion(new Position(0, 0), player.getDungeon());
         inv.add(i1);
         player.useItem("invincibility_potion");
-        CharacterState state = player.getCharacterState();
+        PlayerState state = player.getPlayerState();
         assertEquals(state.getType(), "Invincible");
 
         // Create mercenary
@@ -229,7 +229,7 @@ public class EnemyMoveTest {
         InvincibilityPotion i1 = new InvincibilityPotion(new Position(0, 0), player.getDungeon());
         inv.add(i1);
         player.useItem("invincibility_potion");
-        CharacterState state = player.getCharacterState();
+        PlayerState state = player.getPlayerState();
         assertEquals(state.getType(), "Invincible");
 
         // Create mercenary
@@ -256,7 +256,7 @@ public class EnemyMoveTest {
         InvisibilityPotion i1 = new InvisibilityPotion(new Position(0, 0), player.getDungeon());
         inv.add(i1);
         player.useItem("invisibility_potion");
-        CharacterState state = player.getCharacterState();
+        PlayerState state = player.getPlayerState();
         assertEquals(state.getType(), "Invisible");
 
         // Create mercenary
@@ -380,7 +380,7 @@ public class EnemyMoveTest {
         assertEquals(new Position(1, 10), mercenary.getPosition());
 
         // Move character into wall and position remains the same
-        dungeonInfo = controller.tick(null, Direction.NONE);
+        dungeonInfo = controller.tick(null, Direction.RIGHT);
         
         // Get mercenary entity
         mercenary = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("mercenary")).findFirst().orElse(null);
@@ -389,7 +389,7 @@ public class EnemyMoveTest {
         assertEquals(new Position(1, 9), mercenary.getPosition());
         
         // Move character into wall and position remains the same
-        dungeonInfo = controller.tick(null, Direction.NONE);
+        dungeonInfo = controller.tick(null, Direction.RIGHT);
         
         // Get mercenary entity
         mercenary = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("mercenary")).findFirst().orElse(null);
@@ -398,7 +398,7 @@ public class EnemyMoveTest {
         assertEquals(new Position(1, 9), mercenary.getPosition());
         
         // Move character into wall and position remains the same
-        dungeonInfo = controller.tick(null, Direction.NONE);
+        dungeonInfo = controller.tick(null, Direction.RIGHT);
         
         // Get mercenary entity
         mercenary = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("mercenary")).findFirst().orElse(null);
@@ -430,7 +430,7 @@ public class EnemyMoveTest {
         assertEquals(new Position(5, 5), spider.getPosition());
 
         // Move character into wall and position remains the same
-        dungeonInfo = controller.tick(null, Direction.NONE);
+        dungeonInfo = controller.tick(null, Direction.RIGHT);
         
         // Get spider entity
         spider = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("spider")).findFirst().orElse(null);
@@ -439,7 +439,7 @@ public class EnemyMoveTest {
         assertEquals(new Position(5, 4), spider.getPosition());
         
         // Move character into wall and position remains the same
-        dungeonInfo = controller.tick(null, Direction.NONE);
+        dungeonInfo = controller.tick(null, Direction.RIGHT);
         
         // Get spider entity
         spider = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("spider")).findFirst().orElse(null);
@@ -448,7 +448,7 @@ public class EnemyMoveTest {
         assertEquals(new Position(5, 4), spider.getPosition());
         
         // Move character into wall and position remains the same
-        dungeonInfo = controller.tick(null, Direction.NONE);
+        dungeonInfo = controller.tick(null, Direction.RIGHT);
         
         // Get spider entity
         spider = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("spider")).findFirst().orElse(null);
@@ -457,7 +457,7 @@ public class EnemyMoveTest {
         assertEquals(new Position(5, 4), spider.getPosition());
         
         // Move character into wall and position remains the same
-        dungeonInfo = controller.tick(null, Direction.NONE);
+        dungeonInfo = controller.tick(null, Direction.RIGHT);
         
         // Get spider entity
         spider = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("spider")).findFirst().orElse(null);

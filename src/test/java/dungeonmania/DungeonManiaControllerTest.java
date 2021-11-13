@@ -547,13 +547,14 @@ public class DungeonManiaControllerTest {
     }
 
     @Test
-    public void testHydraSpawning() {
+    public void testHydraSpawningHard() {
         DungeonManiaController controller = new DungeonManiaController();
         DungeonResponse dungeonInfo = controller.newGame("simple", "hard");
         assertEquals(false, dungeonInfo.getEntities().stream().anyMatch(x -> x.getType().equals("hydra")));
 
         for (int i = 0; i < 49; i++) {
             assertDoesNotThrow(() -> controller.tick(null, Direction.RIGHT)); 
+            assertEquals(false, dungeonInfo.getEntities().stream().anyMatch(x -> x.getType().equals("hydra")));
         }
         dungeonInfo = controller.tick(null, Direction.RIGHT);
         assertEquals(true, dungeonInfo.getEntities().stream().anyMatch(x -> x.getType().equals("hydra")));
@@ -563,8 +564,46 @@ public class DungeonManiaControllerTest {
         for (int i = 0; i < 49; i++) {
             assertDoesNotThrow(() -> controller.tick(null, Direction.RIGHT)); 
         }
+    }
 
+    @Test
+    public void testHydraSpawningStandard() {
+        DungeonManiaController controller = new DungeonManiaController();
+        DungeonResponse dungeonInfo = controller.newGame("simple", "standard");
+        assertEquals(false, dungeonInfo.getEntities().stream().anyMatch(x -> x.getType().equals("hydra")));
 
+        for (int i = 0; i < 200; i++) {
+            assertDoesNotThrow(() -> controller.tick(null, Direction.RIGHT)); 
+            assertEquals(false, dungeonInfo.getEntities().stream().anyMatch(x -> x.getType().equals("hydra")));
+        }
+        dungeonInfo = controller.tick(null, Direction.RIGHT);
+        assertEquals(false, dungeonInfo.getEntities().stream().anyMatch(x -> x.getType().equals("hydra")));
+        assertDoesNotThrow(() -> controller.saveGame("hydra"));
+        assertDoesNotThrow(() -> controller.loadGame("hydra"));
+        assertEquals(false, dungeonInfo.getEntities().stream().anyMatch(x -> x.getType().equals("hydra")));
+        for (int i = 0; i < 49; i++) {
+            assertDoesNotThrow(() -> controller.tick(null, Direction.RIGHT)); 
+        }
+    }
+
+    @Test
+    public void testHydraSpawningPeaceful() {
+        DungeonManiaController controller = new DungeonManiaController();
+        DungeonResponse dungeonInfo = controller.newGame("simple", "peaceful");
+        assertEquals(false, dungeonInfo.getEntities().stream().anyMatch(x -> x.getType().equals("hydra")));
+
+        for (int i = 0; i < 200; i++) {
+            assertDoesNotThrow(() -> controller.tick(null, Direction.RIGHT)); 
+            assertEquals(false, dungeonInfo.getEntities().stream().anyMatch(x -> x.getType().equals("hydra")));
+        }
+        dungeonInfo = controller.tick(null, Direction.RIGHT);
+        assertEquals(false, dungeonInfo.getEntities().stream().anyMatch(x -> x.getType().equals("hydra")));
+        assertDoesNotThrow(() -> controller.saveGame("hydra"));
+        assertDoesNotThrow(() -> controller.loadGame("hydra"));
+        assertEquals(false, dungeonInfo.getEntities().stream().anyMatch(x -> x.getType().equals("hydra")));
+        for (int i = 0; i < 49; i++) {
+            assertDoesNotThrow(() -> controller.tick(null, Direction.RIGHT)); 
+        }
     }
 
     @Test
@@ -572,7 +611,7 @@ public class DungeonManiaControllerTest {
         DungeonManiaController controller = new DungeonManiaController();
         assertDoesNotThrow(() -> controller.newGame("potionUsed", "standard"));
         Player player = controller.getActiveGame().getPlayer();
-        String playerState = player.getCharacterState().getType();
+        String playerState = player.getPlayerState().getType();
         assertEquals("Standard", playerState);
 
         DungeonResponse dungeonInfo = controller.tick(null, Direction.DOWN); 
@@ -587,7 +626,7 @@ public class DungeonManiaControllerTest {
         assertDoesNotThrow(() -> controller.loadGame("invincibleStateSaved"));
 
         player = controller.getActiveGame().getPlayer();
-        playerState = player.getCharacterState().getType();
+        playerState = player.getPlayerState().getType();
         assertEquals("Invincible", playerState);
     }
 
@@ -597,7 +636,7 @@ public class DungeonManiaControllerTest {
         DungeonManiaController controller = new DungeonManiaController();
         assertDoesNotThrow(() -> controller.newGame("potionUsed", "standard"));
         Player player = controller.getActiveGame().getPlayer();
-        String playerState = player.getCharacterState().getType();
+        String playerState = player.getPlayerState().getType();
         assertEquals("Standard", playerState);
 
         assertDoesNotThrow(() -> controller.tick(null, Direction.DOWN));
@@ -614,7 +653,7 @@ public class DungeonManiaControllerTest {
         assertDoesNotThrow(() -> controller.loadGame("invisibleStateSaved"));
 
         player = controller.getActiveGame().getPlayer();
-        playerState = player.getCharacterState().getType();
+        playerState = player.getPlayerState().getType();
         assertEquals("Invisible", playerState);
     }
 
@@ -710,7 +749,7 @@ public class DungeonManiaControllerTest {
         DungeonManiaController controller = new DungeonManiaController();
         assertDoesNotThrow(() -> controller.newGame("potionUsed", "standard"));
         Player player = controller.getActiveGame().getPlayer();
-        String playerState = player.getCharacterState().getType();
+        String playerState = player.getPlayerState().getType();
         assertEquals("Standard", playerState);
 
         DungeonResponse dungeonInfo = controller.tick(null, Direction.DOWN); 
@@ -722,18 +761,18 @@ public class DungeonManiaControllerTest {
         assertEquals(false, dungeonInfo.getInventory().stream().anyMatch(x -> x.getType().equals("invincibility_potion")));
 
         player = controller.getActiveGame().getPlayer();
-        playerState = player.getCharacterState().getType();
+        playerState = player.getPlayerState().getType();
         assertEquals("Invincible", playerState);
 
         for (int i = 0; i < 10; i++) {
             player = controller.getActiveGame().getPlayer();
-            playerState = player.getCharacterState().getType();
+            playerState = player.getPlayerState().getType();
             assertEquals("Invincible", playerState);
             assertDoesNotThrow(() -> controller.tick(null, Direction.RIGHT)); 
         }
 
         player = controller.getActiveGame().getPlayer();
-        playerState = player.getCharacterState().getType();
+        playerState = player.getPlayerState().getType();
         assertEquals("Standard", playerState);
     }
 
@@ -742,7 +781,7 @@ public class DungeonManiaControllerTest {
         DungeonManiaController controller = new DungeonManiaController();
         assertDoesNotThrow(() -> controller.newGame("potionUsed", "Hard"));
         Player player = controller.getActiveGame().getPlayer();
-        String playerState = player.getCharacterState().getType();
+        String playerState = player.getPlayerState().getType();
         assertEquals("Standard", playerState);
 
         DungeonResponse dungeonInfo = controller.tick(null, Direction.DOWN); 
@@ -754,7 +793,7 @@ public class DungeonManiaControllerTest {
         assertEquals(false, dungeonInfo.getInventory().stream().anyMatch(x -> x.getType().equals("invincibility_potion")));
 
         player = controller.getActiveGame().getPlayer();
-        playerState = player.getCharacterState().getType();
+        playerState = player.getPlayerState().getType();
         assertEquals("Standard", playerState);
     }
 
@@ -763,7 +802,7 @@ public class DungeonManiaControllerTest {
         DungeonManiaController controller = new DungeonManiaController();
         assertDoesNotThrow(() -> controller.newGame("potionUsed", "standard"));
         Player player = controller.getActiveGame().getPlayer();
-        String playerState = player.getCharacterState().getType();
+        String playerState = player.getPlayerState().getType();
         assertEquals("Standard", playerState);
 
         assertDoesNotThrow(() -> controller.tick(null, Direction.RIGHT)); 
@@ -776,18 +815,18 @@ public class DungeonManiaControllerTest {
         assertEquals(false, dungeonInfo.getInventory().stream().anyMatch(x -> x.getType().equals("invisibility_potion")));
 
         player = controller.getActiveGame().getPlayer();
-        playerState = player.getCharacterState().getType();
+        playerState = player.getPlayerState().getType();
         assertEquals("Invisible", playerState);
 
         for (int i = 0; i < 10; i++) {
             player = controller.getActiveGame().getPlayer();
-            playerState = player.getCharacterState().getType();
+            playerState = player.getPlayerState().getType();
             assertEquals("Invisible", playerState);
             assertDoesNotThrow(() -> controller.tick(null, Direction.RIGHT)); 
         }
 
         player = controller.getActiveGame().getPlayer();
-        playerState = player.getCharacterState().getType();
+        playerState = player.getPlayerState().getType();
         assertEquals("Standard", playerState);
     }
 

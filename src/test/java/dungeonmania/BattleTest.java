@@ -14,7 +14,7 @@ public class BattleTest {
     @Test
     public void testStandardBattleSpiderHealth() {
         Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
-        CharacterState state = character.getCharacterState();
+        PlayerState state = character.getPlayerState();
         assertEquals(state.getType(), "Standard");
        
         // spider battle
@@ -29,7 +29,7 @@ public class BattleTest {
     @Test
     public void testStandardBattleZombieHealth() {
         Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
-        CharacterState state = character.getCharacterState();
+        PlayerState state = character.getPlayerState();
         assertEquals(state.getType(), "Standard");
 
         // zombietoast battle - no armour
@@ -48,7 +48,7 @@ public class BattleTest {
     @Test
     public void testStandardBattleMercenaryHealth() {
         Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
-        CharacterState state = character.getCharacterState();
+        PlayerState state = character.getPlayerState();
         assertEquals(state.getType(), "Standard");
 
         // mercenary battle - no armour
@@ -69,7 +69,7 @@ public class BattleTest {
     @Test
     public void testStandardBattleSword() {
         Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
-        CharacterState state = character.getCharacterState();
+        PlayerState state = character.getPlayerState();
         assertEquals(state.getType(), "Standard");
         Inventory inv = character.getInventory();
         Sword s = new Sword(new Position(0, 0), character.getDungeon());
@@ -88,7 +88,7 @@ public class BattleTest {
     @Test
     public void testStandardBattleBow() {
         Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
-        CharacterState state = character.getCharacterState();
+        PlayerState state = character.getPlayerState();
         assertEquals(state.getType(), "Standard");
         Inventory inv = character.getInventory();
         Bow b = new Bow(character.getDungeon());
@@ -108,7 +108,7 @@ public class BattleTest {
     @Test
     public void testStandardBattleArmour() {
         Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
-        CharacterState state = character.getCharacterState();
+        PlayerState state = character.getPlayerState();
         assertEquals(state.getType(), "Standard");
         Inventory inv = character.getInventory();
         Armour a = new Armour(character.getDungeon(), Armour.DURABILITY);
@@ -126,7 +126,7 @@ public class BattleTest {
     @Test
     public void testStandardBattleShield() {
         Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
-        CharacterState state = character.getCharacterState();
+        PlayerState state = character.getPlayerState();
         assertEquals(state.getType(), "Standard");
         Inventory inv = character.getInventory();
         Shield s = new Shield(character.getDungeon());
@@ -144,7 +144,7 @@ public class BattleTest {
     @Test
     public void testStandardBattleEquipped() {
         Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
-        CharacterState state = character.getCharacterState();
+        PlayerState state = character.getPlayerState();
         assertEquals(state.getType(), "Standard");
         Inventory inv = character.getInventory();
         Sword sword = new Sword(new Position(0, 0), character.getDungeon());
@@ -166,7 +166,7 @@ public class BattleTest {
     @Test
     public void testMixedStandardBattleHealth() {
         Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
-        CharacterState state = character.getCharacterState();
+        PlayerState state = character.getPlayerState();
         assertEquals(state.getType(), "Standard");
 
         // spider battle - 1 round, character has 9 points remaining
@@ -207,7 +207,7 @@ public class BattleTest {
     @Test
     public void testBattleEnemyArmour() {
         Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
-        CharacterState state = character.getCharacterState();
+        PlayerState state = character.getPlayerState();
         assertEquals(state.getType(), "Standard");
 
         // zombietoast battle - with armour
@@ -246,7 +246,7 @@ public class BattleTest {
         InvincibilityPotion i1 = new InvincibilityPotion(new Position(0, 0), character.getDungeon());
         inv.add(i1);
         character.useItem("invincibility_potion");
-        CharacterState state = character.getCharacterState();
+        PlayerState state = character.getPlayerState();
         assertEquals(state.getType(), "Invincible");
 
         // character cannot lose health points, enemy health instantly depleted
@@ -273,7 +273,7 @@ public class BattleTest {
         InvisibilityPotion i1 = new InvisibilityPotion(new Position(0, 0), character.getDungeon());
         inv.add(i1);
         character.useItem("invisibility_potion");
-        CharacterState state = character.getCharacterState();
+        PlayerState state = character.getPlayerState();
         assertEquals(state.getType(), "Invisible");
 
         // no health deductions should be made
@@ -296,7 +296,7 @@ public class BattleTest {
     @Test
     public void testBattleAlly() {
         Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
-        CharacterState state = character.getCharacterState();
+        PlayerState state = character.getPlayerState();
         assertEquals(state.getType(), "Standard");
 
         // mercenary ally - should not battle
@@ -364,7 +364,7 @@ public class BattleTest {
     @Test
     public void testStandardBattleMidnightArmour() {
         Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
-        CharacterState state = character.getCharacterState();
+        PlayerState state = character.getPlayerState();
         assertEquals(state.getType(), "Standard");
         Inventory inv = character.getInventory();
         MidnightArmour m = new MidnightArmour(character.getDungeon());
@@ -383,7 +383,7 @@ public class BattleTest {
     @Test
     public void testStandardBattleArmourPriority() {
         Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
-        CharacterState state = character.getCharacterState();
+        PlayerState state = character.getPlayerState();
         assertEquals(state.getType(), "Standard");
         Inventory inv = character.getInventory();
         MidnightArmour m = new MidnightArmour(character.getDungeon());
