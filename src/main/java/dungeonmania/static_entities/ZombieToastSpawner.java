@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import dungeonmania.util.Position;
 import dungeonmania.Dungeon;
 import dungeonmania.Entity;
-import dungeonmania.exceptions.InvalidActionException;
 import dungeonmania.moving_entities.ZombieToast;
 import dungeonmania.util.Direction;
 

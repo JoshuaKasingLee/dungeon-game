@@ -1,22 +1,16 @@
 package dungeonmania;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import org.junit.jupiter.api.Test;
 
-// import java.util.ArrayList;
-// import java.util.List;
-import java.util.Arrays;
 
-import dungeonmania.exceptions.InvalidActionException;
+
 import dungeonmania.moving_entities.Assassin;
 import dungeonmania.moving_entities.Mercenary;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.static_entities.SwampTile;
-import dungeonmania.util.Position;
 import dungeonmania.util.Direction;
 
 public class Milestone3Loading {

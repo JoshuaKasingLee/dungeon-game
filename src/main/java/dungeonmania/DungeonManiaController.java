@@ -56,11 +56,11 @@ import dungeonmania.static_entities.Switch;
 import dungeonmania.static_entities.Wall;
 import dungeonmania.static_entities.ZombieToastSpawner;
 
-import java.io.File;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.URISyntaxException;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -72,8 +72,6 @@ import java.util.Map;
 import java.util.Random;
 
 import org.json.JSONObject;
-import org.json.JSONTokener;
-import org.eclipse.jetty.io.NetworkTrafficListener;
 import org.json.JSONArray;
 
 

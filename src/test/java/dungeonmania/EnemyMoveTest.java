@@ -1,7 +1,5 @@
 package dungeonmania;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -22,8 +20,7 @@ import dungeonmania.static_entities.Boulder;
 
 import org.junit.jupiter.api.Test;
 
-import java.sql.Time;
-import java.util.List;
+
 
 public class EnemyMoveTest {
     @Test

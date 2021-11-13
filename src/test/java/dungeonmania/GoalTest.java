@@ -1,24 +1,21 @@
 package dungeonmania;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+
 
 import org.junit.jupiter.api.Test;
 
 import dungeonmania.response.models.DungeonResponse;
-import dungeonmania.response.models.EntityResponse;
+
 import dungeonmania.util.Direction;
 
-import java.lang.IllegalArgumentException;
+
 import java.util.List;
 
 import dungeonmania.util.Position;
 
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Arrays;
+
 
 
 
