@@ -9,9 +9,14 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.Test;
 
 import dungeonmania.exceptions.InvalidActionException;
+import dungeonmania.items.InvincibilityPotion;
+import dungeonmania.items.Item;
+import dungeonmania.moving_entities.Mercenary;
+import dungeonmania.player.Player;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
 import dungeonmania.response.models.ItemResponse;
+import dungeonmania.static_entities.Wall;
 import dungeonmania.util.Direction;
 import dungeonmania.util.Position;
 

@@ -5,6 +5,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
+import dungeonmania.items.InvincibilityPotion;
+import dungeonmania.items.InvisibilityPotion;
+import dungeonmania.items.Sceptre;
+import dungeonmania.moving_entities.Assassin;
+import dungeonmania.moving_entities.Mercenary;
+import dungeonmania.player.Inventory;
+import dungeonmania.player.Player;
 import dungeonmania.util.Position;
 
 public class StateTest {

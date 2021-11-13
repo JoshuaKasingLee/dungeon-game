@@ -8,6 +8,20 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 
 import dungeonmania.util.Position;
+import dungeonmania.items.Armour;
+import dungeonmania.items.Bow;
+import dungeonmania.items.InvincibilityPotion;
+import dungeonmania.items.InvisibilityPotion;
+import dungeonmania.items.MidnightArmour;
+import dungeonmania.items.Sceptre;
+import dungeonmania.items.Shield;
+import dungeonmania.items.Sword;
+import dungeonmania.moving_entities.Mercenary;
+import dungeonmania.moving_entities.Spider;
+import dungeonmania.moving_entities.ZombieToast;
+import dungeonmania.player.Inventory;
+import dungeonmania.player.Player;
+import dungeonmania.player.PlayerState;
 import dungeonmania.util.Direction;
 
 public class BattleTest {

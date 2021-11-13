@@ -2,17 +2,27 @@ package dungeonmania;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 import dungeonmania.util.Position;
 import dungeonmania.util.Direction;
-
+import dungeonmania.items.InvincibilityPotion;
+import dungeonmania.items.InvisibilityPotion;
+import dungeonmania.moving_entities.Mercenary;
+import dungeonmania.moving_entities.Spider;
+import dungeonmania.moving_entities.ZombieToast;
+import dungeonmania.player.Inventory;
+import dungeonmania.player.Player;
+import dungeonmania.player.PlayerState;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.response.models.EntityResponse;
+import dungeonmania.static_entities.Boulder;
 
 import org.junit.jupiter.api.Test;
 
+import java.sql.Time;
 import java.util.List;
 
 public class EnemyMoveTest {
@@ -371,10 +381,12 @@ public class EnemyMoveTest {
 
         // Assert player location is 1,1
         assertEquals(new Position(1, 1), player.getPosition());
-
+        
         // Get mercenary entity
         EntityResponse mercenary = null;
         mercenary = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("mercenary")).findFirst().orElse(null);
+        
+        assertDoesNotThrow(()->Thread.sleep(1000));
 
         // Assert mercenary location
         assertEquals(new Position(1, 10), mercenary.getPosition());
@@ -382,6 +394,20 @@ public class EnemyMoveTest {
         // Move character into wall and position remains the same
         dungeonInfo = controller.tick(null, Direction.RIGHT);
         
+        assertDoesNotThrow(()->Thread.sleep(1000));
+
+        // Get mercenary entity
+        mercenary = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("mercenary")).findFirst().orElse(null);
+
+
+        // Assert mercenary location
+        assertEquals(new Position(1, 9), mercenary.getPosition());
+        
+        // Move character into wall and position remains the same
+        dungeonInfo = controller.tick(null, Direction.RIGHT);
+
+        assertDoesNotThrow(()->Thread.sleep(1000));
+        
         // Get mercenary entity
         mercenary = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("mercenary")).findFirst().orElse(null);
 
@@ -390,15 +416,8 @@ public class EnemyMoveTest {
         
         // Move character into wall and position remains the same
         dungeonInfo = controller.tick(null, Direction.RIGHT);
-        
-        // Get mercenary entity
-        mercenary = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("mercenary")).findFirst().orElse(null);
 
-        // Assert mercenary location
-        assertEquals(new Position(1, 9), mercenary.getPosition());
-        
-        // Move character into wall and position remains the same
-        dungeonInfo = controller.tick(null, Direction.RIGHT);
+        assertDoesNotThrow(()->Thread.sleep(1000));
         
         // Get mercenary entity
         mercenary = dungeonInfo.getEntities().stream().filter(n -> n.getType().equals("mercenary")).findFirst().orElse(null);

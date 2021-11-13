@@ -1,5 +1,8 @@
 package dungeonmania;
 
+import dungeonmania.gamemode.Gamemode;
+import dungeonmania.goals.Observer;
+import dungeonmania.goals.Subject;
 import dungeonmania.util.Position;
 
 import java.util.ArrayList;

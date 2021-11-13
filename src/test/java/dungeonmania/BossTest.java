@@ -9,6 +9,19 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 
 import dungeonmania.exceptions.InvalidActionException;
+import dungeonmania.items.Armour;
+import dungeonmania.items.OneRing;
+import dungeonmania.items.Sword;
+import dungeonmania.items.Treasure;
+import dungeonmania.moving_entities.Assassin;
+import dungeonmania.moving_entities.Hydra;
+import dungeonmania.moving_entities.Mercenary;
+import dungeonmania.player.Inventory;
+import dungeonmania.player.Player;
+import dungeonmania.static_entities.Boulder;
+import dungeonmania.static_entities.Door;
+import dungeonmania.static_entities.Wall;
+import dungeonmania.static_entities.ZombieToastSpawner;
 import dungeonmania.util.Position;
 import dungeonmania.util.Direction;
 

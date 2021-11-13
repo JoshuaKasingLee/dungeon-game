@@ -12,6 +12,8 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 
 import dungeonmania.exceptions.InvalidActionException;
+import dungeonmania.moving_entities.Assassin;
+import dungeonmania.moving_entities.Mercenary;
 import dungeonmania.response.models.DungeonResponse;
 import dungeonmania.util.Position;
 import dungeonmania.util.Direction;

@@ -9,6 +9,15 @@ import java.util.Arrays;
 
 import dungeonmania.util.Position;
 import dungeonmania.exceptions.InvalidActionException;
+import dungeonmania.items.Armour;
+import dungeonmania.items.Arrow;
+import dungeonmania.items.Key;
+import dungeonmania.items.SunStone;
+import dungeonmania.items.Treasure;
+import dungeonmania.items.Wood;
+import dungeonmania.moving_entities.ZombieToast;
+import dungeonmania.player.Inventory;
+import dungeonmania.player.Player;
 
 
 public class InventoryTest {
