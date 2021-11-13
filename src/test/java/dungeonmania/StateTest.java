@@ -25,7 +25,6 @@ public class StateTest {
         assertEquals("Standard", character.getPlayerState().getType());
         inv.use("invisibility_potion", character);
         assertEquals("Invisible", character.getPlayerState().getType());
-        // effect is tested in character.java
     }
 
     @Test
@@ -38,7 +37,6 @@ public class StateTest {
         assertEquals("Standard", character.getPlayerState().getType());
         inv.use("invincibility_potion", character);
         assertEquals("Invincible", character.getPlayerState().getType());
-        // effect is tested in character.java
     }
 
     @Test
@@ -53,44 +51,34 @@ public class StateTest {
         character.useItem("sceptre");
         assertTrue(m.isAlly() == true);
 
-        // tick 1
         m.getMercenaryState().updateState();
         assertTrue(m.isAlly() == true);
         assertEquals("MercControlled", m.getMercenaryState().getType());
 
-        // tick 2
         m.getMercenaryState().updateState();
         assertTrue(m.isAlly() == true);
 
-        // tick 3
         m.getMercenaryState().updateState();
         assertTrue(m.isAlly() == true);
 
-        // tick 4
         m.getMercenaryState().updateState();
         assertTrue(m.isAlly() == true);
 
-        // tick 5
         m.getMercenaryState().updateState();
         assertTrue(m.isAlly() == true);
 
-        // tick 6
         m.getMercenaryState().updateState();
         assertTrue(m.isAlly() == true);
 
-        // tick 7
         m.getMercenaryState().updateState();
         assertTrue(m.isAlly() == true);
 
-        // tick 8
         m.getMercenaryState().updateState();
         assertTrue(m.isAlly() == true);
 
-        // tick 9
         m.getMercenaryState().updateState();
         assertTrue(m.isAlly() == true);
 
-        // tick 10
         m.getMercenaryState().updateState();
         assertTrue(m.isAlly() == false);
         assertEquals("MercStandard", m.getMercenaryState().getType());
@@ -109,44 +97,35 @@ public class StateTest {
         character.useItem("sceptre");
         assertTrue(m.isAlly() == true);
 
-        // tick 1
         m.getMercenaryState().updateState();
         assertTrue(m.isAlly() == true);
         assertEquals("MercControlled", m.getMercenaryState().getType());
 
-        // tick 2
         m.getMercenaryState().updateState();
         assertTrue(m.isAlly() == true);
 
-        // tick 3
         m.getMercenaryState().updateState();
         assertTrue(m.isAlly() == true);
 
-        // tick 4
         m.getMercenaryState().updateState();
         assertTrue(m.isAlly() == true);
 
-        // tick 5
         m.getMercenaryState().updateState();
         assertTrue(m.isAlly() == true);
 
-        // tick 6
         m.getMercenaryState().updateState();
         assertTrue(m.isAlly() == true);
 
-        // tick 7
         m.getMercenaryState().updateState();
         assertTrue(m.isAlly() == true);
 
-        // tick 8
         m.getMercenaryState().updateState();
         assertTrue(m.isAlly() == true);
 
-        // tick 9
         m.getMercenaryState().updateState();
         assertTrue(m.isAlly() == true);
 
-        // tick 10 - check retains allied status
+        // tick 10 - retains allied status
         m.getMercenaryState().updateState();
         assertTrue(m.isAlly() == true);
         assertEquals("MercStandard", m.getMercenaryState().getType());
@@ -174,7 +153,6 @@ public class StateTest {
         for (Entity e : character.getDungeon().getEntities()) {
             if (e instanceof Mercenary) {
                 Mercenary m = (Mercenary) e;
-                // tick 10 times
                 m.getMercenaryState().updateState();
                 m.getMercenaryState().updateState();
                 m.getMercenaryState().updateState();
@@ -192,7 +170,6 @@ public class StateTest {
         assertEquals("MercStandard", m2.getMercenaryState().getType());
         assertEquals("MercStandard", a.getMercenaryState().getType());
 
-        // check original ally status is retained
         assertTrue(m1.isAlly() == true);
         assertTrue(m2.isAlly() == false);
         assertTrue(a.isAlly() == false);

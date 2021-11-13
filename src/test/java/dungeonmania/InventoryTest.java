@@ -121,7 +121,7 @@ public class InventoryTest {
         inv.add(i3);
         inv.add(i4);
         inv.craftShield(character);
-        assertEquals(Arrays.asList("key", "shield"), inv.listInventory()); // test key remains
+        assertEquals(Arrays.asList("key", "shield"), inv.listInventory());
     }
 
     @Test
@@ -135,7 +135,7 @@ public class InventoryTest {
         inv.add(i2);
         inv.add(i3);
         inv.craftShield(character);
-        assertEquals(Arrays.asList("shield"), inv.listInventory()); // test key remains
+        assertEquals(Arrays.asList("shield"), inv.listInventory());
     }
 
     @Test
@@ -177,11 +177,9 @@ public class InventoryTest {
         SunStone s = new SunStone(new Position(0, 1), character.getDungeon());
         inv.add(a);
         inv.add(s);
-        // build fails due to presence of zombie
         ZombieToast z = new ZombieToast(new Position(0, 0), character.getDungeon());
         assertThrows(InvalidActionException.class, () -> inv.craftMidnightArmour(character));
         assertEquals(Arrays.asList("armour", "sun_stone"), inv.listInventory());
-        // once zombie is removed, build works
         character.getDungeon().removeEntity(z);
         inv.craftMidnightArmour(character);
         assertEquals(Arrays.asList("midnight_armour"), inv.listInventory());
@@ -204,7 +202,6 @@ public class InventoryTest {
         Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
         Inventory inv = character.getInventory();
 
-        // test crafting with different materials
         Wood w = new Wood(new Position(0, 0), character.getDungeon());
         Treasure t = new Treasure(new Position(0, 0), character.getDungeon());
         SunStone s = new SunStone(new Position(0, 1), character.getDungeon());

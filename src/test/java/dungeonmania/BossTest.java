@@ -30,13 +30,9 @@ public class BossTest {
     @Test
     public void fightAssassinStandard() {
         Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
-
-        // asssasin battle, no armour
         Assassin ass = new Assassin(new Position(0, 1), character.getDungeon());
         ass.giveArmour(0);
         assertEquals(Arrays.asList(character, ass), character.getDungeon().getEntities());
-
-        // expect player dies if encounters assassin without weapons
         character.move(Direction.DOWN);
         assertEquals(Arrays.asList(ass), character.getDungeon().getEntities());
     }
@@ -51,11 +47,9 @@ public class BossTest {
         Armour a = new Armour(character.getDungeon(), Armour.DURABILITY);
         inv.add(a);
 
-        // assassin battle - no armour
         Assassin ass = new Assassin(new Position(0, 1), character.getDungeon());
         ass.giveArmour(0);
 
-        // expect assassin to die in battle now
         character.move(Direction.DOWN);
         assertEquals(Arrays.asList(character, s), character.getDungeon().getEntities());
     }
@@ -65,8 +59,6 @@ public class BossTest {
         Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
         Inventory inv = character.getInventory();
         Assassin ass = new Assassin(new Position(0, 3), character.getDungeon());
-
-        // bribery should operate same as mercenary, with additional requirement of one ring
 
         // no treasure - fail
         assertThrows(InvalidActionException.class, () -> character.bribe(ass));
@@ -111,7 +103,6 @@ public class BossTest {
         assertEquals(Arrays.asList(character, ass1, merc2), character.getDungeon().getEntities());
         int expectedCharHealth = character.getHealth() - ((merc2.getHealth() * merc2.getAttackDamage()) / 10);
 
-        // should only take 1 round of battle to defeat now when with ally
         character.move(Direction.DOWN);
         assertEquals(Arrays.asList(character, ass1), character.getDungeon().getEntities());
         assertEquals(expectedCharHealth, character.getHealth());
@@ -126,7 +117,6 @@ public class BossTest {
         new ZombieToastSpawner(new Position(0, 1), h.getDungeon());
         new Boulder(new Position(0, -1), h.getDungeon());
         new Boulder(new Position(0, -2), h.getDungeon());
-        // test hydra should not be able to move past static entities like player
         h.updatePosition();
         assertEquals(new Position(0, 0), h.getPosition());
         h.updatePosition();

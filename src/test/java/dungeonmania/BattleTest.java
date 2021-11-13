@@ -30,8 +30,6 @@ public class BattleTest {
         Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
         PlayerState state = character.getPlayerState();
         assertEquals(state.getType(), "Standard");
-       
-        // spider battle
         Spider spider = new Spider(new Position(0, 0), character.getDungeon());
         int expectedCharHealth = character.getHealth() - ((spider.getHealth() * spider.getAttackDamage()) / 10);
         int expectedEnemyHealth = spider.getHealth() - ((character.getHealth() * character.getAttackDamage()) / 5);
@@ -45,11 +43,8 @@ public class BattleTest {
         Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
         PlayerState state = character.getPlayerState();
         assertEquals(state.getType(), "Standard");
-
-        // zombietoast battle - no armour
         ZombieToast zombie = new ZombieToast(new Position(0, 0), character.getDungeon());
         zombie.giveArmour(0);
-        // expect 2 rounds to kill zombie
         int expectedCharHealth1 = character.getHealth() - ((zombie.getHealth() * zombie.getAttackDamage()) / 10);
         int expectedEnemyHealth1 = zombie.getHealth() - ((character.getHealth() * character.getAttackDamage()) / 5);
         int expectedCharHealth2 = expectedCharHealth1 - ((expectedEnemyHealth1 * zombie.getAttackDamage()) / 10);
@@ -64,11 +59,8 @@ public class BattleTest {
         Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
         PlayerState state = character.getPlayerState();
         assertEquals(state.getType(), "Standard");
-
-        // mercenary battle - no armour
         Mercenary merc = new Mercenary(new Position(0, 0), character.getDungeon());
         merc.giveArmour(0);
-        // expect 3 rounds to kill mercenary
         int expectedCharHealth1 = character.getHealth() - ((merc.getHealth() * merc.getAttackDamage()) / 10);
         int expectedEnemyHealth1 = merc.getHealth() - ((character.getHealth() * character.getAttackDamage()) / 5);
         int expectedCharHealth2 = expectedCharHealth1 - ((expectedEnemyHealth1 * merc.getAttackDamage()) / 10);
@@ -88,11 +80,8 @@ public class BattleTest {
         Inventory inv = character.getInventory();
         Sword s = new Sword(new Position(0, 0), character.getDungeon());
         inv.add(s);
-
-        // mercenary battle - no armour
         Mercenary merc = new Mercenary(new Position(0, 0), character.getDungeon());
         merc.giveArmour(0);
-        // expect instant kill mercenary 
         int expectedCharHealth = character.getHealth() - ((merc.getHealth() * merc.getAttackDamage()) / 10);
         state.battleEnemy(merc);
         assertEquals(character.getHealth(), expectedCharHealth);
@@ -107,11 +96,8 @@ public class BattleTest {
         Inventory inv = character.getInventory();
         Bow b = new Bow(character.getDungeon());
         inv.add(b);
-
-        // mercenary battle - no armour
         Mercenary merc = new Mercenary(new Position(0, 0), character.getDungeon());
         merc.giveArmour(0);
-        // expect double hit to instantly kill mercenary
         int expectedCharHealth = character.getHealth() - ((merc.getHealth() * merc.getAttackDamage()) / 10);
         int expectedEnemyHealth = merc.getHealth() - 2*((character.getHealth() * character.getAttackDamage()) / 5);
         state.battleEnemy(merc);
@@ -127,8 +113,6 @@ public class BattleTest {
         Inventory inv = character.getInventory();
         Armour a = new Armour(character.getDungeon(), Armour.DURABILITY);
         inv.add(a);
-
-        // spider battle
         Spider spider = new Spider(new Position(0, 0), character.getDungeon());
         int expectedCharHealth = character.getHealth() - ((spider.getHealth() * spider.getAttackDamage()) / 20);
         int expectedEnemyHealth = spider.getHealth() - ((character.getHealth() * character.getAttackDamage()) / 5);
@@ -145,8 +129,6 @@ public class BattleTest {
         Inventory inv = character.getInventory();
         Shield s = new Shield(character.getDungeon());
         inv.add(s);
-
-        // spider battle - shield should protect character health completely
         Spider spider = new Spider(new Position(0, 0), character.getDungeon());
         int expectedEnemyHealth = spider.getHealth() - ((character.getHealth() * character.getAttackDamage()) / 5);
         state.battleEnemy(spider);
@@ -154,7 +136,6 @@ public class BattleTest {
         assertEquals(spider.getHealth(), expectedEnemyHealth);
     }
 
-    // test mix of weapons and protection priorities
     @Test
     public void testStandardBattleEquipped() {
         Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
@@ -169,8 +150,6 @@ public class BattleTest {
         inv.add(armour);
         Shield shield = new Shield(character.getDungeon());
         inv.add(shield);
-        
-        // spider battle - shows sword priority over bow, and shield over armour
         Spider spider = new Spider(new Position(0, 0), character.getDungeon());
         state.battleEnemy(spider);
         assertEquals(character.getHealth(), Player.ORIGINAL_HEALTH_STANDARD);
@@ -183,7 +162,6 @@ public class BattleTest {
         PlayerState state = character.getPlayerState();
         assertEquals(state.getType(), "Standard");
 
-        // spider battle - 1 round, character has 9 points remaining
         Spider spider = new Spider(new Position(0, 0), character.getDungeon());
         int expectedCharHealth1 = character.getHealth() - ((spider.getHealth() * spider.getAttackDamage()) / 10);
         int expectedEnemyHealth1 = spider.getHealth() - ((character.getHealth() * character.getAttackDamage()) / 5);
@@ -191,8 +169,6 @@ public class BattleTest {
         assertTrue(character.getHealth() == expectedCharHealth1);
         assertEquals(spider.getHealth(), expectedEnemyHealth1);
 
-
-        // followed by zombie battle - 2 rounds -> character should have 7 points after round 1 and 2
         ZombieToast zombie = new ZombieToast(new Position(0, 0), character.getDungeon());
         zombie.giveArmour(0);
         int expectedCharHealth2 = expectedCharHealth1 - ((zombie.getHealth()* zombie.getAttackDamage()) / 10);
@@ -203,7 +179,6 @@ public class BattleTest {
         assertEquals(character.getHealth(), expectedCharHealth3);
         assertEquals(zombie.getHealth(), expectedEnemyHealth3);
 
-        // followed by merc battle - 3 rounds
         Mercenary merc = new Mercenary(new Position(0, 0), character.getDungeon());
         merc.giveArmour(0);
         int expectedCharHealth4 = expectedCharHealth3 - ((merc.getHealth() * merc.getAttackDamage()) / 10);
@@ -224,22 +199,18 @@ public class BattleTest {
         PlayerState state = character.getPlayerState();
         assertEquals(state.getType(), "Standard");
 
-        // zombietoast battle - with armour
         ZombieToast zombie = new ZombieToast(new Position(0, 0), character.getDungeon());
         zombie.giveArmour(Armour.DURABILITY);
-        // now expect 3 rounds to kill zombie
         int expectedCharHealth1 = character.getHealth() - ((zombie.getHealth() * zombie.getAttackDamage()) / 10);
         int expectedEnemyHealth1 = zombie.getHealth() - ((character.getHealth() * character.getAttackDamage()) / 10);
         int expectedCharHealth2 = expectedCharHealth1 - ((expectedEnemyHealth1 * zombie.getAttackDamage()) / 10);
         int expectedEnemyHealth2 = expectedEnemyHealth1 - ((expectedCharHealth1 * character.getAttackDamage()) / 10);
-        // zombie armour removed after 2 hits
         int expectedCharHealth3 = expectedCharHealth2 - ((expectedEnemyHealth2 * zombie.getAttackDamage()) / 10);
         int expectedEnemyHealth3 = expectedEnemyHealth2 - ((expectedCharHealth2 * character.getAttackDamage()) / 5);
         state.battleEnemy(zombie);
         assertEquals(character.getHealth(), expectedCharHealth3);
         assertEquals(zombie.getHealth(), expectedEnemyHealth3);
 
-        // expect 2 rounds to kill mercenary with sword
         Inventory inv = character.getInventory();
         Sword sword = new Sword(new Position(0, 0), character.getDungeon());
         inv.add(sword);
@@ -263,7 +234,6 @@ public class BattleTest {
         PlayerState state = character.getPlayerState();
         assertEquals(state.getType(), "Invincible");
 
-        // character cannot lose health points, enemy health instantly depleted
         Spider spider = new Spider(new Position(0, 0), character.getDungeon());
         state.battleEnemy(spider);
         assertTrue(character.getHealth() == Player.ORIGINAL_HEALTH_STANDARD);
@@ -290,7 +260,6 @@ public class BattleTest {
         PlayerState state = character.getPlayerState();
         assertEquals(state.getType(), "Invisible");
 
-        // no health deductions should be made
         Spider spider = new Spider(new Position(0, 0), character.getDungeon());
         state.battleEnemy(spider);
         assertTrue(character.getHealth() == Player.ORIGINAL_HEALTH_STANDARD);
@@ -313,7 +282,6 @@ public class BattleTest {
         PlayerState state = character.getPlayerState();
         assertEquals(state.getType(), "Standard");
 
-        // mercenary ally - should not battle
         Mercenary merc = new Mercenary(new Position(0, 0), character.getDungeon());
         merc.setAlly(true);
         state.battleEnemy(merc);
@@ -352,7 +320,6 @@ public class BattleTest {
         assertEquals(Arrays.asList(character, merc1, merc2), character.getDungeon().getEntities());
         int expectedCharHealth = character.getHealth() - ((merc2.getHealth() * merc2.getAttackDamage()) / 10);
 
-        // should only take 1 round of battle to defeat now when with ally
         character.move(Direction.DOWN);
         assertEquals(Arrays.asList(character, merc1), character.getDungeon().getEntities());
         assertEquals(expectedCharHealth, character.getHealth());
@@ -370,7 +337,6 @@ public class BattleTest {
         assertTrue(m.isAlly() == true);
 
         new ZombieToast(new Position(0, -1), character.getDungeon());
-        // with ally, player should be able to kill zombie in one go
         character.move(Direction.UP);
         assertEquals(Arrays.asList(character, m), character.getDungeon().getEntities());
     }
@@ -384,14 +350,13 @@ public class BattleTest {
         MidnightArmour m = new MidnightArmour(character.getDungeon());
         inv.add(m);
 
-        // spider battle - test using midnight armour as weapon and protection
         Spider spider = new Spider(new Position(0, 0), character.getDungeon());
         int expectedCharHealth = character.getHealth() - ((spider.getHealth() * spider.getAttackDamage()) / 20);
         int expectedEnemyHealth = spider.getHealth() - ((character.getHealth() * (character.getAttackDamage() + MidnightArmour.ADDED_ATTACK_DAMAGE)) / 5);
         state.battleEnemy(spider);
         assertEquals(character.getHealth(), expectedCharHealth);
         assertEquals(spider.getHealth(), expectedEnemyHealth);
-        assertEquals(Arrays.asList(), inv.listInventory()); // used up
+        assertEquals(Arrays.asList(), inv.listInventory());
     }
 
     @Test
@@ -405,14 +370,13 @@ public class BattleTest {
         inv.add(m);
         inv.add(a);
 
-        // spider battle - test using midnight armour as weapon and protection
         Spider spider = new Spider(new Position(0, 0), character.getDungeon());
         int expectedCharHealth = character.getHealth() - ((spider.getHealth() * spider.getAttackDamage()) / 20); // armour used
         int expectedEnemyHealth = spider.getHealth() - ((character.getHealth() * (character.getAttackDamage() + MidnightArmour.ADDED_ATTACK_DAMAGE)) / 5); // midnight armour used
         state.battleEnemy(spider);
         assertEquals(character.getHealth(), expectedCharHealth);
         assertEquals(spider.getHealth(), expectedEnemyHealth);
-        assertEquals(Arrays.asList("midnight_armour", "armour"), inv.listInventory()); // both should have been used once, 1 use left each
+        assertEquals(Arrays.asList("midnight_armour", "armour"), inv.listInventory());
     }
     
 }

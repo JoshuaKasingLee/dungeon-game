@@ -187,13 +187,10 @@ public class ItemTest {
         inv.add(s);
         Mercenary merc = new Mercenary(new Position(0, 2), player.getDungeon());
         assertEquals(false, merc.isAlly());
-
-        // check sunstone bribing works, player retains sunstone
         player.bribe(merc);
         assertEquals(true, merc.isAlly());
         assertEquals(Arrays.asList("sun_stone"), inv.listInventory());
 
-        // check if player has sunstone, treasure will not get used up in bribe
         merc.setAlly(false);
         Treasure t = new Treasure(new Position(0, 0), player.getDungeon());
         inv.add(t);
@@ -210,11 +207,7 @@ public class ItemTest {
         inv.add(s);
         Assassin ass = new Assassin(new Position(0, -2), player.getDungeon());
         assertEquals(false, ass.isAlly());
-
-        // bribe still fails if no one_ring
         assertThrows(InvalidActionException.class, () -> player.bribe(ass));
-
-        // check sunstone bribing works, player retains sunstone
         OneRing ring = new OneRing(new Position(0, 0), player.getDungeon());
         inv.add(ring);
         player.bribe(ass);
@@ -226,12 +219,8 @@ public class ItemTest {
     public void sunStoneOpenDoor() {
         Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
         new Door(new Position(1, 0), character.getDungeon(), 1);
-
-        // door should not open since no key
         character.moveRight();
         assertEquals(new Position(0, 0), character.getPosition());
-
-        // now door should open, key should remain in inventory
         Inventory inv = character.getInventory();
         SunStone s = new SunStone(new Position(0, 1), character.getDungeon());
         inv.add(s);
@@ -269,7 +258,6 @@ public class ItemTest {
         inv.add(i3);
         inv.add(s);
         inv.craftShield(character);
-        // sun-stone should be prioritised last in crafting
         assertEquals(Arrays.asList("sun_stone", "shield"), inv.listInventory());
     }
 
@@ -283,7 +271,6 @@ public class ItemTest {
         inv.add(s);
         assertEquals(Arrays.asList("anduril", "shield"), inv.listInventory());
 
-        // compare spider and boss battle damage
         Spider spider = new Spider(new Position(0, 0), character.getDungeon());
         character.move(Direction.RIGHT);
         assertEquals(Arrays.asList(character), character.getDungeon().getEntities());
@@ -306,8 +293,6 @@ public class ItemTest {
         character.move(Direction.UP);
         assertEquals(Arrays.asList("anduril"), inv.listInventory());
 
-        // anduril is powerful enough to destroy hydra in one kill
-        // hydra should always be killed
         new Hydra(new Position(0, 0), character.getDungeon());
         character.move(Direction.DOWN);
         assertEquals(Arrays.asList(character), character.getDungeon().getEntities());

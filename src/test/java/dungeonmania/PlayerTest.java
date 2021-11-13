@@ -7,8 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import org.junit.jupiter.api.Test;
 
-// import java.util.ArrayList;
-// import java.util.List;
 import java.util.Arrays;
 
 import dungeonmania.exceptions.InvalidActionException;
@@ -96,7 +94,6 @@ public class PlayerTest {
         Inventory inv = character.getInventory();
         Key k = new Key(new Position(0, 0), character.getDungeon(), 1);
         inv.add(k);
-        // door should now unlock
         character.moveRight();
         assertEquals(new Position(1, 0), character.getPosition());
     }
@@ -176,7 +173,6 @@ public class PlayerTest {
         Mercenary merc = new Mercenary(new Position(0, 1), character.getDungeon());
         assertEquals(Arrays.asList(character, merc), character.getDungeon().getEntities());
         character.move(Direction.DOWN);
-        // fight should eliminate character
         assertEquals(Arrays.asList(merc), character.getDungeon().getEntities());
     }
 
@@ -186,13 +182,13 @@ public class PlayerTest {
         character.setHealth(1);
         Inventory inv = character.getInventory();
         OneRing ring = new OneRing(new Position(0, 0), character.getDungeon());
-        inv.add(ring); // doesn't remove from dungeon
+        inv.add(ring);
         assertEquals(Arrays.asList("one_ring"), inv.listInventory());
 
         Mercenary merc = new Mercenary(new Position(0, 1), character.getDungeon());
         assertEquals(Arrays.asList(character, ring, merc), character.getDungeon().getEntities());
         character.move(Direction.DOWN);
-        // fight should happen, one ring should be used since merc can kill character
+
         assertEquals(Arrays.asList(character, ring, merc), character.getDungeon().getEntities());
         assertEquals(Arrays.asList(), inv.listInventory());
         assertEquals(Player.ORIGINAL_HEALTH_STANDARD, character.getHealth());
@@ -236,7 +232,6 @@ public class PlayerTest {
     @Test
     public void bribeMercenaryNoTreasure() {
         Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
-        // no treasure - fail
         Mercenary merc1 = new Mercenary(new Position(0, 1), character.getDungeon());
         assertEquals(false, merc1.isAlly());
         assertThrows(InvalidActionException.class, () -> character.bribe(merc1));
@@ -247,7 +242,7 @@ public class PlayerTest {
         Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
         Inventory inv = character.getInventory();
         Sword s = new Sword(new Position(0, 1), character.getDungeon());
-        inv.add(s); // doesn't remove from dungeon
+        inv.add(s);
         assertEquals(Arrays.asList("sword"), inv.listInventory());
 
         // too far - should fail
@@ -273,7 +268,6 @@ public class PlayerTest {
         inv.add(b);
         assertEquals(Arrays.asList("bow"), inv.listInventory());
 
-        // check bow works
         ZombieToastSpawner z = new ZombieToastSpawner(new Position(0, 2), character.getDungeon());
         z.setPosition(new Position(0,1));
         character.destroySpawner(z);
@@ -284,7 +278,6 @@ public class PlayerTest {
     public void destroyZombieToastSpawnerAttempt() {
         Player character = new Player(new Position(0, 0), new Dungeon("Dungeon", "Standard", "1"));
         ZombieToastSpawner z = new ZombieToastSpawner(new Position(0, 1), character.getDungeon());
-        // no weapon - should fail
         assertThrows(InvalidActionException.class, () -> character.destroySpawner(z));
     }
 
@@ -295,8 +288,6 @@ public class PlayerTest {
         new Anduril(new Position(-1, 0), character.getDungeon());
         character.move(Direction.LEFT);
         assertEquals(Arrays.asList("anduril"), inv.listInventory());
-
-        // check anduril can destory spawner like regular sword
         ZombieToastSpawner z = new ZombieToastSpawner(new Position(-1, -1), character.getDungeon());
         character.destroySpawner(z);
         assertEquals(Arrays.asList(character), character.getDungeon().getEntities());
@@ -308,7 +299,6 @@ public class PlayerTest {
         PlayerState state = character.getPlayerState();
         assertEquals(state.getType(), "Standard");
        
-        // spider battle
         Spider spider = new Spider(new Position(0, 0), character.getDungeon());
         int expectedEnemyHealth = spider.getHealth() - ((character.getHealth() * character.getAttackDamage()) / 5);
         state.battleEnemy(spider); // if spider is killed it may not exist after this
