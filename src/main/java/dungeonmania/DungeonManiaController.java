@@ -326,6 +326,9 @@ public class DungeonManiaController {
                 case "door": 
                     entityData.put("key", ((Door)currEntity).getKey());
                     break;
+                case "door_unlocked":
+                    entityData.put("key", ((Door)currEntity).getKey());
+                    break;
                 case "key":
                     entityData.put("key", ((Key)currEntity).getKey());
                     break;
