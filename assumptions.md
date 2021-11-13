@@ -88,7 +88,7 @@ Team Avocado
 - Goals disappear from front-end only upon completion of all goals
 
 //////// MILESTONE 3 ASSUMPTIONS /////////
-
+ 
 /// BOSSES ///
 - The following constants were assumed:
     - Assassin
