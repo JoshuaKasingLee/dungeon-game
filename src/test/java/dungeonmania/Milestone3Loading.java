@@ -177,8 +177,34 @@ public class Milestone3Loading {
         assertEquals(movementFactor, swampTile.getMovementFactor());
     }
 
-    // @Test
-    // public 
+    @Test
+    public void testLoadingSlowedFactor() {
+        DungeonManiaController controller = new DungeonManiaController();
+        assertDoesNotThrow(() -> controller.newGame("swampTile", "Standard"));
+        assertEquals(true, controller.getActiveGame().getEntities().stream().anyMatch(x -> x.getType().equals("swamp_tile")));
+
+        assertDoesNotThrow(() -> controller.tick(null, Direction.UP));
+
+        if (controller.getActiveGame().getEntities().stream().anyMatch(x -> x.getType().equals("mercenary"))) {
+            Mercenary mercenary = (Mercenary)controller.getActiveGame().getEntities().stream().filter(n -> n.getType().equals("mercenary")).findFirst().orElse(null);
+            int movementFactor = mercenary.getSlowed();
+
+            assertDoesNotThrow(() -> controller.saveGame("swampTile"));
+            assertDoesNotThrow(() -> controller.loadGame("swampTile"));
+            assertEquals(true, controller.getActiveGame().getEntities().stream().anyMatch(x -> x.getType().equals("mercenary")));
+            mercenary = (Mercenary)controller.getActiveGame().getEntities().stream().filter(n -> n.getType().equals("mercenary")).findFirst().orElse(null);
+            assertEquals(movementFactor, mercenary.getSlowed());
+        } else {
+            Assassin assassin = (Assassin)controller.getActiveGame().getEntities().stream().filter(n -> n.getType().equals("assassin")).findFirst().orElse(null);
+            int movementFactor = assassin.getSlowed();
+
+            assertDoesNotThrow(() -> controller.saveGame("swampTile"));
+            assertDoesNotThrow(() -> controller.loadGame("swampTile"));
+            assertEquals(true, controller.getActiveGame().getEntities().stream().anyMatch(x -> x.getType().equals("assassin")));
+            assassin = (Assassin)controller.getActiveGame().getEntities().stream().filter(n -> n.getType().equals("assassin")).findFirst().orElse(null);
+            assertEquals(movementFactor, assassin.getSlowed());
+        }
+    }
 
     
 
