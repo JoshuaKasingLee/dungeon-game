@@ -1,7 +1,7 @@
 {
     "main_menu": {
         "background_image": "images/backgrounds/main_menu3.png",
-        "background_music": "music/floral_life.mp3",
+        "background_music": "music/login.mp3",
         "text_color": "white"
     },
     "game": {
@@ -31,11 +31,12 @@
         "switch": "images/tileset/floor_switch.png",
         "invincibility_potion": "images/tileset/items/potion_10.png",
         "sword": "images/tileset/items/sword_silver.png",
+        "shield": "images/tileset/items/shield.png",
         "chest": "images/tileset/entities/chest.png",
         "door": "images/tileset/entities/door.png",
         "portal": "images/tileset/entities/portal_00.png",
-        "zombie": "images/tileset/entities/zombie_00.png",
-        "zombie_spawner": "images/tileset/entities/zombie_spawner.png",
+        "zombie_toast": "images/tileset/entities/zombie_00.png",
+        "zombie_toast_spawner": "images/tileset/entities/zombie_spawner.png",
         "floor_switch": "images/tileset/entities/floor_switch.png",
         "swamp_tile": "images/tileset/entities/swamp_tile.png",
         "armour": "images/tileset/items/armour.png",
@@ -48,7 +49,7 @@
         "midnight_armour": "images/tileset/milestone3/midnight_armour.png",
         "sceptre": "images/tileset/milestone3/sceptre.png",
         "sun_stone": "images/tileset/milestone3/sun_stone.png",
-        "one_ring": "images/tileset/milestone3/the_one_ring.png",
+        "one_ring": "images/tileset/items/ring_0_special.png",
         "door_unlocked": "images/tileset/entities/door_unlocked.png",
         "enemies": "images/tileset/entities/ranger.png",
         "boulders": "images/tileset/entities/boulder_00.png"
